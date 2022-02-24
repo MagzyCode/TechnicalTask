@@ -18,6 +18,8 @@ namespace ServerPart.Models
 
         public int? DefaultQuantity { get; set; }
 
+        public byte[] Image { get; set; } 
+
         public ICollection<FridgeProducts> FridgeProducts { get; set; }
     }
 }
