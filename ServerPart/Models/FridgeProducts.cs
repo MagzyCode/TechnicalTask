@@ -11,15 +11,15 @@ namespace ServerPart.Models
     public class FridgeProducts
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [ForeignKey(nameof(Fridge))]
-        public int FridgeId { get; set; }
+        public Guid FridgeId { get; set; }
 
         [Required]
         [ForeignKey(nameof(Products))]
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         [Required]
         public int Quantity { get; set; }

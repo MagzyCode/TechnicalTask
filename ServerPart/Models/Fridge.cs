@@ -11,7 +11,7 @@ namespace ServerPart.Models
     public class Fridge
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace ServerPart.Models
         public string OwnerName { get; set; }
 
         [ForeignKey(nameof(FridgeModel))]
-        public int ModelId { get; set; }
+        public Guid ModelId { get; set; }
 
         public FridgeModel FridgeModel { get; set; }
 
