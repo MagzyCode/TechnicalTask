@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerPart.Contracts.DbContracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace ServerPart.Models
 {
     [Table("FridgeModels")]
-    public class FridgeModel
+    public class FridgeModel : IDbModel
     {
         [Key]
         public Guid Id { get; set; }
