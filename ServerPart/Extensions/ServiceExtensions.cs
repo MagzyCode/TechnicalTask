@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServerPart.Context;
+using ServerPart.Contracts.RepositoryManagerContracts;
+using ServerPart.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,8 @@ namespace ServerPart.Extensions
             services.AddDbContext<TaskContext>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("taskConnectionString"),
                     b => b.MigrationsAssembly("ServerPart")));
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }

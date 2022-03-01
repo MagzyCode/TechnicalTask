@@ -3,6 +3,7 @@ using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Models;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerPart.Repositories
 {
@@ -13,8 +14,7 @@ namespace ServerPart.Repositories
 
         public void CallStoredProcedure()
         {
-            // ToDo: Добавить хранимую процедуру по заданию
-            throw new NotImplementedException();
+            Context.Database.ExecuteSqlRaw("EXEC sp_TaskMethod");
         }
 
         public void ClearFridge(Guid fridgeGuid)

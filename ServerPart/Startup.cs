@@ -34,6 +34,7 @@ namespace ServerPart
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerPart", Version = "v1" });
             });
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryManager();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
