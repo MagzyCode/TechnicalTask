@@ -45,6 +45,11 @@ namespace ServerPart.Repositories
             return Context.Set<T>();
         }
 
+        public T GetModel(int id)
+        {
+            return Context.Set<T>().Find(id);
+        }
+
         public void Update(T model)
         {
             Context.Set<T>().Update(model);

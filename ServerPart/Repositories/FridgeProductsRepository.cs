@@ -17,20 +17,20 @@ namespace ServerPart.Repositories
             Context.Database.ExecuteSqlRaw("EXEC sp_TaskMethod");
         }
 
-        public void ClearFridge(Guid fridgeGuid)
-        {
-            var removingProducts = Context.Set<FridgeProducts>()
-                .Where(x => x.FridgeId == fridgeGuid);
-            Context.Set<FridgeProducts>().RemoveRange(removingProducts);
-        }
+        //public void ClearFridge(Guid fridgeGuid)
+        //{
+        //    var removingProducts = Context.FridgeProducts
+        //        .Where(x => x.FridgeId == fridgeGuid);
+        //    Context.FridgeProducts.RemoveRange(removingProducts);
+        //}
 
-        public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid)
-        {
-            var products = Context.Set<Products>();
-            var result = Context.Set<FridgeProducts>()
-                .Where(x => x.FridgeId == fridgeGuid)
-                .Select(x => products.First(i => i.Id == x.ProductId));
-            return result;
-        }
+        //public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid)
+        //{
+        //    var products = Context.Products;
+        //    var result = Context.FridgeProducts
+        //        .Where(x => x.FridgeId == fridgeGuid)
+        //        .Select(x => products.First(i => i.Id == x.ProductId));
+        //    return result;
+        //}
     }
 }

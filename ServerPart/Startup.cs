@@ -35,6 +35,7 @@ namespace ServerPart
             });
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +48,7 @@ namespace ServerPart
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ServerPart v1"));
             }
 
+            app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
 
             app.UseRouting();

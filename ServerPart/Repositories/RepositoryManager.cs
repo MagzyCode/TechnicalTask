@@ -10,7 +10,7 @@ namespace ServerPart.Repositories
 {
     public class RepositoryManager : IRepositoryManager
     {
-        private TaskContext _taskContext;
+        private readonly TaskContext _taskContext;
         private IFridgeProductsRepository _fridgeProductsRepository;
         private IFridgeRepository _fridgeRepository;
         private IProductsRepository _productsRepository;

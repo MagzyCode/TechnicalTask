@@ -9,7 +9,7 @@ namespace ServerPart.Contracts.RepositoryContracts
     public interface IFridgeProductsRepository : IRepository<FridgeProducts>
     {
         public void CallStoredProcedure();
-        public void ClearFridge(Guid fridgeGuid);
-        public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid);
+        // public void ClearFridge(Guid fridgeGuid);
+        // public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid);
     }
 }

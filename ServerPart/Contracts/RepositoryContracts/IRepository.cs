@@ -13,5 +13,6 @@ namespace ServerPart.Contracts.RepositoryContracts
         public void Update(T model);
         public void Delete(T model);
         public IQueryable<T> FindAll();
+        public T GetModel(int id);
     }
 }
