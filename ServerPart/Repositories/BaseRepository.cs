@@ -40,12 +40,12 @@ namespace ServerPart.Repositories
             Context.Set<T>().Remove(model);
         }
 
-        public IQueryable<T> FindAll()
+        public IEnumerable<T> FindAll()
         {
             return Context.Set<T>();
         }
 
-        public T GetModel(int id)
+        public T GetModel(Guid id)
         {
             return Context.Set<T>().Find(id);
         }

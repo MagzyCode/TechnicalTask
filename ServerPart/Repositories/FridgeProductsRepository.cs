@@ -4,6 +4,7 @@ using ServerPart.Models;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ServerPart.Repositories
 {
@@ -17,20 +18,26 @@ namespace ServerPart.Repositories
             Context.Database.ExecuteSqlRaw("EXEC sp_TaskMethod");
         }
 
-        //public void ClearFridge(Guid fridgeGuid)
-        //{
-        //    var removingProducts = Context.FridgeProducts
-        //        .Where(x => x.FridgeId == fridgeGuid);
-        //    Context.FridgeProducts.RemoveRange(removingProducts);
-        //}
+        public Guid AddProductInFridge(FridgeProducts fridgeProduct)
+        {
+            var appendedFridgeProducts = Context.FridgeProducts
+                .Where(x => x.FridgeId == fridgeProduct.FridgeId && x.ProductId == fridgeProduct.ProductId);
+            FridgeProducts appendedFridgeProduct = appendedFridgeProducts.Any() ? appendedFridgeProducts.First() : null;
+            if (appendedFridgeProduct == null)
+            {
+                Create(fridgeProduct);
+                return fridgeProduct.Id;
+            }
+            else
+            {
+                appendedFridgeProduct.Quantity += fridgeProduct.Quantity;
+                Update(appendedFridgeProduct);
+                return appendedFridgeProduct.Id;
+            }                
+        }
 
-        //public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid)
-        //{
-        //    var products = Context.Products;
-        //    var result = Context.FridgeProducts
-        //        .Where(x => x.FridgeId == fridgeGuid)
-        //        .Select(x => products.First(i => i.Id == x.ProductId));
-        //    return result;
-        //}
+        public FridgeProducts GetFridgeProduct(Guid id) => GetModel(id);
+
+        public IEnumerable<FridgeProducts> GetAllFridgesProducts() => FindAll().ToList();
     }
 }

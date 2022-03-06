@@ -12,7 +12,7 @@ namespace ServerPart.Contracts.RepositoryContracts
         public void Create(T model);
         public void Update(T model);
         public void Delete(T model);
-        public IQueryable<T> FindAll();
-        public T GetModel(int id);
+        public IEnumerable<T> FindAll();
+        public T GetModel(Guid id);
     }
 }

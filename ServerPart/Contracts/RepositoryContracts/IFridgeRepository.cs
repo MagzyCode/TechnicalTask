@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
-    public interface IFridgeRepository : IRepository<Fridge>
+    public interface IFridgeRepository
     {
-        public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid);
-        public void ClearFridge(Guid fridgeGuid);
+        public IEnumerable<Products> GetFridgeProducts(Guid fridgeGuid);
+
+        public IEnumerable<Fridge> GetAllFridges();
+
+        public Fridge GetFridge(Guid id);
     }
 }

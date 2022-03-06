@@ -13,19 +13,17 @@ namespace ServerPart.Repositories
         public FridgeRepository(TaskContext context) : base(context)
         { }
 
-        public void ClearFridge(Guid fridgeGuid)
-        {
-            var removingProducts = Context.FridgeProducts
-                .Where(x => x.FridgeId == fridgeGuid);
-            Context.FridgeProducts.RemoveRange(removingProducts);
-        }
+        public IEnumerable<Fridge> GetAllFridges() => FindAll().ToList();
 
-        public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid)
+        public Fridge GetFridge(Guid id) => GetModel(id);
+
+        public IEnumerable<Products> GetFridgeProducts(Guid fridgeId)
         {
             var products = Context.Products;
             var result = Context.FridgeProducts
-                .Where(x => x.FridgeId == fridgeGuid)
-                .Select(x => products.First(i => i.Id == x.ProductId));
+                .Where(x => x.FridgeId == fridgeId)
+                .Select(x => products.First(i => i.Id == x.ProductId))
+                .ToList();
             return result;
         }
     }

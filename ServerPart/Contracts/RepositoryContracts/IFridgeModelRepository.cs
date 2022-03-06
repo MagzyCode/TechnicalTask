@@ -2,6 +2,6 @@
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
-    public interface IFridgeModelRepository : IRepository<FridgeModel>
+    public interface IFridgeModelRepository
     { }
 }

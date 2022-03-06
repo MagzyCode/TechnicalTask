@@ -15,6 +15,9 @@ namespace ServerPart.Models.Mapping
             CreateMap<FridgeModel, FridgeModelDto>();
             CreateMap<FridgeProducts, FridgeProductsDto>();
             CreateMap<Products, ProductsDto>();
+
+
+            CreateMap<CreationFridgeProductDto, FridgeProducts>();
         }
     }
 }

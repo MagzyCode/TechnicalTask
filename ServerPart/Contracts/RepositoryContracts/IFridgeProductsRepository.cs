@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
-    public interface IFridgeProductsRepository : IRepository<FridgeProducts>
+    public interface IFridgeProductsRepository
     {
         public void CallStoredProcedure();
-        // public void ClearFridge(Guid fridgeGuid);
-        // public IQueryable<Products> GetFridgeProducts(Guid fridgeGuid);
+        public Guid AddProductInFridge(FridgeProducts fridgeProducts);
+        public FridgeProducts GetFridgeProduct(Guid id);
+        public IEnumerable<FridgeProducts> GetAllFridgesProducts();
     }
 }
