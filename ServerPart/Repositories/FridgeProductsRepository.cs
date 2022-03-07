@@ -39,5 +39,7 @@ namespace ServerPart.Repositories
         public FridgeProducts GetFridgeProduct(Guid id) => GetModel(id);
 
         public IEnumerable<FridgeProducts> GetAllFridgesProducts() => FindAll().ToList();
+
+        public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
     }
 }

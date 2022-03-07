@@ -2,6 +2,7 @@
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ServerPart.Repositories
@@ -12,5 +13,7 @@ namespace ServerPart.Repositories
         { }
 
         public Products GetProduct(Guid id) => GetModel(id);
+
+        public IEnumerable<Products> GetProducts() => FindAll().ToList();
     }
 }

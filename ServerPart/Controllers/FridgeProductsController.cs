@@ -48,10 +48,13 @@ namespace ServerPart.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProductInFridge([FromBody]CreationFridgeProductDto creationFridgeProduct)
+        public IActionResult AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
             if (creationFridgeProduct == null)
                 return BadRequest("Object creationFridgeProduct is null");
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
 
             var fridge = _manager.Fridge.GetFridge(creationFridgeProduct.FridgeId);
             if (fridge == null)
@@ -67,6 +70,19 @@ namespace ServerPart.Controllers
             var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(_manager.FridgeProducts.GetFridgeProduct(createdGuid));
 
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
+        }
+
+        [HttpDelete("{fridgeProductId}")]
+        public IActionResult DeleteFridgeProduct(Guid fridgeProductId)
+        {
+            var fridgeProduct = _manager.FridgeProducts.GetFridgeProduct(fridgeProductId);
+            if (fridgeProduct == null)
+                return NotFound();
+
+            _manager.FridgeProducts.DeleteFridgeProduct(fridgeProduct);
+            _manager.Save();
+
+            return NoContent();
         }
     }
 }
