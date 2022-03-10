@@ -1,13 +1,14 @@
 ﻿using ServerPart.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
     public interface IProductsRepository
     {
-        public Products GetProduct(Guid id);
+        public Task<Products> GetProductAsync(Guid id);
 
-        public IEnumerable<Products> GetProducts();
+        public Task<IEnumerable<Products>> GetProductsAsync();
     }
 }

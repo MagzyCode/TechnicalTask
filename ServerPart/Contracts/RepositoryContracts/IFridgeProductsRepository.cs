@@ -8,10 +8,10 @@ namespace ServerPart.Contracts.RepositoryContracts
 {
     public interface IFridgeProductsRepository
     {
-        public void CallStoredProcedure();
+        public Task CallStoredProcedureAsync();
         public Guid AddProductInFridge(FridgeProducts fridgeProduct);
-        public FridgeProducts GetFridgeProduct(Guid id);
-        public IEnumerable<FridgeProducts> GetAllFridgesProducts();
+        public Task<FridgeProducts> GetFridgeProductAsync(Guid id);
+        public Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync();
         public void DeleteFridgeProduct(FridgeProducts fridgeProduct);
     }
 }

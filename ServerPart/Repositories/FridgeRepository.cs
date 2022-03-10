@@ -1,4 +1,5 @@
-﻿using ServerPart.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Models;
 using System;
@@ -13,17 +14,17 @@ namespace ServerPart.Repositories
         public FridgeRepository(TaskContext context) : base(context)
         { }
 
-        public IEnumerable<Fridge> GetAllFridges() => FindAll().ToList();
+        public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await FindAll().ToListAsync();
 
-        public Fridge GetFridge(Guid id) => GetModel(id);
+        public Task<Fridge> GetFridgeAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
 
-        public IEnumerable<Products> GetFridgeProducts(Guid fridgeId)
+        public async Task<IEnumerable<Products>> GetFridgeProductsAsync(Guid fridgeId)
         {
             var products = Context.Products;
-            var result = Context.FridgeProducts
+            var result = await Context.FridgeProducts
                 .Where(x => x.FridgeId == fridgeId)
                 .Select(x => products.First(i => i.Id == x.ProductId))
-                .ToList();
+                .ToListAsync();
             return result;
         }
     }

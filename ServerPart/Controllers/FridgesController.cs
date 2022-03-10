@@ -25,17 +25,17 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllFridges()
+        public async Task<IActionResult> GetAllFridges()
         {
-            var fridges = _manager.Fridge.GetAllFridges();
+            var fridges = await _manager.Fridge.GetAllFridgesAsync();
             var fridgesDto = _mapper.Map<IEnumerable<FridgeDto>>(fridges);
             return Ok(fridgesDto);
         }
 
         [HttpGet("{fridgeId}")]
-        public IActionResult GetFridge(Guid fridgeId)
+        public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
-            var fridge = _manager.Fridge.GetFridge(fridgeId);
+            var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
             if (fridge == null)
                 return NotFound();
             var fridgeDto = _mapper.Map<FridgeDto>(fridge);
@@ -43,9 +43,9 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet("{fridgeId}/products")]
-        public IActionResult GetFridgesProducts(Guid fridgeId)
+        public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
-            var products = _manager.Fridge.GetFridgeProducts(fridgeId);
+            var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
             return Ok(productsDto);
         }

@@ -40,7 +40,7 @@ namespace ServerPart.Repositories
             Context.Set<T>().Remove(model);
         }
 
-        public IEnumerable<T> FindAll()
+        public IQueryable<T> FindAll()
         {
             return Context.Set<T>();
         }

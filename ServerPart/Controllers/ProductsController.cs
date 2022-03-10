@@ -24,15 +24,15 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
-            var products = _manager.Products.GetProducts();
+            var products = await _manager.Products.GetProductsAsync();
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
             return Ok(productsDto);
         }
 
         [HttpPut("productId")]
-        public IActionResult UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
+        public async Task <IActionResult> UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
         {
             if (updateProductsDto == null)
                 return BadRequest("Product DTO object is null");
@@ -40,12 +40,12 @@ namespace ServerPart.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            var product = _manager.Products.GetProduct(productId);
+            var product = await _manager.Products.GetProductAsync(productId);
             if (product == null)
                 return NotFound();
 
             _mapper.Map(updateProductsDto, product);
-            _manager.Save();
+            await _manager.SaveAsync();
 
             return NoContent();
         }

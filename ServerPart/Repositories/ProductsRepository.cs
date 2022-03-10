@@ -1,9 +1,11 @@
-﻿using ServerPart.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerPart.Repositories
 {
@@ -12,8 +14,8 @@ namespace ServerPart.Repositories
         public ProductsRepository(TaskContext context) : base(context)
         { }
 
-        public Products GetProduct(Guid id) => GetModel(id);
+        public Task<Products> GetProductAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
 
-        public IEnumerable<Products> GetProducts() => FindAll().ToList();
+        public async Task<IEnumerable<Products>> GetProductsAsync() => await FindAll().ToListAsync();
     }
 }

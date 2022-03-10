@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServerPart.Repositories
 {
@@ -13,9 +14,9 @@ namespace ServerPart.Repositories
         public FridgeProductsRepository(TaskContext context) : base(context)
         { }
 
-        public void CallStoredProcedure()
+        public async Task CallStoredProcedureAsync()
         {
-            Context.Database.ExecuteSqlRaw("EXEC sp_TaskMethod");
+             await Context.Database.ExecuteSqlRawAsync("EXEC sp_TaskMethod");
         }
 
         public Guid AddProductInFridge(FridgeProducts fridgeProduct)
@@ -36,9 +37,11 @@ namespace ServerPart.Repositories
             }                
         }
 
-        public FridgeProducts GetFridgeProduct(Guid id) => GetModel(id);
+        // TODO: Проверить, работает ли функция в таком исполнение, а если нет, то поменять на как в книге на метод FindByCondition(Func<T>);
+        public Task<FridgeProducts> GetFridgeProductAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            //=> Task.Run(() => GetModel(id));
 
-        public IEnumerable<FridgeProducts> GetAllFridgesProducts() => FindAll().ToList();
+        public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await FindAll().ToListAsync();
 
         public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
     }

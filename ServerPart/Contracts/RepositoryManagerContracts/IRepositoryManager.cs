@@ -1,4 +1,5 @@
 ﻿using ServerPart.Contracts.RepositoryContracts;
+using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryManagerContracts
 {
@@ -8,6 +9,6 @@ namespace ServerPart.Contracts.RepositoryManagerContracts
         IFridgeProductsRepository FridgeProducts { get; }
         IFridgeRepository Fridge { get; }
         IProductsRepository Products { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

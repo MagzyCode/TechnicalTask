@@ -25,21 +25,21 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet("procedure")]
-        public IActionResult CallServerProcedure()
+        public async Task<IActionResult> CallServerProcedure()
         {
-            _manager.FridgeProducts.CallStoredProcedure();
-            _manager.Save();
+            await _manager.FridgeProducts.CallStoredProcedureAsync();
+            await _manager.SaveAsync();
 
-            var fridgeProducts = _manager.FridgeProducts.GetAllFridgesProducts();
+            var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
             var fridgeProductsDto = _mapper.Map<IEnumerable<FridgeProductsDto>>(fridgeProducts);
 
             return Ok(fridgeProductsDto);
         }
 
         [HttpGet("{fridgeProductId}", Name = "FridgeProductById")]
-        public IActionResult GetFridgeProductById(Guid fridgeProductId)
+        public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
         {
-            var fridgeProduct = _manager.FridgeProducts.GetFridgeProduct(fridgeProductId);
+            var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
             if (fridgeProduct == null)
                 return BadRequest("There is no fridge product object with such guid.");
 
@@ -48,7 +48,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
+        public async Task<IActionResult> AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
             if (creationFridgeProduct == null)
                 return BadRequest("Object creationFridgeProduct is null");
@@ -56,31 +56,31 @@ namespace ServerPart.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            var fridge = _manager.Fridge.GetFridge(creationFridgeProduct.FridgeId);
+            var fridge = await _manager.Fridge.GetFridgeAsync(creationFridgeProduct.FridgeId);
             if (fridge == null)
                 return NotFound("There is no fridge object with such guid.");
 
-            var product = _manager.Products.GetProduct(creationFridgeProduct.ProductId);
+            var product = await _manager.Products.GetProductAsync(creationFridgeProduct.ProductId);
             if (product == null)
                 return NotFound("There is no product object with such guid.");
 
             var fridgeProduct = _mapper.Map<FridgeProducts>(creationFridgeProduct);
             var createdGuid = _manager.FridgeProducts.AddProductInFridge(fridgeProduct);
-            _manager.Save();
-            var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(_manager.FridgeProducts.GetFridgeProduct(createdGuid));
+            await _manager.SaveAsync();
+            var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(await _manager.FridgeProducts.GetFridgeProductAsync(createdGuid));
 
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
         }
 
         [HttpDelete("{fridgeProductId}")]
-        public IActionResult DeleteFridgeProduct(Guid fridgeProductId)
+        public async Task<IActionResult> DeleteFridgeProduct(Guid fridgeProductId)
         {
-            var fridgeProduct = _manager.FridgeProducts.GetFridgeProduct(fridgeProductId);
+            var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
             if (fridgeProduct == null)
                 return NotFound();
 
             _manager.FridgeProducts.DeleteFridgeProduct(fridgeProduct);
-            _manager.Save();
+            await _manager.SaveAsync();
 
             return NoContent();
         }
