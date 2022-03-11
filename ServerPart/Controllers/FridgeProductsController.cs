@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models;
 using ServerPart.Models.DTOs;
@@ -24,7 +26,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("procedure")]
+        [HttpGet("procedure"), Authorize]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();
@@ -36,7 +38,7 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductsDto);
         }
 
-        [HttpGet("{fridgeProductId}", Name = "FridgeProductById")]
+        [HttpGet("{fridgeProductId}", Name = "FridgeProductById"), Authorize]
         public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
@@ -47,15 +49,10 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductDto);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
-            if (creationFridgeProduct == null)
-                return BadRequest("Object creationFridgeProduct is null");
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
             var fridge = await _manager.Fridge.GetFridgeAsync(creationFridgeProduct.FridgeId);
             if (fridge == null)
                 return NotFound("There is no fridge object with such guid.");
@@ -72,7 +69,7 @@ namespace ServerPart.Controllers
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
         }
 
-        [HttpDelete("{fridgeProductId}")]
+        [HttpDelete("{fridgeProductId}"), Authorize]
         public async Task<IActionResult> DeleteFridgeProduct(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);

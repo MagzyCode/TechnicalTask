@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.Contracts.RepositoryManagerContracts;
@@ -42,7 +43,7 @@ namespace ServerPart.Controllers
             return Ok(fridgeDto);
         }
 
-        [HttpGet("{fridgeId}/products")]
+        [HttpGet("{fridgeId}/products"), Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
             var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models.DTOs;
 using System;
@@ -31,15 +33,10 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
-        [HttpPut("productId")]
+        [HttpPut("productId"), Authorize]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task <IActionResult> UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
         {
-            if (updateProductsDto == null)
-                return BadRequest("Product DTO object is null");
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
             var product = await _manager.Products.GetProductAsync(productId);
             if (product == null)
                 return NotFound();

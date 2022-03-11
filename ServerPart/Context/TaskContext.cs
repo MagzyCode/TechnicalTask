@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServerPart.Models;
 using ServerPart.Models.Configuration;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Context
 {
-    public class TaskContext : DbContext
+    public class TaskContext : IdentityDbContext<User>
     {
         public TaskContext(DbContextOptions options)
             : base(options)
@@ -16,10 +17,12 @@ namespace ServerPart.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new FridgeModelConfiguration());
             modelBuilder.ApplyConfiguration(new FridgeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductsConfiguration());
             modelBuilder.ApplyConfiguration(new FridgeProductsConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
         public DbSet<Fridge> Fridges { get; set; }
