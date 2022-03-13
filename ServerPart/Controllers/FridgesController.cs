@@ -25,7 +25,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetAllFridges()
         {
             var fridges = await _manager.Fridge.GetAllFridgesAsync();
@@ -33,7 +33,7 @@ namespace ServerPart.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpGet("{fridgeId}")]
+        [HttpGet("{fridgeId}"), Authorize]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);

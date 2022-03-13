@@ -25,7 +25,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _manager.Products.GetProductsAsync();
@@ -33,7 +33,7 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
-        [HttpPut("productId"), Authorize]
+        [HttpPut("productId"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task <IActionResult> UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
         {

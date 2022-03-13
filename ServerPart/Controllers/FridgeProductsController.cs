@@ -26,7 +26,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("procedure"), Authorize]
+        [HttpGet("procedure"), Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();

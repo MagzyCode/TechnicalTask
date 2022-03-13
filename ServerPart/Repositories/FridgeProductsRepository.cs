@@ -39,8 +39,6 @@ namespace ServerPart.Repositories
 
         // TODO: Проверить, работает ли функция в таком исполнение, а если нет, то поменять на как в книге на метод FindByCondition(Func<T>);
         public Task<FridgeProducts> GetFridgeProductAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
-            //=> Task.Run(() => GetModel(id));
-
         public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await FindAll().ToListAsync();
 
         public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
