@@ -14,9 +14,11 @@ namespace ServerPart.Repositories
         public FridgeRepository(TaskContext context) : base(context)
         { }
 
+        public void DeleteFridge(Fridge fridge) => Delete(fridge);
+
         public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await FindAll().ToListAsync();
 
-        public Task<Fridge> GetFridgeAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        public async Task<Fridge> GetFridgeAsync(Guid id) => await FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Products>> GetFridgeProductsAsync(Guid fridgeId)
         {
@@ -27,5 +29,7 @@ namespace ServerPart.Repositories
                 .ToListAsync();
             return result;
         }
+
+
     }
 }

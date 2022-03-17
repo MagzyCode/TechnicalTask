@@ -38,7 +38,7 @@ namespace ClientPart.Controllers
 
             // TODO: В случае неправильных данных выкидывает ошибку
             var token = await _authenticationService.Authenticate(model);
-            ViewBag.Token = token;
+            // ViewBag.Token = token;
             //HttpContext.Response.HttpContext.Response.Headers.Add("Autorization", $"Bearer {token}");
             // Исправить на перевод на начальную страницу пользователя
             return RedirectToAction("GetFridges", "Fridges");

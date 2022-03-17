@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models;
 using ServerPart.Models.DTOs;
@@ -25,7 +26,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet, Authorize]
+        [HttpGet/*, Authorize*/]
         public async Task<IActionResult> GetAllFridges()
         {
             var fridges = await _manager.Fridge.GetAllFridgesAsync();
@@ -33,7 +34,7 @@ namespace ServerPart.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpGet("{fridgeId}"), Authorize]
+        [HttpGet("{fridgeId}")/*, Authorize*/]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
@@ -43,7 +44,7 @@ namespace ServerPart.Controllers
             return Ok(fridgeDto);
         }
 
-        [HttpGet("{fridgeId}/products"), Authorize]
+        [HttpGet("{fridgeId}/products")/*, Authorize*/]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
             var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);
@@ -51,6 +52,33 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
-        
+        [HttpPut("{fridgeId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateFridge(Guid fridgeId, [FromBody]UpdateFridgeDto updateFridge)
+        {
+            var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
+            if (fridge == null)
+                return NotFound();
+
+            _mapper.Map(updateFridge, fridge);
+            await _manager.SaveAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{fridgeId}")/*, Authorize*/]
+        public async Task<IActionResult> DeleteFridge(Guid fridgeId)
+        {
+            var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
+            if (fridge == null)
+                return NotFound();
+
+            _manager.Fridge.DeleteFridge(fridge);
+            await _manager.SaveAsync();
+
+            return NoContent();
+        }
+
+
     }
 }

@@ -13,5 +13,7 @@ namespace ServerPart.Contracts.RepositoryContracts
         public Task<IEnumerable<Fridge>> GetAllFridgesAsync();
 
         public Task<Fridge> GetFridgeAsync(Guid id);
+
+        public void DeleteFridge(Fridge id);
     }
 }

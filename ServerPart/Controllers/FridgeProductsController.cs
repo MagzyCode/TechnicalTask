@@ -26,7 +26,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("procedure"), Authorize(Roles = "Administrator")]
+        [HttpGet("procedure")/*, Authorize(Roles = "Administrator")*/]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();
@@ -38,7 +38,7 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductsDto);
         }
 
-        [HttpGet("{fridgeProductId}", Name = "FridgeProductById"), Authorize]
+        [HttpGet("{fridgeProductId}", Name = "FridgeProductById")/*, Authorize*/]
         public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
@@ -49,7 +49,7 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductDto);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost/*, Authorize*/]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
@@ -69,7 +69,7 @@ namespace ServerPart.Controllers
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
         }
 
-        [HttpDelete("{fridgeProductId}"), Authorize]
+        [HttpDelete("{fridgeProductId}")/*, Authorize*/]
         public async Task<IActionResult> DeleteFridgeProduct(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);

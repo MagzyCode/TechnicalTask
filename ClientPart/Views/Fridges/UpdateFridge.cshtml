@@ -1,0 +1,58 @@
+﻿@model UpdatedFridgeViewModel;
+@inject ClientPart.ApiConnection.Services.FridgesService FridgeService
+@{ 
+    // var models = FridgeService.
+}
+<form method="post" asp-controller="Issue" asp-action="Details">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group row">
+        <label asp-for="Name" class="col-xs-2 col-form-label">Fridge name</label>
+        <br />
+        <input asp-for="Name" value="@Model.Name" class="form-control col-xs-2" type="text" id="example-text-input">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="OwnerName" class="col-xs-2 col-form-label">Name of owner</label>
+        <br />
+        <input asp-for="OwnerName" class="form-control col-xs-5" type="text" id="example-text-input">
+        <span asp-validation-for="OwnerName"></span>
+    </div>
+    @*<div class="form-group row">
+        @{
+            var item = new SelectListItem() { Text = " " };
+
+            var checklists = Model
+                .Checklists
+                .Select(i => new SelectListItem() { Text = i.ListName })
+                .ToList();
+            checklists.Insert(0, item);
+        }
+        <label asp-for="SelectedChecklist" class="col-xs-2 col-form-label">Категория для задачи</label>
+        <select class="form-control col-xs-5" asp-for="SelectedChecklist" asp-items="@checklists"></select>
+    </div>*@
+    @*<div class="form-group row">
+            <label asp-for="CompletionDate" class="col-xs-2 col-form-label">Добавить дату выполнения</label>
+            <br />
+            <input asp-for="CompletionDate" class="form-control col-xs-5" type="date" id="example-text-input">
+            <span asp-validation-for="CompletionDate"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Repetition" class="col-xs-2 col-form-label">Повтор (в днях)</label>
+            <br />
+            <input asp-for="Repetition" class="form-control col-xs-5" type="number" id="example-text-input">
+            <span asp-validation-for="Repetition"></span>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Note" class="col-xs-2 col-form-label">Заметка</label>
+            <br />
+            <input asp-for="Note" class="form-control col-xs-5" type="text" id="example-text-input">
+            <span asp-validation-for="Note"></span>
+        </div>*@
+
+    <div class="form-group row">
+        <form method="post">
+            <button asp-controller="Fridges" asp-action="Update" asp-route-id="@Model.Id" type="submit" class="btn btn-primary mb-2 bg-danger">Update fridge</button>
+        </form>
+    </div>
+</form>

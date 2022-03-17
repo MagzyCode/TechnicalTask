@@ -12,8 +12,12 @@ namespace ClientPart.ApiConnection.Services
     {
         public async Task<IEnumerable<FridgesViewModel>> GetAllFridges() => await _data.GetAllFridges();
 
-        public async Task<FridgesViewModel> GetFridge(Guid fridgeId) => await GetFridge(fridgeId);
+        public async Task<FridgesViewModel> GetFridge(Guid fridgeId) => await _data.GetFridge(fridgeId);
 
         public async Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId) => await _data.GetFridgesProducts(fridgeId);
+
+        public async Task UpdateFridge(Guid fridgeId, UpdatedFridgeViewModel updatedFridge) => await _data.UpdateFridge(fridgeId, updatedFridge);
+
+        public async Task DeleteFridge(Guid fridgeId) => await _data.DeleteFridge(fridgeId);
     }
 }
