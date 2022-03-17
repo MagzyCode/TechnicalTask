@@ -33,7 +33,7 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
-        [HttpPut("productId"), Authorize(Roles = "Administrator")]
+        [HttpPut("{productId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task <IActionResult> UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
         {
