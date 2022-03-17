@@ -12,12 +12,15 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IFridgesData : IApiData
     {
         [Get("/api/fridges")]
+        [Headers("Authorization: Bearer")]
         public Task<IEnumerable<FridgesViewModel>> GetAllFridges();
 
         [Get("/api/fridges/{fridgeId}")]
+        [Headers("Authorization: Bearer")]
         public Task<FridgesViewModel> GetFridge(Guid fridgeId);
 
         [Get("/api/fridges/{fridgeId}/products")]
+        [Headers("Authorization: Bearer")]
         public Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId);
     }
 }

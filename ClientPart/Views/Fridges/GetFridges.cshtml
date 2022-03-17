@@ -1,0 +1,18 @@
+﻿@model IEnumerable<FridgesViewModel>;
+
+<h2>Все задачи</h2>
+<br/>
+<div>
+    <div class="list-group">
+        <table class="table">
+            @foreach (var item in Model)
+	        {
+		        <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.OwnerName</td>
+                </tr>
+	        }
+        </table>
+    </div>
+</div>

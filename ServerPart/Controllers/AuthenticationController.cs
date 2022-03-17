@@ -52,7 +52,8 @@ namespace ServerPart.Controllers
         {
             if (!await _authManager.ValidateUser(user))
                 return Unauthorized();
-            return Ok( new { Token = await _authManager.CreateToken() });
+            var token = await _authManager.CreateToken();
+            return Ok(token);
         }
     }
 }

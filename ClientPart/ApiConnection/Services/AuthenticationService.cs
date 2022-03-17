@@ -11,6 +11,6 @@ namespace ClientPart.ApiConnection.Services
     {
         public async Task RegisterUser(RegistrationUserViewModel model) => await _data.RegisterUser(model);
 
-        public async Task<object> Authenticate(AuthenticationUserViewModel model) => await _data.Authenticate(model);
+        public async Task<string> Authenticate(AuthenticationUserViewModel model) => await _data.Authenticate(model);
     }
 }

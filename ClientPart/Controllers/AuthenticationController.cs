@@ -38,11 +38,10 @@ namespace ClientPart.Controllers
 
             // TODO: В случае неправильных данных выкидывает ошибку
             var token = await _authenticationService.Authenticate(model);
-            var value = (new Regex("\".+.[.].+[.].+\"")).Matches(token.ToString())[0].Value;
-            var result = value.Substring(9, value.Length - 10);
-            ViewData["token"] = result;
+            ViewBag.Token = token;
+            //HttpContext.Response.HttpContext.Response.Headers.Add("Autorization", $"Bearer {token}");
             // Исправить на перевод на начальную страницу пользователя
-            return Ok();
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
 

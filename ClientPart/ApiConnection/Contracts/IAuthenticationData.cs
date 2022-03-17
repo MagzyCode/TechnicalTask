@@ -15,6 +15,6 @@ namespace ClientPart.ApiConnection.Contracts
         public Task RegisterUser([Body] RegistrationUserViewModel userForRegistration);
 
         [Post("/api/authentication/login")]
-        public Task<object> Authenticate([Body] AuthenticationUserViewModel user);
+        public Task<string> Authenticate([Body] AuthenticationUserViewModel user);
     }
 }
