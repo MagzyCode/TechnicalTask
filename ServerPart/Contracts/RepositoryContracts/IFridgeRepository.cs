@@ -15,5 +15,7 @@ namespace ServerPart.Contracts.RepositoryContracts
         public Task<Fridge> GetFridgeAsync(Guid id);
 
         public void DeleteFridge(Fridge id);
+
+        public Guid AddFridge(Fridge fridge);
     }
 }

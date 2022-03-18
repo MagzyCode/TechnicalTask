@@ -57,9 +57,7 @@ namespace ClientPart.Controllers
                     item.IsChecked = true;
                     item.Quantity = fridgeProductsById.First(x => x.ProductId.Equals(item.Id)).Quantity;
                 }
-            }
-                
-                    
+            }                    
             updatedFridgeViewModel.FridgeProducts = productsViewModel.ToList();
             return View(updatedFridgeViewModel);
         }
@@ -102,15 +100,56 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddFridge()
+        public async Task<IActionResult> AddFridge()
         {
-            return View(new AddFridgeViewModel());
+
+
+            //var updatedFridge = await _fridgesService.GetFridge(id);
+            //var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
+            // all
+            //var fridgeProducts = await _fridgeProductsService.GetFridgesProducts();
+            var products = await _productsService.GetProducts();
+            var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
+            //foreach (AddProductInFridgeViewModel item in productsViewModel)
+            //{
+            //    if (fridgeProductsById.Any(x => x.ProductId.Equals(item.Id)))
+            //    {
+            //        item.IsChecked = true;
+            //        item.Quantity = fridgeProductsById.First(x => x.ProductId.Equals(item.Id)).Quantity;
+            //    }
+            //}
+            //updatedFridgeViewModel.FridgeProducts = productsViewModel.ToList();
+            //return View(updatedFridgeViewModel);
+
+
+            return View(new AddFridgeViewModel() 
+            { 
+                FridgeProducts = productsViewModel.ToList()
+            });
         }
 
         [HttpPost]
-        public IActionResult AddFridge(AddFridgeViewModel model)
+        public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
         {
-            
+            if (model == null)
+                return NotFound();
+
+            var addModel = _mapper.Map<AddShortFridgeViewModel>(model);
+            addModel.Id = Guid.NewGuid();
+            await _fridgesService.AddFridge(addModel);
+            foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
+            {
+                if (item.IsChecked)
+                {
+                    await _fridgeProductsService.AddFridgeProduct(new CreationFridgeProductViewModel()
+                    {
+                        FridgeId = addModel.Id,
+                        ProductId = item.Id,
+                        Quantity = item.Quantity
+                    });
+                }
+
+            }
             return RedirectToAction("GetFridges", "Fridges");
         }
 

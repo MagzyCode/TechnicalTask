@@ -80,22 +80,19 @@ namespace ServerPart.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFridge([FromBody])
+        public async Task<IActionResult> AddFridge([FromBody]CreationFridgeDto creationFridgeDto)
         {
-            var fridge = await _manager.Fridge.GetFridgeAsync(creationFridgeProduct.FridgeId);
-            if (fridge == null)
-                return NotFound("There is no fridge object with such guid.");
+            var model = await _manager.FridgeModel.GetFridgeModelAsync(creationFridgeDto.ModelId);
+            if (model == null)
+                return NotFound();
 
-            var product = await _manager.Products.GetProductAsync(creationFridgeProduct.ProductId);
-            if (product == null)
-                return NotFound("There is no product object with such guid.");
-
-            var fridgeProduct = _mapper.Map<FridgeProducts>(creationFridgeProduct);
-            var createdGuid = _manager.FridgeProducts.AddProductInFridge(fridgeProduct);
+            var fridge = _mapper.Map<Fridge>(creationFridgeDto);
+            var createdGuid = _manager.Fridge.AddFridge(fridge);
             await _manager.SaveAsync();
-            var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(await _manager.FridgeProducts.GetFridgeProductAsync(createdGuid));
+            var result = await _manager.Fridge.GetFridgeAsync(createdGuid);
+            var fridgeDtoToReturn = _mapper.Map<FridgeDto>(await _manager.Fridge.GetFridgeAsync(createdGuid));
 
-            return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
+            return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeDtoToReturn);
         }
 
     }

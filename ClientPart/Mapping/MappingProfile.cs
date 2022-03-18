@@ -14,6 +14,7 @@ namespace ClientPart.Mapping
             CreateMap<FridgesViewModel, UpdatedFridgeViewModel>();
             CreateMap<ProductsViewModel, AddProductInFridgeViewModel>();
             CreateMap<UpdatedFridgeViewModel, UpdatedShortFridgeViewModel>();
+            CreateMap<AddFridgeViewModel, AddShortFridgeViewModel>();
         }
     }
 }

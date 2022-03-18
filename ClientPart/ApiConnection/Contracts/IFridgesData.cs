@@ -29,5 +29,8 @@ namespace ClientPart.ApiConnection.Contracts
 
         [Delete("/api/fridges/{fridgeId}")]
         public Task DeleteFridge(Guid fridgeId);
+
+        [Post("/api/fridges")]
+        public Task AddFridge([Body] AddShortFridgeViewModel model);
     }
 }

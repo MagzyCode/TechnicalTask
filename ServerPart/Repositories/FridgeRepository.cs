@@ -14,6 +14,12 @@ namespace ServerPart.Repositories
         public FridgeRepository(TaskContext context) : base(context)
         { }
 
+        public Guid AddFridge(Fridge fridge)
+        {
+            Create(fridge);
+            return fridge.Id;
+        }
+
         public void DeleteFridge(Fridge fridge) => Delete(fridge);
 
         public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await FindAll().ToListAsync();

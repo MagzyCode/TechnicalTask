@@ -19,5 +19,7 @@ namespace ClientPart.ApiConnection.Services
         public async Task UpdateFridge(Guid fridgeId, UpdatedShortFridgeViewModel updatedFridge) => await _data.UpdateFridge(fridgeId, updatedFridge);
 
         public async Task DeleteFridge(Guid fridgeId) => await _data.DeleteFridge(fridgeId);
+
+        public async Task AddFridge(AddShortFridgeViewModel model) => await _data.AddFridge(model);
     }
 }

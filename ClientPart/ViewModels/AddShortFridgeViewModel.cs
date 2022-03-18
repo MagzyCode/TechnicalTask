@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClientPart.ViewModels
 {
-    public class AddFridgeViewModel
+    public class AddShortFridgeViewModel
     {
         public Guid Id { get; set; }
 
@@ -14,7 +14,5 @@ namespace ClientPart.ViewModels
         public string OwnerName { get; set; }
 
         public Guid ModelId { get; set; }
-
-        public List<AddProductInFridgeViewModel> FridgeProducts { get; set; }
     }
 }
