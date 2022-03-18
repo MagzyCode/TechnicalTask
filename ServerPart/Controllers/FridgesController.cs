@@ -89,10 +89,11 @@ namespace ServerPart.Controllers
             var fridge = _mapper.Map<Fridge>(creationFridgeDto);
             var createdGuid = _manager.Fridge.AddFridge(fridge);
             await _manager.SaveAsync();
-            var result = await _manager.Fridge.GetFridgeAsync(createdGuid);
-            var fridgeDtoToReturn = _mapper.Map<FridgeDto>(await _manager.Fridge.GetFridgeAsync(createdGuid));
+            //var fridgeAfterCreation = await _manager.Fridge.GetFridgeAsync(createdGuid);
+            //var fridgeDtoToReturn = _mapper.Map<FridgeDto>(fridgeAfterCreation);
 
-            return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeDtoToReturn);
+            return Created($"api/fridgeProducts/{createdGuid}", createdGuid);
+            // return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeDtoToReturn);
         }
 
     }

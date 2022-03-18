@@ -135,15 +135,15 @@ namespace ClientPart.Controllers
                 return NotFound();
 
             var addModel = _mapper.Map<AddShortFridgeViewModel>(model);
-            addModel.Id = Guid.NewGuid();
-            await _fridgesService.AddFridge(addModel);
+            // addModel.Id = Guid.NewGuid();
+            var createdGuid = await _fridgesService.AddFridge(addModel);
             foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
             {
                 if (item.IsChecked)
                 {
                     await _fridgeProductsService.AddFridgeProduct(new CreationFridgeProductViewModel()
                     {
-                        FridgeId = addModel.Id,
+                        FridgeId = createdGuid,
                         ProductId = item.Id,
                         Quantity = item.Quantity
                     });
