@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AddFridgeViewModel
+@inject ClientPart.ApiConnection.Services.FridgeModelService FridgeModel
+@inject FridgeProductsService FridgeProducts
 @{
+    var models = await FridgeModel.GetFridgeModels();
 }
+<form method="post" asp-controller="Fridges" asp-action="UpdateFridge">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group row">
+        <label asp-for="Name" class="col-xs-2 col-form-label">Fridge name</label>
+        <br />
+        <input asp-for="Name" value="@Model.Name" class="form-control col-xs-2" type="text" id="example-text-input">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="OwnerName" class="col-xs-2 col-form-label">Name of owner</label>
+        <br />
+        <input asp-for="OwnerName" class="form-control col-xs-5" type="text" id="example-text-input">
+        <span asp-validation-for="OwnerName"></span>
+    </div>
+    <div class="form-group row">
+        @{
+            var item = new SelectListItem() { Text = " " };
+
+            var modelSelects = models
+                .Select(i => new SelectListItem() { Text = i.Name, Value = i.Id.ToString() })
+                .ToList();
+            modelSelects.Insert(0, item);
+        }
+        <label asp-for="ModelId" class="col-xs-2 col-form-label">Fridge model</label>
+        <select class="form-control col-xs-5" asp-for="ModelId" asp-items="@modelSelects"></select>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="FridgeProducts" class="col-xs-2 col-form-label">Products in fridge</label>
+        <table class="table">
+
+            @for (int i = 0; i < Model.FridgeProducts.Count; i++)
+            {
+                <tr>
+                    <td>@Model.FridgeProducts[i].Name</td>
+                    <td>
+                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)
+                    </td>
+                    <td>
+                        <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
+                    </td>
+                </tr>
+                @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Id)
+                @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Name)
+                @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Quantity)
+                @Html.HiddenFor(modelItem => Model.FridgeProducts[i].IsChecked)
+            }
+
+        </table>
+    </div>
+
+    <div class="form-group row">
+        <button asp-controller="Fridges" asp-action="AddFridge" type="submit" class="btn btn-primary mb-2">Update fridge</button>
+    </div>
+</form>

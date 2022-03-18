@@ -13,12 +13,12 @@ namespace ServerPart.Controllers
 {
     [Route("api/fridgeModels")]
     [ApiController]
-    public class FridgeModelController : ControllerBase
+    public class FridgeModelsController : ControllerBase
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
 
-        public FridgeModelController(IRepositoryManager manager, IMapper mapper)
+        public FridgeModelsController(IRepositoryManager manager, IMapper mapper)
         {
             _manager = manager;
             _mapper = mapper;
@@ -28,12 +28,12 @@ namespace ServerPart.Controllers
         public async Task<IActionResult> GetFridgeModels()
         {
             var fridgeModel = await _manager.FridgeModel.GetAllFridgeModelsAsync();
-            var fridgeModelDto = _mapper.Map<IEnumerable<FridgeProductsDto>>(fridgeModel);
+            var fridgeModelDto = _mapper.Map<IEnumerable<FridgeModelDto>>(fridgeModel);
             return Ok(fridgeModelDto);
         }
 
         [HttpGet("{fridgeModelId}")]
-        public async Task<IActionResult> UpdateProduct(Guid fridgeModelId)
+        public async Task<IActionResult> GetFridgeModel(Guid fridgeModelId)
         {
             var fridgeModel = await _manager.FridgeModel.GetFridgeModelAsync(fridgeModelId);
             if (fridgeModel == null)

@@ -5,13 +5,18 @@ using System.Threading.Tasks;
 
 namespace ClientPart.ViewModels
 {
-    public class FridgeModelViewModel
+    public class AddProductInFridgeViewModel
     {
         public Guid Id { get; set; }
+
         public string Name { get; set; }
 
-        public int? Year { get; set; }
+        public int? DefaultQuantity { get; set; }
 
-        // public ICollection<FridgesViewModel> Fridges { get; set; }
+        public byte[] Image { get; set; }
+
+        public bool IsChecked { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

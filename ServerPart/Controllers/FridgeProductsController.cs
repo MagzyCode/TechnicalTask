@@ -26,6 +26,14 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetFridgesProducts()
+        {
+            var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
+            var fridgeProductsDto = _mapper.Map<IEnumerable<FridgeProductsDto>>(fridgeProducts);
+            return Ok(fridgeProductsDto);
+        }
+
         [HttpGet("procedure")/*, Authorize(Roles = "Administrator")*/]
         public async Task<IActionResult> CallServerProcedure()
         {

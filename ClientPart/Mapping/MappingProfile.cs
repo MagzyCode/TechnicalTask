@@ -12,6 +12,8 @@ namespace ClientPart.Mapping
         public MappingProfile()
         {
             CreateMap<FridgesViewModel, UpdatedFridgeViewModel>();
+            CreateMap<ProductsViewModel, AddProductInFridgeViewModel>();
+            CreateMap<UpdatedFridgeViewModel, UpdatedShortFridgeViewModel>();
         }
     }
 }

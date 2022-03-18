@@ -26,5 +26,8 @@ namespace ClientPart.ApiConnection.Contracts
         [Delete("/api/fridgeProducts/{fridgeProductId}")]
         //[Headers("Authorization: Bearer")]
         public Task DeleteFridgeProduct(Guid fridgeProductId);
+
+        [Get("/api/fridgeProducts")]
+        public Task<IEnumerable<FridgeProductsViewModel>> GetFridgesProducts();
     }
 }

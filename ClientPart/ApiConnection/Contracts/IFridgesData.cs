@@ -25,7 +25,7 @@ namespace ClientPart.ApiConnection.Contracts
 
         [Put("/api/fridges/{fridgeId}")]
         // [Headers("Authorization: Bearer")]
-        public Task UpdateFridge(Guid fridgeId, [Body] UpdatedFridgeViewModel updatedFridge);
+        public Task UpdateFridge(Guid fridgeId, [Body] UpdatedShortFridgeViewModel updatedFridge);
 
         [Delete("/api/fridges/{fridgeId}")]
         public Task DeleteFridge(Guid fridgeId);

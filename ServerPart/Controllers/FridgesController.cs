@@ -79,6 +79,24 @@ namespace ServerPart.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddFridge([FromBody])
+        {
+            var fridge = await _manager.Fridge.GetFridgeAsync(creationFridgeProduct.FridgeId);
+            if (fridge == null)
+                return NotFound("There is no fridge object with such guid.");
+
+            var product = await _manager.Products.GetProductAsync(creationFridgeProduct.ProductId);
+            if (product == null)
+                return NotFound("There is no product object with such guid.");
+
+            var fridgeProduct = _mapper.Map<FridgeProducts>(creationFridgeProduct);
+            var createdGuid = _manager.FridgeProducts.AddProductInFridge(fridgeProduct);
+            await _manager.SaveAsync();
+            var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(await _manager.FridgeProducts.GetFridgeProductAsync(createdGuid));
+
+            return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
+        }
 
     }
 }

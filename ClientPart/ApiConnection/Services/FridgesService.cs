@@ -16,7 +16,7 @@ namespace ClientPart.ApiConnection.Services
 
         public async Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId) => await _data.GetFridgesProducts(fridgeId);
 
-        public async Task UpdateFridge(Guid fridgeId, UpdatedFridgeViewModel updatedFridge) => await _data.UpdateFridge(fridgeId, updatedFridge);
+        public async Task UpdateFridge(Guid fridgeId, UpdatedShortFridgeViewModel updatedFridge) => await _data.UpdateFridge(fridgeId, updatedFridge);
 
         public async Task DeleteFridge(Guid fridgeId) => await _data.DeleteFridge(fridgeId);
     }
