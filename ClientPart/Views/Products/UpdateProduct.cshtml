@@ -1,5 +1,20 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model UpdatedProductViewModel
+
+<form method="post" asp-controller="Products" asp-action="UpdateProducts">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group row">
+        <label asp-for="Name" class="col-xs-2 col-form-label">Fridge name</label>
+        <br />
+        <input asp-for="Name" value="@Model.Name" class="form-control col-xs-2" type="text" id="example-text-input">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="DefaultQuantity" class="col-xs-2 col-form-label">Default quantity</label>
+        <br />
+        <input asp-for="DefaultQuantity" class="form-control col-xs-5" type="number" id="example-text-input">
+        <span asp-validation-for="DefaultQuantity"></span>
+    </div>
+    <div class="form-group row">
+        <button asp-controller="Products" asp-action="UpdateProduct" type="submit" class="btn btn-primary mb-2">Update fridge</button>
+    </div>
+</form>

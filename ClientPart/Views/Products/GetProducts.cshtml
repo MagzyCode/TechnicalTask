@@ -1,5 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<ProductsViewModel>
+
+<h2>All products</h2>
+<br />
+<div>
+    <div class="list-group">
+        @*<form method="get">
+            <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="AddFridge">Add new fridge</button>
+        </form>*@
+
+        <table class="table">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    @*<td>@item.OwnerName</td>*@
+                    <td>
+                        <form method="get">
+                            <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</button>
+                        </form>
+                    </td>
+                    @*<td>
+                        <form method="get">
+                            <button type="submit" class="btn btn-primary mb-2 bg-danger" asp-controller="Fridges" asp-action="DeleteFridge" asp-route-id="@item.Id">Delete</button>
+                        </form>
+                    </td>*@
+                </tr>
+            }
+        </table>
+    </div>
+</div>

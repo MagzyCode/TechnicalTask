@@ -10,5 +10,7 @@ namespace ServerPart.Models.DTOs
 
         [Required(ErrorMessage = "Default number of product shouldn't be null")]
         public int? DefaultQuantity { get; set; }
+
+        public byte[] Image { get; set; }
     }
 }
