@@ -30,19 +30,13 @@ namespace ClientPart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // services.AddScoped<AuthenticationService>();
-            // services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddRefitServicesDependecies();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped<AuthenticateHttpClientHandler>();
-            //services.AddHttpClient()
-            //    .AddHttpClient<AuthenticateHttpClientHandler>();
-            //services.AddScoped<AuthenticateHttpClientHandler>();
             services.AddSession();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => //CookieAuthenticationOptions
+                .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Authentication/Login");
                 });
@@ -69,7 +63,6 @@ namespace ClientPart
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints =>
             {

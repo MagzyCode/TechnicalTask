@@ -36,22 +36,12 @@
     <div class="form-group row">
         <label asp-for="FridgeProducts" class="col-xs-2 col-form-label">Products in fridge</label>
         <table class="table">
-
-            @*@for (int i = 0; i < Model.FridgeProducts.Count; i++)*@
-            @*@foreach (AddProductInFridgeViewModel value in Model.FridgeProducts)*@
             @for (int i = 0; i < Model.FridgeProducts.Count; i++)
             {
-                //var quantity = fridgeProducts
-                //    ?.Where(x => x.FridgeId == Model.Id && x.ProductId == value.Id)
-                //    ?.FirstOrDefault()
-                //    ?.Quantity;
-
-
                 <tr>
                     <td>@Model.FridgeProducts[i].Name</td>
                     <td>
-                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)
-                        @*<input asp-for="@Model.FridgeProducts[i].IsChecked" value=" @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)" class="form-control col-xs-5" type="checkbox" id="example-text-input">*@
+                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)   
                     </td>
                     <td>
                         <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
@@ -67,53 +57,6 @@
     </div>
 
     <div class="form-group row">
-        @*@{
-                async Task AddProducts()
-                {
-                    foreach (AddProductInFridgeViewModel value in Model.FridgeProducts)
-                    {
-                        if (value.IsChecked && !fridgeProducts.Any(x => x.FridgeId.Equals(Model.Id) && x.ProductId.Equals(value.Id)))
-                        {
-                            await FridgeProducts.AddFridgeProduct(new CreationFridgeProductViewModel()
-                            {
-                                FridgeId = Model.Id,
-                                ProductId = value.Id,
-                                Quantity = value.Quantity
-                            });
-                        }
-                    }
-                }
-                await AddProducts();
-            <button asp-controller="Fridges" asp-action="UpdateFridge" type="submit" class="btn btn-primary mb-2">Update fridge @AddProducts()</button>
-        }*@
         <button asp-controller="Fridges" asp-action="UpdateFridge" type="submit" class="btn btn-primary mb-2">Update fridge</button>
-
     </div>
-
-    @*<div class="form-group row">
-            <label asp-for="CompletionDate" class="col-xs-2 col-form-label">Добавить дату выполнения</label>
-            <br />
-            <input asp-for="CompletionDate" class="form-control col-xs-5" type="date" id="example-text-input">
-            <span asp-validation-for="CompletionDate"></span>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Repetition" class="col-xs-2 col-form-label">Повтор (в днях)</label>
-            <br />
-            <input asp-for="Repetition" class="form-control col-xs-5" type="number" id="example-text-input">
-            <span asp-validation-for="Repetition"></span>
-        </div>
-
-        <div class="form-group row">
-            <label asp-for="Note" class="col-xs-2 col-form-label">Заметка</label>
-            <br />
-            <input asp-for="Note" class="form-control col-xs-5" type="text" id="example-text-input">
-            <span asp-validation-for="Note"></span>
-        </div>*@
-
-
 </form>
-@*<div class="form-group row">
-    <form method="post">
-        <button asp-controller="Fridges" asp-action="UpdateFridge" type="submit" class="btn btn-primary mb-2">Update fridge</button>
-    </form>
-</div>*@

@@ -12,11 +12,9 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IProductsData : IApiData
     {
         [Get("/api/products")]
-        //[Headers("Authorization: Bearer")]
         public Task<IEnumerable<ProductsViewModel>> GetProducts([Authorize("Bearer")] string token);
 
         [Put("/api/products/{productId}")]
-        //[Headers("Authorization: Bearer")]
         public Task UpdateProduct(Guid productId, [Body] UpdatedProductViewModel product, [Authorize("Bearer")] string token);
     }
 }

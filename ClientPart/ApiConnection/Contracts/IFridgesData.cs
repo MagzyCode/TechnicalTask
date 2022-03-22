@@ -12,19 +12,15 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IFridgesData : IApiData
     {
         [Get("/api/fridges")]
-        // [Headers("Authorization: Bearer")]
         public Task<IEnumerable<FridgesViewModel>> GetAllFridges([Authorize("Bearer")] string token);
 
         [Get("/api/fridges/{fridgeId}")]
-        // [Headers("Authorization: Bearer")]
         public Task<FridgesViewModel> GetFridge(Guid fridgeId, [Authorize("Bearer")] string token);
 
         [Get("/api/fridges/{fridgeId}/products")]
-        // [Headers("Authorization: Bearer")]
         public Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId, [Authorize("Bearer")] string token);
 
         [Put("/api/fridges/{fridgeId}")]
-        // [Headers("Authorization: Bearer")]
         public Task UpdateFridge(Guid fridgeId, [Body] UpdatedShortFridgeViewModel updatedFridge, [Authorize("Bearer")] string token);
 
         [Delete("/api/fridges/{fridgeId}")]

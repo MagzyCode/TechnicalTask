@@ -48,11 +48,19 @@ namespace ClientPart.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdatedProductViewModel model)
         {
-            var token = _authenticationService.GetToken(this);
-            if (model == null)
-                return BadRequest();
-            await _productsService.UpdateProduct(model.Id, model, token);
-            return RedirectToAction("GetProducts", "Products");
+            try
+            {
+                var token = _authenticationService.GetToken(this);
+                if (model == null)
+                    return BadRequest();
+                await _productsService.UpdateProduct(model.Id, model, token);
+                return RedirectToAction("GetProducts", "Products");
+            }
+            catch (Refit.ApiException)
+            {
+                ViewData["Error"] = "You have no access to this option";
+                return View("~/Views/Home/Error.cshtml");
+            }
         }
     }
 }

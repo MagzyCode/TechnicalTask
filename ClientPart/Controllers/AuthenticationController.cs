@@ -28,7 +28,6 @@ namespace ClientPart.Controllers
             return View();
         }
 
-
         [HttpGet]
         public async Task<IActionResult> LogOut()
         {
@@ -39,7 +38,6 @@ namespace ClientPart.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // HttpContext.Session.Clear();
             return View(new AuthenticationUserViewModel());
         }
 
@@ -48,33 +46,25 @@ namespace ClientPart.Controllers
         {
             if (model == null && !ModelState.IsValid)
                 return BadRequest();
-            await Authenticate(model);
-            // TODO: В случае неправильных данных выкидывает ошибку
-            //var token = await _authenticationService.Authenticate(model);
-            // HttpContext.Session.SetString(nameof(token), token);
-            // HttpContext.Request.Headers.Add("Authorization", "Bearer " + token); //.SetString(nameof(token), token);
+            try
+            {
+                await Authenticate(model);
+            }
+            catch (Refit.ValidationApiException)
+            {
+                ViewData["Error"] = "Try another user name or password";
+                return View("~/Views/Home/Error.cshtml");
+            }
             return RedirectToAction("GetFridges", "Fridges");
         }
 
         private async Task Authenticate(AuthenticationUserViewModel model)
         {
             var token = await _authenticationService.Authenticate(model);
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-                new Claim("Token", token)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
+            var claims = new List<Claim> { new Claim("Token", token) };
+            ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
-        //private async Task AuthenticationUser(AuthenticationUserViewModel user)
-        //{
-
-        //}
-
 
     }
 }

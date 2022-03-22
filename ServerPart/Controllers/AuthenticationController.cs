@@ -55,5 +55,12 @@ namespace ServerPart.Controllers
             var token = await _authManager.CreateToken();
             return Ok(token);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> IsAuthenticated([FromBody] UserForAuthenticationDto user)
+        //{
+        //    if (!await _authManager.ValidateUser(user))
+        //}
+
     }
 }
