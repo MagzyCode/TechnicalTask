@@ -9,7 +9,7 @@ namespace ClientPart.ApiConnection.Services
 {
     public class FridgeModelService : BaseRefitService<IFridgeModelData>
     {
-        public async Task<IEnumerable<FridgeModelViewModel>> GetFridgeModels() => await _data.GetFridgeModels();
-        public async Task<FridgeModelViewModel> GetFridgeModel(Guid fridgeModelId) => await _data.GetFridgeModel(fridgeModelId);
+        public async Task<IEnumerable<FridgeModelViewModel>> GetFridgeModels(string token) => await _data.GetFridgeModels(token);
+        public async Task<FridgeModelViewModel> GetFridgeModel(Guid fridgeModelId, string token) => await _data.GetFridgeModel(fridgeModelId, token);
     }
 }

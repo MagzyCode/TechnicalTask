@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.ActionFilters;
@@ -25,6 +26,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetFridgeModels()
         {
             var fridgeModel = await _manager.FridgeModel.GetAllFridgeModelsAsync();
@@ -33,6 +35,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet("{fridgeModelId}")]
+        [Authorize]
         public async Task<IActionResult> GetFridgeModel(Guid fridgeModelId)
         {
             var fridgeModel = await _manager.FridgeModel.GetFridgeModelAsync(fridgeModelId);

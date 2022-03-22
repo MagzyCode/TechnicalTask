@@ -13,10 +13,10 @@ namespace ClientPart.ApiConnection.Contracts
     {
         [Get("/api/products")]
         //[Headers("Authorization: Bearer")]
-        public Task<IEnumerable<ProductsViewModel>> GetProducts();
+        public Task<IEnumerable<ProductsViewModel>> GetProducts([Authorize("Bearer")] string token);
 
         [Put("/api/products/{productId}")]
         //[Headers("Authorization: Bearer")]
-        public Task UpdateProduct(Guid productId, [Body] UpdatedProductViewModel product);
+        public Task UpdateProduct(Guid productId, [Body] UpdatedProductViewModel product, [Authorize("Bearer")] string token);
     }
 }

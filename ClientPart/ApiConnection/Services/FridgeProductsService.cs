@@ -9,11 +9,16 @@ namespace ClientPart.ApiConnection.Services
 {
     public class FridgeProductsService : BaseRefitService<IFridgeProductsData>
     {
-        public async Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure() => await _data.CallServerProcedure();
-        public async Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId) => await _data.GetFridgeProductById(fridgeProductId);
-        public async Task AddFridgeProduct(CreationFridgeProductViewModel creationFridgeProduct) => await _data.AddFridgeProduct(creationFridgeProduct);
-        public async Task DeleteFridgeProduct(Guid fridgeProductId) => await _data.DeleteFridgeProduct(fridgeProductId);
-        public async Task<IEnumerable<FridgeProductsViewModel>> GetFridgesProducts() => await _data.GetFridgesProducts();
+        public async Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure(string token) 
+            => await _data.CallServerProcedure(token);
+        public async Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId, string token) 
+            => await _data.GetFridgeProductById(fridgeProductId, token);
+        public async Task AddFridgeProduct(CreationFridgeProductViewModel creationFridgeProduct, string token) 
+            => await _data.AddFridgeProduct(creationFridgeProduct, token);
+        public async Task DeleteFridgeProduct(Guid fridgeProductId, string token) 
+            => await _data.DeleteFridgeProduct(fridgeProductId, token);
+        public async Task<IEnumerable<FridgeProductsViewModel>> GetFridgesProducts(string token) 
+            => await _data.GetFridgesProducts(token);
 
     }
 }

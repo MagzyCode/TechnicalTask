@@ -24,6 +24,7 @@ namespace ClientPart.ApiConnection.HttpClientHandlers
         {
             if (!string.IsNullOrWhiteSpace(_token) && request.Headers.Authorization != null)
             {
+                
                 var parameters = _token.Split(' ');
                 request.Headers.Authorization = new AuthenticationHeaderValue(parameters[0], parameters[1]);
             }

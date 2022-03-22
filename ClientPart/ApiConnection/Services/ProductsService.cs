@@ -9,8 +9,8 @@ namespace ClientPart.ApiConnection.Services
 {
     public class ProductsService : BaseRefitService<IProductsData>
     {
-        public async Task<IEnumerable<ProductsViewModel>> GetProducts() => await _data.GetProducts();
+        public async Task<IEnumerable<ProductsViewModel>> GetProducts(string token) => await _data.GetProducts(token);
 
-        public Task UpdateProduct(Guid productId, UpdatedProductViewModel product) => _data.UpdateProduct(productId, product);
+        public Task UpdateProduct(Guid productId, UpdatedProductViewModel product, string token) => _data.UpdateProduct(productId, product, token);
     }
 }

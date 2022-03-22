@@ -13,24 +13,24 @@ namespace ClientPart.ApiConnection.Contracts
     {
         [Get("/api/fridges")]
         // [Headers("Authorization: Bearer")]
-        public Task<IEnumerable<FridgesViewModel>> GetAllFridges();
+        public Task<IEnumerable<FridgesViewModel>> GetAllFridges([Authorize("Bearer")] string token);
 
         [Get("/api/fridges/{fridgeId}")]
         // [Headers("Authorization: Bearer")]
-        public Task<FridgesViewModel> GetFridge(Guid fridgeId);
+        public Task<FridgesViewModel> GetFridge(Guid fridgeId, [Authorize("Bearer")] string token);
 
         [Get("/api/fridges/{fridgeId}/products")]
         // [Headers("Authorization: Bearer")]
-        public Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId);
+        public Task<IEnumerable<ProductsViewModel>> GetFridgesProducts(Guid fridgeId, [Authorize("Bearer")] string token);
 
         [Put("/api/fridges/{fridgeId}")]
         // [Headers("Authorization: Bearer")]
-        public Task UpdateFridge(Guid fridgeId, [Body] UpdatedShortFridgeViewModel updatedFridge);
+        public Task UpdateFridge(Guid fridgeId, [Body] UpdatedShortFridgeViewModel updatedFridge, [Authorize("Bearer")] string token);
 
         [Delete("/api/fridges/{fridgeId}")]
-        public Task DeleteFridge(Guid fridgeId);
+        public Task DeleteFridge(Guid fridgeId, [Authorize("Bearer")] string token);
 
         [Post("/api/fridges")]
-        public Task<Guid> AddFridge([Body] AddShortFridgeViewModel model);
+        public Task<Guid> AddFridge([Body] AddShortFridgeViewModel model, [Authorize("Bearer")] string token);
     }
 }

@@ -27,6 +27,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet/*, Authorize*/]
+        [Authorize]
         public async Task<IActionResult> GetAllFridges()
         {
             var fridges = await _manager.Fridge.GetAllFridgesAsync();
@@ -34,7 +35,8 @@ namespace ServerPart.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpGet("{fridgeId}")/*, Authorize*/]
+        [HttpGet("{fridgeId}")]/*, Authorize*/
+        [Authorize]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
@@ -45,6 +47,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet("{fridgeId}/products")/*, Authorize*/]
+        [Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
             var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);
@@ -53,6 +56,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpPut("{fridgeId}")]
+        [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateFridge(Guid fridgeId, [FromBody]UpdateFridgeDto updateFridge)
         {
@@ -67,6 +71,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpDelete("{fridgeId}")/*, Authorize*/]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
@@ -80,6 +85,7 @@ namespace ServerPart.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddFridge([FromBody]CreationFridgeDto creationFridgeDto)
         {
             var model = await _manager.FridgeModel.GetFridgeModelAsync(creationFridgeDto.ModelId);

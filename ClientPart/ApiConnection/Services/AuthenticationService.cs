@@ -1,5 +1,6 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,13 @@ namespace ClientPart.ApiConnection.Services
         public async Task RegisterUser(RegistrationUserViewModel model) => await _data.RegisterUser(model);
 
         public async Task<string> Authenticate(AuthenticationUserViewModel model) => await _data.Authenticate(model);
+
+        public string GetToken(Controller controller)
+        {
+            var tokenClaim = controller.HttpContext?.User?.Claims?.First(x => x.Type.Equals("Token"));
+            if (tokenClaim != null)
+                return tokenClaim.Value;
+            return string.Empty;
+        }
     }
 }

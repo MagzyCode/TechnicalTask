@@ -1,11 +1,13 @@
 ﻿using ClientPart.ApiConnection.Services;
 using ClientPart.ViewModels;
+using ClientPart.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClientPart.Controllers
 {
@@ -15,6 +17,7 @@ namespace ClientPart.Controllers
         private readonly FridgeModelService _fridgeModelService;
         private readonly ProductsService _productsService;
         private readonly FridgeProductsService _fridgeProductsService;
+        private readonly AuthenticationService _authenticationService;
         private readonly IMapper _mapper;
 
         public FridgesController(
@@ -22,6 +25,7 @@ namespace ClientPart.Controllers
             FridgeModelService modelService, 
             ProductsService productsService,
             FridgeProductsService fridgeProductsService,
+            AuthenticationService authenticationService,
             IMapper mapper)
         {
             _fridgesService = fridgesService;
@@ -29,26 +33,31 @@ namespace ClientPart.Controllers
             _fridgeModelService = modelService;
             _productsService = productsService;
             _fridgeProductsService = fridgeProductsService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetFridges()
         {
-            var fridges = await _fridgesService.GetAllFridges();
+            var fridges = await _fridgesService.GetAllFridges(_authenticationService.GetToken(this));
             return View(fridges);
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> UpdateFridge(Guid id)
         {
-            var updatedFridge = await _fridgesService.GetFridge(id);
+            var token = _authenticationService.GetToken(this);
+            var updatedFridge = await _fridgesService.GetFridge(id, token);
             var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
             // all
-            var fridgeProducts = await _fridgeProductsService.GetFridgesProducts();
+            updatedFridgeViewModel.Controller = this;
+            var fridgeProducts = await _fridgeProductsService.GetFridgesProducts(token);
             var fridgeProductsById = fridgeProducts
                 .Where(x => x.FridgeId.Equals(id))
                 .ToList();
-            var products = await _productsService.GetProducts();
+            var products = await _productsService.GetProducts(token);
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
             foreach (AddProductInFridgeViewModel item in productsViewModel)
             {
@@ -63,9 +72,11 @@ namespace ClientPart.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateFridge(UpdatedFridgeViewModel updatedFridge)
         {
-            var fridgeProduct = await _fridgeProductsService.GetFridgesProducts();
+            var token = _authenticationService.GetToken(this);
+            var fridgeProduct = await _fridgeProductsService.GetFridgesProducts(token);
 
             foreach (AddProductInFridgeViewModel item in updatedFridge.FridgeProducts)
             {
@@ -73,13 +84,16 @@ namespace ClientPart.Controllers
                 {
                     var isExists = fridgeProduct.Any(x => x.FridgeId == updatedFridge.Id && x.ProductId == item.Id);
                     if (isExists)
-                        await _fridgeProductsService.DeleteFridgeProduct(fridgeProduct.FirstOrDefault(x => x.FridgeId == updatedFridge.Id && x.ProductId == item.Id).Id);
+                        await _fridgeProductsService.DeleteFridgeProduct(
+                            fridgeProduct.FirstOrDefault(x => x.FridgeId == updatedFridge.Id && x.ProductId == item.Id).Id
+                            , token);
                     await _fridgeProductsService.AddFridgeProduct(new CreationFridgeProductViewModel()
                     {
                         FridgeId = updatedFridge.Id,
                         ProductId = item.Id,
                         Quantity = item.Quantity
-                    });
+                    }
+                    , token);
                 }
             }
 
@@ -88,27 +102,30 @@ namespace ClientPart.Controllers
 
             var resultViewModel = _mapper.Map<UpdatedShortFridgeViewModel>(updatedFridge);
 
-            await _fridgesService.UpdateFridge(updatedFridge.Id, resultViewModel);
+            await _fridgesService.UpdateFridge(updatedFridge.Id, resultViewModel, token);
             return RedirectToAction("GetFridges", "Fridges");
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteFridge(Guid id)
         {
-            await _fridgesService.DeleteFridge(id);
+            var token = _authenticationService.GetToken(this);
+            await _fridgesService.DeleteFridge(id, token);
             return RedirectToAction("GetFridges", "Fridges");
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> AddFridge()
         {
-
+            var token = _authenticationService.GetToken(this);
 
             //var updatedFridge = await _fridgesService.GetFridge(id);
             //var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
             // all
             //var fridgeProducts = await _fridgeProductsService.GetFridgesProducts();
-            var products = await _productsService.GetProducts();
+            var products = await _productsService.GetProducts(token);
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
             //foreach (AddProductInFridgeViewModel item in productsViewModel)
             //{
@@ -124,19 +141,23 @@ namespace ClientPart.Controllers
 
             return View(new AddFridgeViewModel() 
             { 
-                FridgeProducts = productsViewModel.ToList()
+                FridgeProducts = productsViewModel.ToList(),
+                Controller = this
             });
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
         {
+            var token = _authenticationService.GetToken(this);
+
             if (model == null)
                 return NotFound();
 
             var addModel = _mapper.Map<AddShortFridgeViewModel>(model);
-            // addModel.Id = Guid.NewGuid();
-            var createdGuid = await _fridgesService.AddFridge(addModel);
+            var createdGuid = await _fridgesService.AddFridge(addModel, token);
+         
             foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
             {
                 if (item.IsChecked)
@@ -146,7 +167,8 @@ namespace ClientPart.Controllers
                         FridgeId = createdGuid,
                         ProductId = item.Id,
                         Quantity = item.Quantity
-                    });
+                    },
+                    token : token);
                 }
 
             }
@@ -154,4 +176,6 @@ namespace ClientPart.Controllers
         }
 
     }
+
+    
 }

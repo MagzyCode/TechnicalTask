@@ -1,9 +1,10 @@
 ﻿@model UpdatedFridgeViewModel;
 @inject ClientPart.ApiConnection.Services.FridgeModelService FridgeModel
+@inject ClientPart.ApiConnection.Services.AuthenticationService AuthenticationService
 @inject FridgeProductsService FridgeProducts
 @{
-    var models = await FridgeModel.GetFridgeModels();
-    var fridgeProducts = await FridgeProducts.GetFridgesProducts();
+    var models = await FridgeModel.GetFridgeModels(AuthenticationService.GetToken(Model.Controller));
+    var fridgeProducts = await FridgeProducts.GetFridgesProducts(AuthenticationService.GetToken(Model.Controller));
 }
 <form method="post" asp-controller="Fridges" asp-action="UpdateFridge">
     <div asp-validation-summary="ModelOnly"></div>

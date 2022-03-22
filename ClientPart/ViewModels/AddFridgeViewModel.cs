@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,5 +17,7 @@ namespace ClientPart.ViewModels
         public Guid ModelId { get; set; }
 
         public List<AddProductInFridgeViewModel> FridgeProducts { get; set; }
+
+        public Controller Controller { get; set; }
     }
 }

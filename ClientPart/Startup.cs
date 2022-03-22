@@ -1,6 +1,7 @@
 using ClientPart.ApiConnection.HttpClientHandlers;
 using ClientPart.ApiConnection.Services;
 using ClientPart.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,8 +34,18 @@ namespace ClientPart
             // services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddRefitServicesDependecies();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<AuthenticateHttpClientHandler>();
+            //services.AddScoped<AuthenticateHttpClientHandler>();
+            //services.AddHttpClient()
+            //    .AddHttpClient<AuthenticateHttpClientHandler>();
+            //services.AddScoped<AuthenticateHttpClientHandler>();
+            services.AddSession();
+
             services.AddAutoMapper(typeof(Startup));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new PathString("/Authentication/Login");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,15 +58,18 @@ namespace ClientPart
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+ 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
