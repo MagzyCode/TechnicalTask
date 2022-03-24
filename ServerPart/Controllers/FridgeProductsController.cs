@@ -36,7 +36,6 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet("procedure")/*, Authorize(Roles = "Administrator")*/]
-        [Authorize]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();

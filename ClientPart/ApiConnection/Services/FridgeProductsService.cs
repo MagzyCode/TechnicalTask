@@ -9,8 +9,8 @@ namespace ClientPart.ApiConnection.Services
 {
     public class FridgeProductsService : BaseRefitService<IFridgeProductsData>
     {
-        public async Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure(string token) 
-            => await _data.CallServerProcedure(token);
+        public async Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure() 
+            => await _data.CallServerProcedure();
         public async Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId, string token) 
             => await _data.GetFridgeProductById(fridgeProductId, token);
         public async Task AddFridgeProduct(CreationFridgeProductViewModel creationFridgeProduct, string token) 

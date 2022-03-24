@@ -12,7 +12,7 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IFridgeProductsData : IApiData
     {
         [Get("/api/fridgeProducts/procedure")]
-        public Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure([Authorize("Bearer")] string token);
+        public Task<IEnumerable<FridgeProductsViewModel>> CallServerProcedure();
 
         [Get("/api/fridgeProducts/{fridgeProductId}")]
         public Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId, [Authorize("Bearer")] string token);
