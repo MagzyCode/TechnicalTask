@@ -9,12 +9,9 @@ namespace ClientPart.Models
     public class FridgeModel
     {
         public Guid Id { get; set; }
-
-        [Required]
         public string Name { get; set; }
-
         public int? Year { get; set; }
 
-        public ICollection<Fridge> Fridges { get; set; }
+        // public ICollection<Fridge> Fridges { get; set; }
     }
 }

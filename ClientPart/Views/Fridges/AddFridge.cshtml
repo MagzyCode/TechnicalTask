@@ -1,12 +1,19 @@
 ﻿@model AddFridgeViewModel
-@inject ClientPart.ApiConnection.Services.FridgeModelService FridgeModel
-@inject ClientPart.ApiConnection.Services.AuthenticationService AuthenticationService
-@inject FridgeProductsService FridgeProducts
+@*@inject ClientPart.ApiConnection.Services.FridgeModelService FridgeModel
+    @inject ClientPart.ApiConnection.Services.AuthenticationService AuthenticationService
+    @inject FridgeProductsService FridgeProducts*@
+
 @{
-    var models = await FridgeModel.GetFridgeModels(AuthenticationService.GetToken(Model.Controller));
+    var item = new SelectListItem() { Text = " " };
+
+    var modelSelects = Model.FridgeModels
+        .Select(i => new SelectListItem() { Text = i.Name, Value = i.Id.ToString() })
+        .ToList();
+    modelSelects.Insert(0, item);
 }
+
 <form method="post" asp-controller="Fridges" asp-action="UpdateFridge">
-    <div asp-validation-summary="ModelOnly"></div>
+    @*<div asp-validation-summary="ModelOnly"></div>*@
     <div class="form-group row">
         <label asp-for="Name" class="col-xs-2 col-form-label">Fridge name</label>
         <br />
@@ -20,14 +27,6 @@
         <span asp-validation-for="OwnerName"></span>
     </div>
     <div class="form-group row">
-        @{
-            var item = new SelectListItem() { Text = " " };
-
-            var modelSelects = models
-                .Select(i => new SelectListItem() { Text = i.Name, Value = i.Id.ToString() })
-                .ToList();
-            modelSelects.Insert(0, item);
-        }
         <label asp-for="ModelId" class="col-xs-2 col-form-label">Fridge model</label>
         <select class="form-control col-xs-5" asp-for="ModelId" asp-items="@modelSelects"></select>
     </div>
@@ -35,7 +34,6 @@
     <div class="form-group row">
         <label asp-for="FridgeProducts" class="col-xs-2 col-form-label">Products in fridge</label>
         <table class="table">
-
             @for (int i = 0; i < Model?.FridgeProducts?.Count; i++)
             {
                 <tr>
@@ -60,3 +58,9 @@
         <button asp-controller="Fridges" asp-action="AddFridge" type="submit" class="btn btn-primary mb-2">Update fridge</button>
     </div>
 </form>
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

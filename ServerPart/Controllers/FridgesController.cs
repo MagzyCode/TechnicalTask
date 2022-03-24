@@ -26,7 +26,7 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet/*, Authorize*/]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAllFridges()
         {
@@ -35,7 +35,7 @@ namespace ServerPart.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpGet("{fridgeId}")]/*, Authorize*/
+        [HttpGet("{fridgeId}")]
         [Authorize]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {

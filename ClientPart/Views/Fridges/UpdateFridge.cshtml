@@ -41,7 +41,7 @@
                 <tr>
                     <td>@Model.FridgeProducts[i].Name</td>
                     <td>
-                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)   
+                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)
                     </td>
                     <td>
                         <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
@@ -60,3 +60,9 @@
         <button asp-controller="Fridges" asp-action="UpdateFridge" type="submit" class="btn btn-primary mb-2">Update fridge</button>
     </div>
 </form>
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -9,8 +9,7 @@ namespace ClientPart.ViewModels
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-
-        public int? Year { get; set; }
+        // public int? Year { get; set; }
 
         // public ICollection<FridgesViewModel> Fridges { get; set; }
     }

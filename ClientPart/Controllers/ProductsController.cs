@@ -28,9 +28,17 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> GetProducts()
         {
-            var token = _authenticationService.GetToken(this);
-            var products = await _productsService.GetProducts(token);
-            return View(products);
+            try
+            {
+                var token = _authenticationService.GetToken(this);
+                var products = await _productsService.GetProducts(token);
+                return View(products);
+            }
+            catch (Refit.ApiException)
+            {
+                ViewData["Error"] = "You should sign in.";
+                return View("~/Views/Home/Error.cshtml");
+            }
         }
 
         [HttpGet]

@@ -40,8 +40,17 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> GetFridges()
         {
-            var fridges = await _fridgesService.GetAllFridges(_authenticationService.GetToken(this));
-            return View(fridges);
+            try
+            {
+                var fridges = await _fridgesService.GetAllFridges(_authenticationService.GetToken(this));
+                return View(fridges);
+            }
+            catch (Refit.ApiException)
+            {
+                ViewData["Error"] = "You should sign in.";
+                return View("~/Views/Home/Error.cshtml");
+            }
+            
         }
 
         [HttpGet]
@@ -134,11 +143,16 @@ namespace ClientPart.Controllers
         {
             var token = _authenticationService.GetToken(this);
             var products = await _productsService.GetProducts(token);
-            var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
+            var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products)
+                .ToList();
+            var fridgeModels = await _fridgeModelService.GetFridgeModels(token);
+            var fridgeModelsDto = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels)
+                .ToList();
+
             return View(new AddFridgeViewModel() 
             { 
-                FridgeProducts = productsViewModel.ToList(),
-                Controller = this
+                FridgeProducts = productsViewModel,
+                FridgeModels = fridgeModelsDto
             });
         }
 
@@ -147,6 +161,9 @@ namespace ClientPart.Controllers
         public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
         {
             var token = _authenticationService.GetToken(this);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
 
             if (model == null)
                 return NotFound();

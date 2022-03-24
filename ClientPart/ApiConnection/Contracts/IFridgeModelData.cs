@@ -1,4 +1,5 @@
-﻿using ClientPart.ViewModels;
+﻿using ClientPart.Models;
+using ClientPart.ViewModels;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IFridgeModelData : IApiData
     {
         [Get("/api/fridgeModels")]
-        public Task<IEnumerable<FridgeModelViewModel>> GetFridgeModels([Authorize("Bearer")] string token);
+        public Task<IEnumerable<FridgeModel>> GetFridgeModels([Authorize("Bearer")] string token);
 
         [Get("/api/fridgeModels/{fridgeModelId}")]
-        public Task<FridgeModelViewModel> GetFridgeModel(Guid fridgeModelId, [Authorize("Bearer")] string token);
+        public Task<FridgeModel> GetFridgeModel(Guid fridgeModelId, [Authorize("Bearer")] string token);
     }
 }
