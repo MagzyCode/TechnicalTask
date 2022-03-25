@@ -69,6 +69,6 @@ namespace ServerPart.Repositories
             }
         }
 
-        public Task SaveAsync() => _taskContext.SaveChangesAsync();
+        public async Task SaveAsync() => await _taskContext.SaveChangesAsync();
     }
 }
