@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClientPart.ApiConnection.Services;
+using ClientPart.Models;
 using ClientPart.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,9 @@ namespace ClientPart.Controllers
             {
                 var token = _authenticationService.GetToken(this);
                 var products = await _productsService.GetProducts(token);
-                return View(products);
+                var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
+
+                return View(productsViewModel);
             }
             catch (Refit.ApiException)
             {
@@ -46,10 +49,11 @@ namespace ClientPart.Controllers
         public async Task<IActionResult> UpdateProduct(Guid id)
         {
             var token = _authenticationService.GetToken(this);
+
             var products = await _productsService.GetProducts(token);
-            var updadtedProduct = products.First(x => x.Id.Equals(id));
-            var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updadtedProduct);
-            updatedProductViewModel.Id = id;
+            var updatedProduct = products.First(x => x.Id.Equals(id));
+            var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
+
             return View(updatedProductViewModel);
         }
 
@@ -59,9 +63,13 @@ namespace ClientPart.Controllers
             try
             {
                 var token = _authenticationService.GetToken(this);
-                if (model == null)
+
+                if (model == null || !ModelState.IsValid)
                     return BadRequest();
-                await _productsService.UpdateProduct(model.Id, model, token);
+
+                var updatedProduct = _mapper.Map<Products>(model);
+                await _productsService.UpdateProduct(updatedProduct.Id, updatedProduct, token);
+
                 return RedirectToAction("GetProducts", "Products");
             }
             catch (Refit.ApiException)

@@ -12,9 +12,7 @@ namespace ClientPart.ViewModels
 
         public string Name { get; set; }
 
-        // public int? DefaultQuantity { get; set; }
-
-        // public byte[] Image { get; set; }
+        public byte[] Image { get; set; }
 
         public bool IsChecked { get; set; }
 

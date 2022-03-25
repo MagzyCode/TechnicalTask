@@ -32,7 +32,7 @@ namespace ClientPart.Controllers
         public async Task<IActionResult> Procedure()
         {
             await _fridgeProductsService.CallServerProcedure();
-            return View("Index");
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -9,7 +9,6 @@ namespace ClientPart.ViewModels
 {
     public class AddFridgeViewModel
     {
-        // public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Fridge name should be required.")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "Lenght of fridge name is should be more than 5 characters and less then 30.")]

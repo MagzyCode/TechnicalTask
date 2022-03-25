@@ -1,13 +1,11 @@
 ﻿@model UpdatedFridgeViewModel;
-@inject ClientPart.ApiConnection.Services.FridgeModelService FridgeModel
-@inject ClientPart.ApiConnection.Services.AuthenticationService AuthenticationService
-@inject FridgeProductsService FridgeProducts
 @{
-    var models = await FridgeModel.GetFridgeModels(AuthenticationService.GetToken(Model.Controller));
-    var fridgeProducts = await FridgeProducts.GetFridgesProducts(AuthenticationService.GetToken(Model.Controller));
+    var modelSelects = Model.FridgeModels
+        .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString(), Selected = x.Id.Equals(Model.ModelId) })
+        .ToList();
 }
+
 <form method="post" asp-controller="Fridges" asp-action="UpdateFridge">
-    <div asp-validation-summary="ModelOnly"></div>
     <div class="form-group row">
         <label asp-for="Name" class="col-xs-2 col-form-label">Fridge name</label>
         <br />
@@ -21,14 +19,6 @@
         <span asp-validation-for="OwnerName"></span>
     </div>
     <div class="form-group row">
-        @{
-            var item = new SelectListItem() { Text = " " };
-
-            var modelSelects = models
-                .Select(i => new SelectListItem() { Text = i.Name, Value = i.Id.ToString() })
-                .ToList();
-            modelSelects.Insert(0, item);
-        }
         <label asp-for="ModelId" class="col-xs-2 col-form-label">Fridge model</label>
         <select class="form-control col-xs-5" asp-for="ModelId" asp-items="@modelSelects"></select>
     </div>
@@ -45,6 +35,7 @@
                     </td>
                     <td>
                         <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
+                        <span asp-validation-for="@Model.FridgeProducts[i].Quantity"></span>
                     </td>
                 </tr>
                 @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Id)
@@ -62,7 +53,6 @@
 </form>
 
 @section scripts{
-
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

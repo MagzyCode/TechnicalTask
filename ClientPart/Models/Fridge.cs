@@ -16,8 +16,8 @@ namespace ClientPart.Models
 
         public Guid ModelId { get; set; }
 
-        public FridgeModel FridgeModel { get; set; }
+        // public FridgeModel FridgeModel { get; set; }
 
-        public ICollection<FridgeProducts> FridgeProducts { get; set; }
+        // public ICollection<FridgeProducts> FridgeProducts { get; set; }
     }
 }

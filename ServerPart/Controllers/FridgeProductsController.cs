@@ -35,16 +35,13 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductsDto);
         }
 
-        [HttpGet("procedure")/*, Authorize(Roles = "Administrator")*/]
+        [HttpGet("procedure")]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();
             await _manager.SaveAsync();
 
-            var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
-            var fridgeProductsDto = _mapper.Map<IEnumerable<FridgeProductsDto>>(fridgeProducts);
-
-            return Ok(fridgeProductsDto);
+            return Ok();
         }
 
         [HttpGet("{fridgeProductId}", Name = "FridgeProductById")/*, Authorize*/]

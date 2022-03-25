@@ -46,6 +46,7 @@ namespace ClientPart.Controllers
         {
             if (model == null && !ModelState.IsValid)
                 return BadRequest();
+
             try
             {
                 await Authenticate(model);

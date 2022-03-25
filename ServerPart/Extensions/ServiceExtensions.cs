@@ -51,7 +51,7 @@ namespace ServerPart.Extensions
                 {
                     Endpoint = "*",
                     Limit = 30,
-                    Period = "1m"
+                    Period = "60m"
                 }
             };
 

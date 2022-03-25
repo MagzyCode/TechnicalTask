@@ -12,15 +12,25 @@ namespace ClientPart.Mapping
     {
         public MappingProfile()
         {
+            // models in view models
             CreateMap<FridgeModel, FridgeModelViewModel>();
+            CreateMap<Fridge, FridgesViewModel>();
+            CreateMap<Fridge, UpdatedFridgeViewModel>();
+            CreateMap<FridgeProducts, FridgeProductsViewModel>();
+            CreateMap<Products, AddProductInFridgeViewModel>();
+            CreateMap<Products, ProductsViewModel>();
+            CreateMap<Products, UpdatedProductViewModel>();
 
+
+            // view models back to models
+            CreateMap<UpdatedFridgeViewModel, Fridge>();
+            CreateMap<AddFridgeViewModel, Fridge>();
+            CreateMap<UpdatedProductViewModel, Products>();
             CreateMap<FridgesViewModel, UpdatedFridgeViewModel>();
-            CreateMap<ProductsViewModel, AddProductInFridgeViewModel>();
             CreateMap<ProductsViewModel, UpdatedProductViewModel>();
             CreateMap<UpdatedFridgeViewModel, UpdatedShortFridgeViewModel>();
-            CreateMap<AddFridgeViewModel, AddShortFridgeViewModel>();
 
-            
+                 
         }
     }
 }
