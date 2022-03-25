@@ -17,6 +17,7 @@ namespace ClientPart.Extensions
             services.AddScoped<ProductsService>();
             services.AddScoped<FridgeProductsService>();
             services.AddScoped<AuthenticationService>();
+            services.AddScoped<RolesService>();
         }
             
     }

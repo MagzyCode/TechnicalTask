@@ -19,26 +19,45 @@ namespace ClientPart.Controllers
     public class AuthenticationController : Controller
     {
         private readonly ApiConnection.Services.AuthenticationService _authenticationService;
+        private readonly RolesService _rolesService;
         private readonly IMapper _mapper;
 
         public AuthenticationController(
             ApiConnection.Services.AuthenticationService authenticationService,
+            RolesService rolesService,
             IMapper mapper)
         {
             _authenticationService = authenticationService;
+            _rolesService = rolesService;
             _mapper = mapper;
         }
 
-        public IActionResult Register()
+        [HttpGet]
+        public async Task<IActionResult> Register()
         {
-            return View(new RegistrationUserViewModel());
+            var roles = await _rolesService.GetRolesAsync();
+
+            return View(new RegistrationUserViewModel()
+            {
+                Roles = roles.ToList()
+            });
         }
 
         [HttpPost]
-        public IActionResult Register(RegistrationUserViewModel registrationUserViewModel)
+        public async Task<IActionResult> Register(RegistrationUserViewModel registrationUserViewModel)
         {
             if (registrationUserViewModel == null || !ModelState.IsValid)
                 return BadRequest();
+
+            var registrationUser = _mapper.Map<User>(registrationUserViewModel);
+            await _authenticationService.RegisterUser(registrationUser);
+
+            var userInSystem = new AuthenticationUserViewModel()
+            {
+                UserName = registrationUser.UserName,
+                Password = registrationUser.Password
+            };
+            await Authenticate(userInSystem);
 
             return RedirectToAction("GetFridges", "Fridges");
         }

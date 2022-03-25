@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 namespace ClientPart.ApiConnection.Contracts
 {
     public interface IApiData
-    { }
+    { 
+    
+    }
 }

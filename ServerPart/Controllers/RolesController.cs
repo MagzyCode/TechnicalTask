@@ -23,9 +23,10 @@ namespace ServerPart.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRoles()
+        public async Task<IActionResult> GetRoles()
         {
-
+            var roles = await _manager.Roles.GetRoles();
+            return Ok(roles);
         }
     }
 }

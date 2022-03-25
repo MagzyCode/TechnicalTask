@@ -9,6 +9,7 @@ namespace ServerPart.Contracts.RepositoryManagerContracts
         IFridgeProductsRepository FridgeProducts { get; }
         IFridgeRepository Fridge { get; }
         IProductsRepository Products { get; }
+        IRolesRepository Roles { get; }
         Task SaveAsync();
     }
 }

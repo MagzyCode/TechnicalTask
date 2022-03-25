@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using System;
 using System.Collections.Generic;
@@ -7,11 +9,27 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Repositories
 {
-    public class RolesRepository : BaseRepository<IdentityRole>, IRolesRepository
+    public class RolesRepository : IRolesRepository
     {
-        public Task<IEnumerable<string>> GetRoles()
+        private protected TaskContext _taskContext;
+
+        public RolesRepository(TaskContext context)
         {
-            throw new NotImplementedException();
+            Context = context;
         }
+
+        public TaskContext Context
+        {
+            get
+            {
+                return _taskContext;
+            }
+            private set
+            {
+                _taskContext = value ?? throw new Exception("Context should be initialize");
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetRoles() => await _taskContext.Roles.Select(x => x.Name).ToListAsync();
     }
 }

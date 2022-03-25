@@ -15,6 +15,7 @@ namespace ServerPart.Repositories
         private IFridgeRepository _fridgeRepository;
         private IProductsRepository _productsRepository;
         private IFridgeModelRepository _fridgeModelRepository;
+        private IRolesRepository _rolesRepository;
 
         public RepositoryManager(TaskContext context)
         {
@@ -58,6 +59,16 @@ namespace ServerPart.Repositories
                 if (_productsRepository == null)
                     _productsRepository = new ProductsRepository(_taskContext);
                 return _productsRepository;
+            }
+        }
+
+        public IRolesRepository Roles
+        {
+            get
+            {
+                if (_rolesRepository == null)
+                    _rolesRepository = new RolesRepository(_taskContext);
+                return _rolesRepository;
             }
         }
 
