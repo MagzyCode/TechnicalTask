@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using System;
@@ -30,6 +29,9 @@ namespace ServerPart.Repositories
             }
         }
 
-        public async Task<IEnumerable<string>> GetRoles() => await _taskContext.Roles.Select(x => x.Name).ToListAsync();
+        public async Task<IEnumerable<string>> GetRolesAsync() 
+            => await _taskContext.Roles
+                .Select(x => x.Name)
+                .ToListAsync();
     }
 }

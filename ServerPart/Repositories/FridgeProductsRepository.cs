@@ -21,26 +21,22 @@ namespace ServerPart.Repositories
 
         public Guid AddProductInFridge(FridgeProducts fridgeProduct)
         {
-            var appendedFridgeProducts = Context.FridgeProducts
-                .Where(x => x.FridgeId == fridgeProduct.FridgeId && x.ProductId == fridgeProduct.ProductId);
-            FridgeProducts appendedFridgeProduct = appendedFridgeProducts.Any() ? appendedFridgeProducts.First() : null;
-            if (appendedFridgeProduct == null)
-            {
-                Create(fridgeProduct);
-                return fridgeProduct.Id;
-            }
-            else
-            {
-                appendedFridgeProduct.Quantity += fridgeProduct.Quantity;
-                Update(appendedFridgeProduct);
-                return appendedFridgeProduct.Id;
-            }                
+            if (fridgeProduct == null)
+                return Guid.Empty;
+
+            Create(fridgeProduct);
+            return fridgeProduct.Id;
         }
 
-       
-        public Task<FridgeProducts> GetFridgeProductAsync(Guid id) => FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        public async Task<FridgeProducts> GetFridgeProductAsync(Guid id) 
+            => await FindAll()
+                .Where(x => x.Id.Equals(id))
+                .FirstOrDefaultAsync();
+
         public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await FindAll().ToListAsync();
 
         public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
+
+        public void UpdateFridgeProduct(FridgeProducts updatedFridgeProduct) => Update(updatedFridgeProduct);
     }
 }

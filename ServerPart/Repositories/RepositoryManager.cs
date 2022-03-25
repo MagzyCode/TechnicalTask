@@ -1,9 +1,6 @@
 ﻿using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Contracts.RepositoryManagerContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerPart.Repositories

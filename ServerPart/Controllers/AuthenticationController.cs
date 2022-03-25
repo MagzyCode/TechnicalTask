@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.ActionFilters;
 using ServerPart.Contracts.AuthenticationManagerContracts;
 using ServerPart.Models;
 using ServerPart.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerPart.Controllers
@@ -18,7 +14,7 @@ namespace ServerPart.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private UserManager<User> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
 
         public AuthenticationController(IMapper mapper, UserManager<User> userManager, 
@@ -35,6 +31,7 @@ namespace ServerPart.Controllers
         {
             var user = _mapper.Map<User>(userForRegistration);
             var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -42,6 +39,7 @@ namespace ServerPart.Controllers
 
                 return BadRequest(ModelState);
             }
+
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
             return StatusCode(201);
         }
@@ -52,7 +50,9 @@ namespace ServerPart.Controllers
         {
             if (!await _authManager.ValidateUser(user))
                 return Unauthorized();
+
             var token = await _authManager.CreateToken();
+
             return Ok(token);
         }
     }

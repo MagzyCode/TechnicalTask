@@ -7,7 +7,6 @@ using ServerPart.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,14 +30,15 @@ namespace ServerPart.Repositories
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims();
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
-            return (_user != null
-                && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
+
+            return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
         }
 
         private SigningCredentials GetSigningCredentials()
@@ -55,17 +55,21 @@ namespace ServerPart.Repositories
             {
                 new Claim(ClaimTypes.Name, _user.UserName)
             };
+
             var roles = await _userManager.GetRolesAsync(_user);
+
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+
             return claims;
         }
 
         private JwtSecurityToken GenerateTokenOptions (SigningCredentials signingCredentials, List<Claim> claims)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
+
             var tokenOptions = new JwtSecurityToken
             (
                 issuer: jwtSettings.GetSection("validIssuer").Value,

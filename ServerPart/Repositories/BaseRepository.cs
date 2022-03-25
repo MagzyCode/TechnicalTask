@@ -1,10 +1,7 @@
 ﻿using ServerPart.Context;
-using ServerPart.Contracts.DbContracts;
 using ServerPart.Contracts.RepositoryContracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ServerPart.Repositories
 {

@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerPart.Controllers
@@ -31,6 +29,7 @@ namespace ServerPart.Controllers
         {
             var products = await _manager.Products.GetProductsAsync();
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
+
             return Ok(productsDto);
         }
 

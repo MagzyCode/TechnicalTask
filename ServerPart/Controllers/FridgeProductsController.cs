@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
@@ -32,6 +31,7 @@ namespace ServerPart.Controllers
         {
             var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
             var fridgeProductsDto = _mapper.Map<IEnumerable<FridgeProductsDto>>(fridgeProducts);
+
             return Ok(fridgeProductsDto);
         }
 
@@ -44,25 +44,25 @@ namespace ServerPart.Controllers
             return Ok();
         }
 
-        [HttpGet("{fridgeProductId}", Name = "FridgeProductById")/*, Authorize*/]
+        [HttpGet("{fridgeProductId}", Name = "FridgeProductById")]
         [Authorize]
         public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
+
             if (fridgeProduct == null)
                 return BadRequest("There is no fridge product object with such guid.");
 
             var fridgeProductDto = _mapper.Map<FridgeProductsDto>(fridgeProduct);
+
             return Ok(fridgeProductDto);
         }
 
-        [HttpPost/*, Authorize*/]
+        [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
-
-
             var product = await _manager.Products.GetProductAsync(creationFridgeProduct.ProductId);
             if (product == null)
                 return NotFound("There is no product object with such guid.");
@@ -71,15 +71,30 @@ namespace ServerPart.Controllers
             if (fridge == null)
                 return NotFound("There is no fridge object with such guid.");
 
+            var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
+            var fridgeProductInFridge = fridgeProducts
+                .FirstOrDefault(x => x.FridgeId.Equals(creationFridgeProduct.FridgeId) && x.ProductId.Equals(creationFridgeProduct.ProductId));
+            
             var fridgeProduct = _mapper.Map<FridgeProducts>(creationFridgeProduct);
-            var createdGuid = _manager.FridgeProducts.AddProductInFridge(fridgeProduct);
+            var createdGuid = new Guid();
+            
+            if (fridgeProductInFridge == null)
+            {
+                createdGuid = _manager.FridgeProducts.AddProductInFridge(fridgeProduct);
+            }
+            else
+            {
+                _manager.FridgeProducts.UpdateFridgeProduct(fridgeProduct);
+                createdGuid = fridgeProduct.Id;
+            }
+            
             await _manager.SaveAsync();
             var fridgeProductToReturn = _mapper.Map<FridgeProductsDto>(await _manager.FridgeProducts.GetFridgeProductAsync(createdGuid));
 
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
         }
 
-        [HttpDelete("{fridgeProductId}")/*, Authorize*/]
+        [HttpDelete("{fridgeProductId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteFridgeProduct(Guid fridgeProductId)
         {

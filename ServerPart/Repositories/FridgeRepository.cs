@@ -16,6 +16,9 @@ namespace ServerPart.Repositories
 
         public Guid AddFridge(Fridge fridge)
         {
+            if (fridge == null)
+                return Guid.Empty;
+
             Create(fridge);
             return fridge.Id;
         }
@@ -33,6 +36,7 @@ namespace ServerPart.Repositories
                 .Where(x => x.FridgeId == fridgeId)
                 .Select(x => products.First(i => i.Id == x.ProductId))
                 .ToListAsync();
+
             return result;
         }
 

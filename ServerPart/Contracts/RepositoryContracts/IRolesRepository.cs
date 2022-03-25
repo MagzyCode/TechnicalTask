@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
     public interface IRolesRepository
     {
-        public Task<IEnumerable<string>> GetRoles();
+        public Task<IEnumerable<string>> GetRolesAsync();
     }
 }

@@ -11,9 +11,7 @@ using ServerPart.Models;
 using ServerPart.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerPart.Extensions
 {
@@ -50,7 +48,7 @@ namespace ServerPart.Extensions
                 new RateLimitRule
                 {
                     Endpoint = "*",
-                    Limit = 30,
+                    Limit = 200,
                     Period = "60m"
                 }
             };

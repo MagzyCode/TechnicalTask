@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerPart.ActionFilters;
 using ServerPart.Contracts.RepositoryManagerContracts;
@@ -8,7 +7,6 @@ using ServerPart.Models;
 using ServerPart.Models.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerPart.Controllers
@@ -32,6 +30,7 @@ namespace ServerPart.Controllers
         {
             var fridges = await _manager.Fridge.GetAllFridgesAsync();
             var fridgesDto = _mapper.Map<IEnumerable<FridgeDto>>(fridges);
+
             return Ok(fridgesDto);
         }
 
@@ -40,18 +39,22 @@ namespace ServerPart.Controllers
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
+
             if (fridge == null)
                 return NotFound();
+
             var fridgeDto = _mapper.Map<FridgeDto>(fridge);
+
             return Ok(fridgeDto);
         }
 
-        [HttpGet("{fridgeId}/products")/*, Authorize*/]
+        [HttpGet("{fridgeId}/products")]
         [Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
             var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
+
             return Ok(productsDto);
         }
 
@@ -70,7 +73,7 @@ namespace ServerPart.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{fridgeId}")/*, Authorize*/]
+        [HttpDelete("{fridgeId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteFridge(Guid fridgeId)
         {
@@ -93,13 +96,11 @@ namespace ServerPart.Controllers
                 return NotFound();
 
             var fridge = _mapper.Map<Fridge>(creationFridgeDto);
+
             var createdGuid = _manager.Fridge.AddFridge(fridge);
             await _manager.SaveAsync();
-            //var fridgeAfterCreation = await _manager.Fridge.GetFridgeAsync(createdGuid);
-            //var fridgeDtoToReturn = _mapper.Map<FridgeDto>(fridgeAfterCreation);
 
             return Created($"api/fridgeProducts/{createdGuid}", createdGuid);
-            // return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeDtoToReturn);
         }
 
     }

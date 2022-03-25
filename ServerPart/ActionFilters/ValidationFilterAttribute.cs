@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ServerPart.ActionFilters
 {
     public class ValidationFilterAttribute : IActionFilter
     {
-        public ValidationFilterAttribute()
-        { }
-
         public void OnActionExecuted(ActionExecutedContext context)
         { }
 
@@ -23,11 +17,13 @@ namespace ServerPart.ActionFilters
                 .SingleOrDefault(x => x.Value.ToString()
                 .Contains("Dto"))
                 .Value;
+
             if (param == null)
             {
                 context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action }");
                 return;
             }
+
             if (!context.ModelState.IsValid)
                 context.Result = new UnprocessableEntityObjectResult(context.ModelState);
         }

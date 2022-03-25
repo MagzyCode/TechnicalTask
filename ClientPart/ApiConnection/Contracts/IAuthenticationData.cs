@@ -1,10 +1,5 @@
 ﻿using ClientPart.Models;
-using ClientPart.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Refit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPart.ApiConnection.Contracts

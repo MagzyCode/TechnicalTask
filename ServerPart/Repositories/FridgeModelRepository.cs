@@ -16,6 +16,9 @@ namespace ServerPart.Repositories
 
         public async Task<IEnumerable<FridgeModel>> GetAllFridgeModelsAsync() => await FindAll().ToListAsync();
 
-        public async Task<FridgeModel> GetFridgeModelAsync(Guid id) => await FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        public async Task<FridgeModel> GetFridgeModelAsync(Guid id) 
+            => await FindAll()
+                .Where(x => x.Id.Equals(id))
+                .FirstOrDefaultAsync();
     }
 }

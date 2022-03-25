@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServerPart.Contracts.RepositoryManagerContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerPart.Controllers
@@ -14,18 +9,16 @@ namespace ServerPart.Controllers
     public class RolesController : ControllerBase
     {
         private readonly IRepositoryManager _manager;
-        private readonly IMapper _mapper;
 
-        public RolesController(IRepositoryManager manager, IMapper mapper)
+        public RolesController(IRepositoryManager manager)
         {
             _manager = manager;
-            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
-            var roles = await _manager.Roles.GetRoles();
+            var roles = await _manager.Roles.GetRolesAsync();
             return Ok(roles);
         }
     }

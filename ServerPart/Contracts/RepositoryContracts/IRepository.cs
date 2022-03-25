@@ -1,8 +1,5 @@
-﻿using ServerPart.Contracts.DbContracts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
