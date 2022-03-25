@@ -2,7 +2,7 @@
 
 namespace ServerPart.Contracts.DbContracts
 {
-    public interface IDbModel
+    public interface IDbModel<T>
     {
         public Guid Id { get; }
     }

@@ -11,7 +11,7 @@ namespace ClientPart.ApiConnection.Services
     public class FridgeProductsService : BaseRefitService<IFridgeProductsData>
     {
         public async Task CallServerProcedure() => await _data.CallServerProcedure();
-        public async Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId, string token) 
+        public async Task<FridgeProducts> GetFridgeProductById(Guid fridgeProductId, string token) 
             => await _data.GetFridgeProductById(fridgeProductId, token);
         public async Task AddFridgeProduct(FridgeProducts creationFridgeProduct, string token) 
             => await _data.AddFridgeProduct(creationFridgeProduct, token);

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Contracts.RepositoryContracts
 {
-    public interface IRepository<T> where T:
-        class, IDbModel
+    public interface IRepository<T>
     {
         public void Create(T model);
         public void Update(T model);

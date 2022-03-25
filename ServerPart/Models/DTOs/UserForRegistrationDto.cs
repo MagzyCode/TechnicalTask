@@ -26,6 +26,7 @@ namespace ServerPart.Models.DTOs
         [Required(ErrorMessage = "User mail is a required field.")]
         [StringLength(18, ErrorMessage = "Maximum lenght for the user first name is 18 characters.", MinimumLength = 10)]
         public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Every user should have some role. Select one.")]
         public ICollection<string> Roles { get; set; }
     }
 }

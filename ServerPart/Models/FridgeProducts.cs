@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ServerPart.Models
 {
     [Table("FridgeProducts")]
-    public class FridgeProducts : IDbModel
+    public class FridgeProducts
     {
         [Key]
         public Guid Id { get; set; }

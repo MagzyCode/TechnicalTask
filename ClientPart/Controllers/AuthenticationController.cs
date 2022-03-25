@@ -1,4 +1,6 @@
-﻿using ClientPart.ApiConnection.Services;
+﻿using AutoMapper;
+using ClientPart.ApiConnection.Services;
+using ClientPart.Models;
 using ClientPart.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,15 +19,28 @@ namespace ClientPart.Controllers
     public class AuthenticationController : Controller
     {
         private readonly ApiConnection.Services.AuthenticationService _authenticationService;
+        private readonly IMapper _mapper;
 
-        public AuthenticationController(ApiConnection.Services.AuthenticationService authenticationService)
+        public AuthenticationController(
+            ApiConnection.Services.AuthenticationService authenticationService,
+            IMapper mapper)
         {
             _authenticationService = authenticationService;
+            _mapper = mapper;
         }
 
         public IActionResult Register()
         {
-            return View();
+            return View(new RegistrationUserViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegistrationUserViewModel registrationUserViewModel)
+        {
+            if (registrationUserViewModel == null || !ModelState.IsValid)
+                return BadRequest();
+
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
         [HttpGet]
@@ -61,7 +76,11 @@ namespace ClientPart.Controllers
 
         private async Task Authenticate(AuthenticationUserViewModel model)
         {
-            var token = await _authenticationService.Authenticate(model);
+            if (model == null && !ModelState.IsValid)
+                return;
+
+            var authenticationUser = _mapper.Map<AuthenticationUser>(model);
+            var token = await _authenticationService.Authenticate(authenticationUser);
             var claims = new List<Claim> { new Claim("Token", token) };
             ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));

@@ -18,7 +18,7 @@ namespace ClientPart.ApiConnection.Contracts
         public Task<IEnumerable<FridgeProducts>> GetFridgesProducts([Authorize("Bearer")] string token);
 
         [Get("/api/fridgeProducts/{fridgeProductId}")]
-        public Task<FridgeProductsViewModel> GetFridgeProductById(Guid fridgeProductId, [Authorize("Bearer")] string token);
+        public Task<FridgeProducts> GetFridgeProductById(Guid fridgeProductId, [Authorize("Bearer")] string token);
 
         [Post("/api/fridgeProducts")]
         public Task AddFridgeProduct([Body] FridgeProducts creationFridgeProduct, [Authorize("Bearer")] string token);

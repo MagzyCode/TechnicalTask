@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ServerPart.Repositories
 {
     public abstract class BaseRepository<T> 
-        : IRepository<T> where T : class, IDbModel
+        : IRepository<T> where T : class
     {
         private protected TaskContext _taskContext;
 
