@@ -1,6 +1,7 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
 using ClientPart.ViewModels;
+using Microsoft.Extensions.Configuration;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace ClientPart.ApiConnection.Services
 {
     public class FridgesService : BaseRefitService<IFridgesData>
     {
+        public FridgesService(IConfiguration configuration) : base(configuration)
+        { }
+
         public async Task<IEnumerable<Fridge>> GetAllFridges(string token) => await _data.GetAllFridges(token);
 
         public async Task<Fridge> GetFridge(Guid fridgeId, string token) => await _data.GetFridge(fridgeId, token);

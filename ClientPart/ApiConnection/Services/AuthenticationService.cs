@@ -2,6 +2,7 @@
 using ClientPart.Models;
 using ClientPart.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace ClientPart.ApiConnection.Services
 {
     public class AuthenticationService : BaseRefitService<IAuthenticationData>
     {
+        public AuthenticationService(IConfiguration configuration) : base (configuration)
+        { }
+
         public async Task RegisterUser(User model) => await _data.RegisterUser(model);
 
         public async Task<string> Authenticate(AuthenticationUser model) => await _data.Authenticate(model);

@@ -1,4 +1,5 @@
 ﻿using ClientPart.ApiConnection.Contracts;
+using Microsoft.Extensions.Configuration;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace ClientPart.ApiConnection.Services
         where T : IApiData
     {
         private protected readonly T _data;
+        private protected readonly IConfiguration _configuration;
 
-        public BaseRefitService(string baseUrl = "https://localhost:5001")
+        public BaseRefitService(IConfiguration configuration)
         {
-            _data = RestService.For<T>(baseUrl);
+            _configuration = configuration;
+            _data = RestService.For<T>(_configuration.GetValue<string>("Refit:BaseUrl"));
         }
     }
 }
