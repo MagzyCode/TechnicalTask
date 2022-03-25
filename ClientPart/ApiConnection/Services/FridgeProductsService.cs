@@ -1,10 +1,8 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
-using ClientPart.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPart.ApiConnection.Services
@@ -14,15 +12,19 @@ namespace ClientPart.ApiConnection.Services
         public FridgeProductsService(IConfiguration configuration) : base(configuration)
         { }
 
-        public async Task CallServerProcedure() => await _data.CallServerProcedure();
-        public async Task<FridgeProducts> GetFridgeProductById(Guid fridgeProductId, string token) 
-            => await _data.GetFridgeProductById(fridgeProductId, token);
-        public async Task AddFridgeProduct(FridgeProducts creationFridgeProduct, string token) 
-            => await _data.AddFridgeProduct(creationFridgeProduct, token);
-        public async Task DeleteFridgeProduct(Guid fridgeProductId, string token) 
-            => await _data.DeleteFridgeProduct(fridgeProductId, token);
-        public async Task<IEnumerable<FridgeProducts>> GetFridgesProducts(string token) 
-            => await _data.GetFridgesProducts(token);
+        public async Task CallServerProcedureAsync() => await _data.CallServerProcedureAsync();
+
+        public async Task<FridgeProducts> GetFridgeProductByIdAsync(Guid fridgeProductId, string token) 
+            => await _data.GetFridgeProductByIdAsync(fridgeProductId, token);
+
+        public async Task AddFridgeProductAsync(FridgeProducts creationFridgeProduct, string token) 
+            => await _data.AddFridgeProductAsync(creationFridgeProduct, token);
+
+        public async Task DeleteFridgeProductAsync(Guid fridgeProductId, string token) 
+            => await _data.DeleteFridgeProductAsync(fridgeProductId, token);
+
+        public async Task<IEnumerable<FridgeProducts>> GetFridgesProductsAsync(string token) 
+            => await _data.GetFridgesProductsAsync(token);
 
     }
 }

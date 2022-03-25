@@ -1,10 +1,7 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
-using ClientPart.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,9 +12,9 @@ namespace ClientPart.ApiConnection.Services
         public AuthenticationService(IConfiguration configuration) : base (configuration)
         { }
 
-        public async Task RegisterUser(User model) => await _data.RegisterUser(model);
+        public async Task RegisterUserAsync(User model) => await _data.RegisterUserAsync(model);
 
-        public async Task<string> Authenticate(AuthenticationUser model) => await _data.Authenticate(model);
+        public async Task<string> AuthenticateAsync(AuthenticationUser model) => await _data.AuthenticateAsync(model);
 
         public string GetToken(Controller controller)
         {

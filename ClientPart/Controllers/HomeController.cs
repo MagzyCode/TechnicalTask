@@ -1,11 +1,7 @@
 ﻿using ClientPart.ApiConnection.Services;
 using ClientPart.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPart.Controllers
@@ -31,7 +27,8 @@ namespace ClientPart.Controllers
 
         public async Task<IActionResult> Procedure()
         {
-            await _fridgeProductsService.CallServerProcedure();
+            await _fridgeProductsService.CallServerProcedureAsync();
+
             return RedirectToAction("GetFridges", "Fridges");
         }
 

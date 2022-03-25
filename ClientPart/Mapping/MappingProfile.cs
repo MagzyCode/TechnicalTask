@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using ClientPart.Models;
 using ClientPart.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClientPart.Mapping
 {
@@ -31,7 +27,6 @@ namespace ClientPart.Mapping
             CreateMap<UpdatedFridgeViewModel, UpdatedShortFridgeViewModel>();
             CreateMap<RegistrationUserViewModel, User>();
             CreateMap<AuthenticationUserViewModel, AuthenticationUser>();     
-
         }
     }
 }

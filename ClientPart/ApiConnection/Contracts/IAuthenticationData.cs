@@ -7,9 +7,9 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IAuthenticationData : IApiData
     {
         [Post("/api/authentication")]
-        public Task RegisterUser([Body] User userForRegistration);
+        public Task RegisterUserAsync([Body] User userForRegistration);
 
         [Post("/api/authentication/login")]
-        public Task<string> Authenticate([Body] AuthenticationUser user);
+        public Task<string> AuthenticateAsync([Body] AuthenticationUser user);
     }
 }

@@ -6,12 +6,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ClientPart.Controllers
@@ -50,13 +47,14 @@ namespace ClientPart.Controllers
                 return BadRequest();
 
             var registrationUser = _mapper.Map<User>(registrationUserViewModel);
-            await _authenticationService.RegisterUser(registrationUser);
+            await _authenticationService.RegisterUserAsync(registrationUser);
 
             var userInSystem = new AuthenticationUserViewModel()
             {
                 UserName = registrationUser.UserName,
                 Password = registrationUser.Password
             };
+
             await Authenticate(userInSystem);
 
             return RedirectToAction("GetFridges", "Fridges");
@@ -90,6 +88,7 @@ namespace ClientPart.Controllers
                 ViewData["Error"] = "Try another user name or password";
                 return View("~/Views/Home/Error.cshtml");
             }
+
             return RedirectToAction("GetFridges", "Fridges");
         }
 
@@ -99,8 +98,9 @@ namespace ClientPart.Controllers
                 return;
 
             var authenticationUser = _mapper.Map<AuthenticationUser>(model);
-            var token = await _authenticationService.Authenticate(authenticationUser);
+            var token = await _authenticationService.AuthenticateAsync(authenticationUser);
             var claims = new List<Claim> { new Claim("Token", token) };
+
             ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }

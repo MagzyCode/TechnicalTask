@@ -1,11 +1,8 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
-using ClientPart.ViewModels;
 using Microsoft.Extensions.Configuration;
-using Refit;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPart.ApiConnection.Services
@@ -15,17 +12,17 @@ namespace ClientPart.ApiConnection.Services
         public FridgesService(IConfiguration configuration) : base(configuration)
         { }
 
-        public async Task<IEnumerable<Fridge>> GetAllFridges(string token) => await _data.GetAllFridges(token);
+        public async Task<IEnumerable<Fridge>> GetAllFridgesAsync(string token) => await _data.GetAllFridgesAsync(token);
 
-        public async Task<Fridge> GetFridge(Guid fridgeId, string token) => await _data.GetFridge(fridgeId, token);
+        public async Task<Fridge> GetFridgeAsync(Guid fridgeId, string token) => await _data.GetFridgeAsync(fridgeId, token);
 
-        public async Task<IEnumerable<Products>> GetFridgesProducts(Guid fridgeId, string token) => await _data.GetFridgesProducts(fridgeId, token);
+        public async Task<IEnumerable<Products>> GetFridgesProductsAsync(Guid fridgeId, string token) => await _data.GetFridgesProductsAsync(fridgeId, token);
 
-        public async Task UpdateFridge(Guid fridgeId, Fridge updatedFridge, string token) 
-            => await _data.UpdateFridge(fridgeId, updatedFridge, token);
+        public async Task UpdateFridgeAsync(Guid fridgeId, Fridge updatedFridge, string token) 
+            => await _data.UpdateFridgeAsync(fridgeId, updatedFridge, token);
 
-        public async Task DeleteFridge(Guid fridgeId, string token) => await _data.DeleteFridge(fridgeId, token);
+        public async Task DeleteFridgeAsync(Guid fridgeId, string token) => await _data.DeleteFridgeAsync(fridgeId, token);
 
-        public async Task<Guid> AddFridge(Fridge model, string token) => await _data.AddFridge(model, token);
+        public async Task<Guid> AddFridgeAsync(Fridge model, string token) => await _data.AddFridgeAsync(model, token);
     }
 }

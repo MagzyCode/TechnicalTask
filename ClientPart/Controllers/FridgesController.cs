@@ -1,6 +1,5 @@
 ﻿using ClientPart.ApiConnection.Services;
 using ClientPart.ViewModels;
-using ClientPart.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -43,8 +42,9 @@ namespace ClientPart.Controllers
         {
             try
             {
-                var fridges = await _fridgesService.GetAllFridges(_authenticationService.GetToken(this));
+                var fridges = await _fridgesService.GetAllFridgesAsync(_authenticationService.GetToken(this));
                 var fridgesViewModel = _mapper.Map<IEnumerable<FridgesViewModel>>(fridges);
+
                 return View(fridgesViewModel);
             }
             catch (Refit.ApiException)
@@ -52,7 +52,6 @@ namespace ClientPart.Controllers
                 ViewData["Error"] = "You should sign in.";
                 return View("~/Views/Home/Error.cshtml");
             }
-            
         }
 
         [HttpGet]
@@ -61,21 +60,21 @@ namespace ClientPart.Controllers
         {
             var token = _authenticationService.GetToken(this);
 
-            var updatedFridge = await _fridgesService.GetFridge(id, token);
-            var fridgeModels = await _fridgeModelService.GetFridgeModels(token);
+            var updatedFridge = await _fridgesService.GetFridgeAsync(id, token);
+            var fridgeModels = await _fridgeModelService.GetFridgeModelsAsync(token);
 
             var fridgeModelsViewModel = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels);
             var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
             updatedFridgeViewModel.FridgeModels = fridgeModelsViewModel.ToList();
              
-            var fridgeProducts = await _fridgeProductsService.GetFridgesProducts(token);
+            var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync(token);
             var fridgeProductsViewModel = _mapper.Map<IEnumerable<FridgeProductsViewModel>>(fridgeProducts);
 
             var productsOfCurrentFridge = fridgeProductsViewModel
                 .Where(x => x.FridgeId.Equals(id))
                 .ToList();
             
-            var products = await _productsService.GetProducts(token);
+            var products = await _productsService.GetProductsAsync(token);
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
 
             foreach (AddProductInFridgeViewModel item in productsViewModel)
@@ -98,7 +97,7 @@ namespace ClientPart.Controllers
             try
             {
                 var token = _authenticationService.GetToken(this);
-                var fridgeProduct = await _fridgeProductsService.GetFridgesProducts(token);
+                var fridgeProduct = await _fridgeProductsService.GetFridgesProductsAsync(token);
 
                 foreach (AddProductInFridgeViewModel item in updatedFridgeViewModel.FridgeProducts)
                 {
@@ -108,14 +107,14 @@ namespace ClientPart.Controllers
 
                         if (isExists)
                         {
-                            await _fridgeProductsService.DeleteFridgeProduct(
+                            await _fridgeProductsService.DeleteFridgeProductAsync(
                                 fridgeProductId: fridgeProduct
                                     .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id)
                                     .Id,
                                 token: token);
                         }
                             
-                        await _fridgeProductsService.AddFridgeProduct(
+                        await _fridgeProductsService.AddFridgeProductAsync(
                             creationFridgeProduct : new FridgeProducts()
                             {
                                 FridgeId = updatedFridgeViewModel.Id,
@@ -128,7 +127,8 @@ namespace ClientPart.Controllers
 
                 var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);
 
-                await _fridgesService.UpdateFridge(updatedFridgeViewModel.Id, updatedFridge, token);
+                await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge, token);
+
                 return RedirectToAction("GetFridges", "Fridges");
             }
             catch (Refit.ApiException)
@@ -136,7 +136,6 @@ namespace ClientPart.Controllers
                 ViewData["Error"] = "You have no access to this option";
                 return View("~/Views/Home/Error.cshtml");
             }
-            
         }
 
         [HttpGet]
@@ -146,7 +145,8 @@ namespace ClientPart.Controllers
             try
             {
                 var token = _authenticationService.GetToken(this);
-                await _fridgesService.DeleteFridge(id, token);
+                await _fridgesService.DeleteFridgeAsync(id, token);
+
                 return RedirectToAction("GetFridges", "Fridges");
             }
             catch (Refit.ApiException)
@@ -162,11 +162,11 @@ namespace ClientPart.Controllers
         {
             var token = _authenticationService.GetToken(this);
 
-            var products = await _productsService.GetProducts(token);
+            var products = await _productsService.GetProductsAsync(token);
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products)
                 .ToList();
 
-            var fridgeModels = await _fridgeModelService.GetFridgeModels(token);
+            var fridgeModels = await _fridgeModelService.GetFridgeModelsAsync(token);
             var fridgeModelsDto = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels)
                 .ToList();
 
@@ -176,8 +176,6 @@ namespace ClientPart.Controllers
                 FridgeModels = fridgeModelsDto
             });
         }
-
-
 
         [HttpPost]
         [Authorize]
@@ -191,13 +189,13 @@ namespace ClientPart.Controllers
             var addingFridge = _mapper.Map<Fridge>(model);
             try
             {
-                var createdGuid = await _fridgesService.AddFridge(addingFridge, token);
+                var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge, token);
 
                 foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
                 {
                     if (item.IsChecked)
                     {
-                        await _fridgeProductsService.AddFridgeProduct(
+                        await _fridgeProductsService.AddFridgeProductAsync(
                             creationFridgeProduct : new FridgeProducts()
                             {
                                 FridgeId = createdGuid,
@@ -206,16 +204,15 @@ namespace ClientPart.Controllers
                             },
                             token: token);
                     }
-
                 }
+
                 return RedirectToAction("GetFridges", "Fridges");
             }
             catch (Refit.ApiException)
             {
                 ViewData["Error"] = "You have no access to this option";
                 return View("~/Views/Home/Error.cshtml");
-            }
-            
+            }   
         }
 
     }

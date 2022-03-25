@@ -24,7 +24,6 @@ namespace ClientPart.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetProducts()
@@ -32,7 +31,7 @@ namespace ClientPart.Controllers
             try
             {
                 var token = _authenticationService.GetToken(this);
-                var products = await _productsService.GetProducts(token);
+                var products = await _productsService.GetProductsAsync(token);
                 var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
 
                 return View(productsViewModel);
@@ -50,7 +49,7 @@ namespace ClientPart.Controllers
         {
             var token = _authenticationService.GetToken(this);
 
-            var products = await _productsService.GetProducts(token);
+            var products = await _productsService.GetProductsAsync(token);
             var updatedProduct = products.First(x => x.Id.Equals(id));
             var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
 
@@ -68,7 +67,7 @@ namespace ClientPart.Controllers
                     return BadRequest();
 
                 var updatedProduct = _mapper.Map<Products>(model);
-                await _productsService.UpdateProduct(updatedProduct.Id, updatedProduct, token);
+                await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct, token);
 
                 return RedirectToAction("GetProducts", "Products");
             }
