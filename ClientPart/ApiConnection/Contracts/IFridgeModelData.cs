@@ -9,9 +9,9 @@ namespace ClientPart.ApiConnection.Contracts
     public interface IFridgeModelData : IApiData
     {
         [Get("/api/fridgeModels")]
-        public Task<IEnumerable<FridgeModel>> GetFridgeModelsAsync([Authorize("Bearer")] string token);
+        public Task<IEnumerable<FridgeModel>> GetFridgeModelsAsync();
 
         [Get("/api/fridgeModels/{fridgeModelId}")]
-        public Task<FridgeModel> GetFridgeModelAsync(Guid fridgeModelId, [Authorize("Bearer")] string token);
+        public Task<FridgeModel> GetFridgeModelAsync(Guid fridgeModelId);
     }
 }

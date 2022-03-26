@@ -1,5 +1,6 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,15 @@ namespace ClientPart.ApiConnection.Services
 {
     public class ProductsService : BaseRefitService<IProductsData>
     {
-        public ProductsService(IConfiguration configuration) : base(configuration)
+        public ProductsService(
+            IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor,
+            AuthenticationService authenticationService)
+            : base(configuration, httpContextAccessor, authenticationService)
         { }
 
-        public async Task<IEnumerable<Products>> GetProductsAsync(string token) => await _data.GetProductsAsync(token);
+        public async Task<IEnumerable<Products>> GetProductsAsync() => await _data.GetProductsAsync();
 
-        public async Task UpdateProductAsync(Guid productId, Products product, string token) => await _data.UpdateProductAsync(productId, product, token);
+        public async Task UpdateProductAsync(Guid productId, Products product) => await _data.UpdateProductAsync(productId, product);
     }
 }

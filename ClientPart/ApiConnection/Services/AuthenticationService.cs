@@ -1,5 +1,6 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
@@ -19,6 +20,16 @@ namespace ClientPart.ApiConnection.Services
         public string GetToken(Controller controller)
         {
             var tokenClaim = controller.HttpContext?.User?.Claims?.First(x => x.Type.Equals("Token"));
+
+            if (tokenClaim != null)
+                return tokenClaim.Value;
+
+            return string.Empty;
+        }
+
+        public string GetToken(HttpContext context)
+        {
+            var tokenClaim = context?.User?.Claims?.First(x => x.Type.Equals("Token"));
 
             if (tokenClaim != null)
                 return tokenClaim.Value;

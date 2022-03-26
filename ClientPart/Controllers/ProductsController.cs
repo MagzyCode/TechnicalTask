@@ -31,7 +31,7 @@ namespace ClientPart.Controllers
             try
             {
                 var token = _authenticationService.GetToken(this);
-                var products = await _productsService.GetProductsAsync(token);
+                var products = await _productsService.GetProductsAsync();
                 var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
 
                 return View(productsViewModel);
@@ -49,7 +49,7 @@ namespace ClientPart.Controllers
         {
             var token = _authenticationService.GetToken(this);
 
-            var products = await _productsService.GetProductsAsync(token);
+            var products = await _productsService.GetProductsAsync();
             var updatedProduct = products.First(x => x.Id.Equals(id));
             var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
 
@@ -67,7 +67,7 @@ namespace ClientPart.Controllers
                     return BadRequest();
 
                 var updatedProduct = _mapper.Map<Products>(model);
-                await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct, token);
+                await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct);
 
                 return RedirectToAction("GetProducts", "Products");
             }

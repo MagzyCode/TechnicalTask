@@ -15,15 +15,15 @@ namespace ClientPart.ApiConnection.Contracts
         public Task CallServerProcedureAsync();
 
         [Get("/api/fridgeProducts")]
-        public Task<IEnumerable<FridgeProducts>> GetFridgesProductsAsync([Authorize("Bearer")] string token);
+        public Task<IEnumerable<FridgeProducts>> GetFridgesProductsAsync();
 
         [Get("/api/fridgeProducts/{fridgeProductId}")]
-        public Task<FridgeProducts> GetFridgeProductByIdAsync(Guid fridgeProductId, [Authorize("Bearer")] string token);
+        public Task<FridgeProducts> GetFridgeProductByIdAsync(Guid fridgeProductId);
 
         [Post("/api/fridgeProducts")]
-        public Task AddFridgeProductAsync([Body] FridgeProducts creationFridgeProduct, [Authorize("Bearer")] string token);
+        public Task AddFridgeProductAsync([Body] FridgeProducts creationFridgeProduct);
 
         [Delete("/api/fridgeProducts/{fridgeProductId}")]
-        public Task DeleteFridgeProductAsync(Guid fridgeProductId, [Authorize("Bearer")] string token);
+        public Task DeleteFridgeProductAsync(Guid fridgeProductId);
     }
 }

@@ -1,3 +1,4 @@
+using ClientPart.ApiConnection.HttpClientHandlers;
 using ClientPart.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
 
 namespace ClientPart
 {
@@ -26,6 +28,9 @@ namespace ClientPart
             services.AddRefitServicesDependecies();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
+
+            services.AddHttpClient();
+            services.AddScoped<AuthenticatedHttpClientHandler>();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
