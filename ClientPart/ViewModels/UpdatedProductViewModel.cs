@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ClientPart.ViewModels
@@ -15,6 +16,10 @@ namespace ClientPart.ViewModels
         [Range(1, int.MaxValue, ErrorMessage = "Number of products in one fridge can't be less than 1 and more than 2147483647")]
         public int? DefaultQuantity { get; set; }
 
-        public byte[] Image { get; set; }
+        //public byte[] Image { get; set; }
+        //[Required(ErrorMessage = "Image for product should be required")]
+        public IFormFile ImageData { get; set; }
+
+        public string Image { get; set; }
     }
 }

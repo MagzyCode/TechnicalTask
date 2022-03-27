@@ -9,6 +9,10 @@ using ServerPart.ActionFilters;
 using ServerPart.Contracts.AuthenticationManagerContracts;
 using ServerPart.Extensions;
 using ServerPart.Repositories;
+using Swashbuckle.Examples;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace ServerPart
 {
@@ -29,6 +33,9 @@ namespace ServerPart
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerPart", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();

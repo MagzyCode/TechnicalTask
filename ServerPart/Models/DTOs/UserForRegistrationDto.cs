@@ -5,6 +5,9 @@ namespace ServerPart.Models.DTOs
 {
     public class UserForRegistrationDto
     {
+        /// <example>
+        /// Mikhail
+        /// </example>
         [Required(ErrorMessage = "User first name is a required field.")]
         [StringLength(100, ErrorMessage = "Maximum lenght for the user first name is 100 characters.", MinimumLength = 2)]
         public string FirstName { get; set; }

@@ -58,9 +58,6 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateFridge(Guid id)
         {
-            var token = _authenticationService.GetToken(this);
-
-            //var updatedFridge = await _fridgesService.GetFridgeAsync(id, token);
             var updatedFridge = await _fridgesService.GetFridgeAsync(id);
             var fridgeModels = await _fridgeModelService.GetFridgeModelsAsync();
 
@@ -97,7 +94,6 @@ namespace ClientPart.Controllers
         {
             try
             {
-                var token = _authenticationService.GetToken(this);
                 var fridgeProduct = await _fridgeProductsService.GetFridgesProductsAsync();
 
                 foreach (AddProductInFridgeViewModel item in updatedFridgeViewModel.FridgeProducts)
@@ -126,7 +122,6 @@ namespace ClientPart.Controllers
 
                 var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);
 
-                // await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge, token);
                 await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge);
 
                 return RedirectToAction("GetFridges", "Fridges");
@@ -144,8 +139,6 @@ namespace ClientPart.Controllers
         {
             try
             {
-                var token = _authenticationService.GetToken(this);
-                //await _fridgesService.DeleteFridgeAsync(id, token);
                 await _fridgesService.DeleteFridgeAsync(id);
 
                 return RedirectToAction("GetFridges", "Fridges");
@@ -161,8 +154,6 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> AddFridge()
         {
-            var token = _authenticationService.GetToken(this);
-
             var products = await _productsService.GetProductsAsync();
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products)
                 .ToList();
@@ -182,15 +173,12 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
         {
-            var token = _authenticationService.GetToken(this);
-
             if (!ModelState.IsValid || model == null)
                 return BadRequest();
 
             var addingFridge = _mapper.Map<Fridge>(model);
             try
             {
-                //var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge, token);
                 var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge);
 
                 foreach (AddProductInFridgeViewModel item in model.FridgeProducts)

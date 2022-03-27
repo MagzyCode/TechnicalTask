@@ -9,23 +9,33 @@
         </form>
 
         <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <td>Id</td>
+                    <td>Fridge name</td>
+                    <td>Owner</td>
+                    <td colspan="2">Actions</td>
+                </tr>
+            </thead>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.OwnerName</td>
-                    <td>
-                        <form method="get">
-                            <button type="submit" class="btn btn-primary mb-2" asp-controller="Fridges" asp-action="UpdateFridge" asp-route-id="@item.Id">Update</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="get">
-                            <button type="submit" class="btn btn-primary mb-2 bg-danger" asp-controller="Fridges" asp-action="DeleteFridge" asp-route-id="@item.Id">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.OwnerName</td>
+                        <td>
+                            <form method="get">
+                                <button type="submit" class="btn btn-primary mb-2" asp-controller="Fridges" asp-action="UpdateFridge" asp-route-id="@item.Id">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="get">
+                                <button type="submit" class="btn btn-primary mb-2 bg-danger" asp-controller="Fridges" asp-action="DeleteFridge" asp-route-id="@item.Id">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
             }
         </table>
     </div>

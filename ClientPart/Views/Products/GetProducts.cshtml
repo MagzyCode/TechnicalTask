@@ -5,17 +5,39 @@
 <div>
     <div class="list-group">
         <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <td>Image</td>
+                    <td>Id</td>
+                    <td>Product name</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>
-                        <form method="get">
-                            <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</button>
-                        </form>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            @if (item.Image?.Length == 0)
+                            {
+                                <img height="80" width="80" src="~/Files/Images/NoImage.png" />
+                            }
+                            else
+                            {
+                                <img height="80" width="80" src="@item.ImageSrc" />
+                            }
+
+                        </td>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>
+                            <form method="get">
+                                <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+
             }
         </table>
     </div>

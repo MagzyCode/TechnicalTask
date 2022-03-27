@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,9 +31,14 @@ namespace ClientPart.Controllers
         {
             try
             {
-                var token = _authenticationService.GetToken(this);
                 var products = await _productsService.GetProductsAsync();
                 var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
+
+                foreach (var product in productsViewModel)
+                {
+                    if (product.Image != null)
+                        product.ImageSrc = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(product.Image));
+                }
 
                 return View(productsViewModel);
             }
@@ -47,26 +53,38 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateProduct(Guid id)
         {
-            var token = _authenticationService.GetToken(this);
-
             var products = await _productsService.GetProductsAsync();
             var updatedProduct = products.First(x => x.Id.Equals(id));
+
+            var imageSource = string.Empty;
+
+            if (updatedProduct.Image != null)
+                imageSource = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(updatedProduct.Image));
+
             var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
+            updatedProductViewModel.Image = imageSource;
 
             return View(updatedProductViewModel);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateProduct(UpdatedProductViewModel model)
         {
             try
             {
-                var token = _authenticationService.GetToken(this);
-
                 if (model == null || !ModelState.IsValid)
                     return BadRequest();
 
+                var imageInBytes = Array.Empty<byte>();
+                using (var binaryReader = new BinaryReader(model.ImageData.OpenReadStream()))
+                {
+                    imageInBytes = binaryReader.ReadBytes((int)model.ImageData.Length);
+                }
+
                 var updatedProduct = _mapper.Map<Products>(model);
+                updatedProduct.Image = imageInBytes;
+
                 await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct);
 
                 return RedirectToAction("GetProducts", "Products");
