@@ -6,7 +6,7 @@ namespace ClientPart.ApiConnection.Contracts
 {
     public interface IAuthenticationData : IApiData
     {
-        [Post("/api/authentication")]
+        [Post("/api/registration")]
         public Task RegisterUserAsync([Body] User userForRegistration);
 
         [Post("/api/authentication/login")]

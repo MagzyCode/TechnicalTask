@@ -52,6 +52,10 @@ namespace ServerPart.Controllers
         [Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
+            var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
+            if (fridge == null)
+                return NotFound();
+
             var products = await _manager.Fridge.GetFridgeProductsAsync(fridgeId);
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
 

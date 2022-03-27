@@ -66,7 +66,7 @@ namespace ServerPart.Extensions
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = Encoding.UTF8.GetBytes(configuration["Keys:JWT"]); // Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(opt =>
             {
@@ -83,7 +83,7 @@ namespace ServerPart.Extensions
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(secretKey)
                 };
             });
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ServerPart.Controllers
 {
-    [Route("api/authentication")]
+    [Route("api")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace ServerPart.Controllers
             _authManager = authManager;
         }
 
-        [HttpPost]
+        [HttpPost("registration")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody]UserForRegistrationDto userForRegistration)
         {
@@ -44,7 +44,7 @@ namespace ServerPart.Controllers
             return StatusCode(201);
         }
 
-        [HttpPost("login")]
+        [HttpPost("authentication/login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
