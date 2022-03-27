@@ -25,6 +25,10 @@ namespace ServerPart.Controllers
             _authManager = authManager;
         }
 
+        /// <summary>
+        /// Registrate user in system.
+        /// </summary>
+        /// <param name="userForRegistration">Registration user.</param>
         [HttpPost("registration")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody]UserForRegistrationDto userForRegistration)
@@ -44,6 +48,11 @@ namespace ServerPart.Controllers
             return StatusCode(201);
         }
 
+        /// <summary>
+        /// Authenticate user in system.
+        /// </summary>
+        /// <param name="user">Authenticate data of user.</param>
+        /// <returns></returns>
         [HttpPost("authentication/login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)

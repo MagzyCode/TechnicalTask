@@ -23,6 +23,10 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get products.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetProducts()
@@ -33,6 +37,12 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
+        /// <summary>
+        /// Update existing product.
+        /// </summary>
+        /// <param name="productId">Updated product guid.</param>
+        /// <param name="updateProductsDto">Updated product data.</param>
+        /// <returns></returns>
         [HttpPut("{productId}")]
         [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

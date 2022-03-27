@@ -22,6 +22,10 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all fridge models.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetFridgeModels()
@@ -32,6 +36,11 @@ namespace ServerPart.Controllers
             return Ok(fridgeModelDto);
         }
 
+        /// <summary>
+        /// Get fridge model by current guid.
+        /// </summary>
+        /// <param name="fridgeModelId">Fridge model guid.</param>
+        /// <returns></returns>
         [HttpGet("{fridgeModelId}")]
         [Authorize]
         public async Task<IActionResult> GetFridgeModel(Guid fridgeModelId)

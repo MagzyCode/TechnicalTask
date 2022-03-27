@@ -15,6 +15,10 @@ namespace ServerPart.Controllers
             _manager = manager;
         }
 
+        /// <summary>
+        /// Get existing roles.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {

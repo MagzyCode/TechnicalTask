@@ -25,6 +25,10 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all fridge products.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetFridgesProducts()
@@ -35,6 +39,10 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductsDto);
         }
 
+        /// <summary>
+        /// Call stored procedure for this task.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("procedure")]
         public async Task<IActionResult> CallServerProcedure()
         {
@@ -44,6 +52,11 @@ namespace ServerPart.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Get fridge product by current guid.
+        /// </summary>
+        /// <param name="fridgeProductId">Fridge product guid.</param>
+        /// <returns></returns>
         [HttpGet("{fridgeProductId}", Name = "FridgeProductById")]
         [Authorize]
         public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
@@ -58,6 +71,11 @@ namespace ServerPart.Controllers
             return Ok(fridgeProductDto);
         }
 
+        /// <summary>
+        /// Add or complement fridge product.
+        /// </summary>
+        /// <param name="creationFridgeProduct">Adding fridge model data.</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -94,6 +112,11 @@ namespace ServerPart.Controllers
             return CreatedAtRoute("FridgeProductById", new { fridgeProductId = createdGuid }, fridgeProductToReturn);
         }
 
+        /// <summary>
+        /// Delete product from fridge.
+        /// </summary>
+        /// <param name="fridgeProductId">Deleting fridge product guid.</param>
+        /// <returns></returns>
         [HttpDelete("{fridgeProductId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteFridgeProduct(Guid fridgeProductId)

@@ -24,6 +24,10 @@ namespace ServerPart.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all fridges.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAllFridges()
@@ -34,6 +38,11 @@ namespace ServerPart.Controllers
             return Ok(fridgesDto);
         }
 
+        /// <summary>
+        /// Get fridge by current guid.
+        /// </summary>
+        /// <param name="fridgeId"></param>
+        /// <returns></returns>
         [HttpGet("{fridgeId}")]
         [Authorize]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
@@ -48,6 +57,11 @@ namespace ServerPart.Controllers
             return Ok(fridgeDto);
         }
 
+        /// <summary>
+        /// Get products in fridge with current guid.
+        /// </summary>
+        /// <param name="fridgeId">Fridge guid.</param>
+        /// <returns></returns>
         [HttpGet("{fridgeId}/products")]
         [Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
@@ -62,6 +76,12 @@ namespace ServerPart.Controllers
             return Ok(productsDto);
         }
 
+        /// <summary>
+        /// Update exists fridge.
+        /// </summary>
+        /// <param name="fridgeId">Updated fridge guid.</param>
+        /// <param name="updateFridge">Updated fridge data.</param>
+        /// <returns></returns>
         [HttpPut("{fridgeId}")]
         [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -71,12 +91,21 @@ namespace ServerPart.Controllers
             if (fridge == null)
                 return NotFound();
 
+            var fridgeModel = await _manager.FridgeModel.GetFridgeModelAsync(updateFridge.ModelId);
+            if (fridgeModel == null)
+                return NotFound();
+
             _mapper.Map(updateFridge, fridge);
             await _manager.SaveAsync();
 
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete fridge with current guid.
+        /// </summary>
+        /// <param name="fridgeId">Deleting frige guid.</param>
+        /// <returns></returns>
         [HttpDelete("{fridgeId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteFridge(Guid fridgeId)
@@ -91,12 +120,21 @@ namespace ServerPart.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Create fridge.
+        /// </summary>
+        /// <param name="creationFridgeDto">Creation fridge data.</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddFridge([FromBody]CreationFridgeDto creationFridgeDto)
         {
             var model = await _manager.FridgeModel.GetFridgeModelAsync(creationFridgeDto.ModelId);
             if (model == null)
+                return NotFound();
+
+            var fridgeModel = await _manager.FridgeModel.GetFridgeModelAsync(creationFridgeDto.ModelId);
+            if (fridgeModel == null)
                 return NotFound();
 
             var fridge = _mapper.Map<Fridge>(creationFridgeDto);
