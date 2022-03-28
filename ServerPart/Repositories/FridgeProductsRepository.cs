@@ -16,25 +16,7 @@ namespace ServerPart.Repositories
 
         public async Task CallStoredProcedureAsync()
         {
-            // try this, but on my side that don't work
-            var procedure =
-                "IF OBJECT_ID('sp_TaskMethod', 'P') IS NOT NULL\n" +
-                "   DROP PROCEDURE sp_TaskMethod;\n" +
-                "GO\n" +
-                "CREATE PROCEDURE sp_TaskMethod\n" +
-                "AS\n" +
-                "BEGIN\n" +
-                "   UPDATE FridgeProducts\n" +
-                "   SET Quantity = (SELECT DefaultQuantity FROM Products\n" +
-                "      WHERE Products.Id = FridgeProducts.ProductId)\n" +
-                "	WHERE Quantity = 0\n" +
-                "END\n" +
-                "GO\n" +
-                "EXEC sp_TaskMethod";
-
-            await Context.Database.ExecuteSqlRawAsync("EXEC sp_TaskMethod");
-                
-             
+            await Context.Database.ExecuteSqlRawAsync("EXEC sp_TaskMethod");          
         }
 
         public Guid AddProductInFridge(FridgeProducts fridgeProduct)
