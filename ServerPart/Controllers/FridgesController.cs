@@ -84,7 +84,7 @@ namespace ServerPart.Controllers
         /// <returns></returns>
         [HttpPut("{fridgeId}")]
         [Authorize(Roles = "Administrator")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ValidationFilter]
         public async Task<IActionResult> UpdateFridge(Guid fridgeId, [FromBody]UpdateFridgeDto updateFridge)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
@@ -127,6 +127,7 @@ namespace ServerPart.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
+        [ValidationFilter]
         public async Task<IActionResult> AddFridge([FromBody]CreationFridgeDto creationFridgeDto)
         {
             var model = await _manager.FridgeModel.GetFridgeModelAsync(creationFridgeDto.ModelId);

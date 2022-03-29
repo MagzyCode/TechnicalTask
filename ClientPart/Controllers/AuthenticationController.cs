@@ -76,7 +76,7 @@ namespace ClientPart.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticationUserViewModel model)
         {
-            if (model == null && !ModelState.IsValid)
+            if (model == null || !ModelState.IsValid)
                 return BadRequest();
 
             try
@@ -94,7 +94,7 @@ namespace ClientPart.Controllers
 
         private async Task Authenticate(AuthenticationUserViewModel model)
         {
-            if (model == null && !ModelState.IsValid)
+            if (model == null || !ModelState.IsValid)
                 return;
 
             var authenticationUser = _mapper.Map<AuthenticationUser>(model);

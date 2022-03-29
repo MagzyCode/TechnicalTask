@@ -17,19 +17,9 @@ namespace ClientPart.ApiConnection.Services
 
         public async Task<string> AuthenticateAsync(AuthenticationUser model) => await _data.AuthenticateAsync(model);
 
-        public string GetToken(Controller controller)
-        {
-            var tokenClaim = controller.HttpContext?.User?.Claims?.First(x => x.Type.Equals("Token"));
-
-            if (tokenClaim != null)
-                return tokenClaim.Value;
-
-            return string.Empty;
-        }
-
         public string GetToken(HttpContext context)
         {
-            var tokenClaim = context?.User?.Claims?.First(x => x.Type.Equals("Token"));
+            var tokenClaim = context?.User?.Claims?.First(x => x.Type == "Token");
 
             if (tokenClaim != null)
                 return tokenClaim.Value;

@@ -29,7 +29,14 @@ namespace ServerPart
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            //services.AddControllers(config =>
+            //{
+            //    config.Filters.Add(new ValidationFilterAttribute());
+            //});
+            services.AddControllers(config =>
+            {
+                config.Filters.Add<ValidationFilterAttribute>();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerPart", Version = "v1" });

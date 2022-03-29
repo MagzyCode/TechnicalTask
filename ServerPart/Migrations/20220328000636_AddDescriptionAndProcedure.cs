@@ -7,17 +7,21 @@ namespace ServerPart.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var procedureCheck = "IF OBJECT_ID('sp_TaskMethod', 'P')\n" +
-                "IS NOT NULL DROP PROCEDURE sp_TaskMethod;";
-            var createSp =
-                "CREATE PROCEDURE sp_TaskMethod\n" +
-                "AS\n" +
-                "BEGIN UPDATE FridgeProducts\n" +
-                "SET Quantity = (SELECT DefaultQuantity FROM Products WHERE Products.Id = FridgeProducts.ProductId)\n" +
-                "WHERE Quantity = 0 \n" +
-                "END \n";
-            migrationBuilder.Sql(procedureCheck);
-            migrationBuilder.Sql(createSp);
+            migrationBuilder.Sql(@"
+            IF OBJECT_ID('sp_TaskMethod', 'P') IS NOT NULL
+                DROP PROCEDURE sp_TaskMethod;
+            GO
+            CREATE PROCEDURE sp_TaskMethod
+            AS
+            BEGIN 
+                UPDATE FridgeProducts
+                SET Quantity = (SELECT DefaultQuantity 
+                                FROM Products 
+                                WHERE Products.Id = FridgeProducts.ProductId)
+                WHERE Quantity = 0
+            END
+            GO
+            ");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using System.Net.Http;
 
 namespace ClientPart
 {
@@ -25,6 +24,10 @@ namespace ClientPart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //services.AddControllersWithViews(config =>
+            //{
+            //    config.Filters.Add<GlobalExceptionHandlingAttribute>();
+            //});
             services.AddRefitServicesDependecies();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
@@ -52,7 +55,9 @@ namespace ClientPart
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
- 
+
+            // app.ConfigureExceptionHandler();
+            // app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();

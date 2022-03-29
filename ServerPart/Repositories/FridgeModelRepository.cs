@@ -14,11 +14,11 @@ namespace ServerPart.Repositories
         public FridgeModelRepository(TaskContext context) : base(context)
         { }
 
-        public async Task<IEnumerable<FridgeModel>> GetAllFridgeModelsAsync() => await FindAll().ToListAsync();
+        public async Task<IEnumerable<FridgeModel>> GetAllFridgeModelsAsync() => await GetAll().ToListAsync();
 
         public async Task<FridgeModel> GetFridgeModelAsync(Guid id) 
-            => await FindAll()
-                .Where(x => x.Id.Equals(id))
+            => await GetAll()
+                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
     }
 }

@@ -78,7 +78,7 @@ namespace ServerPart.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ValidationFilter]
         public async Task<IActionResult> AddFridgeProduct([FromBody]CreationFridgeProductDto creationFridgeProduct)
         {
             var product = await _manager.Products.GetProductAsync(creationFridgeProduct.ProductId);
@@ -91,7 +91,7 @@ namespace ServerPart.Controllers
 
             var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
             var fridgeProductInFridge = fridgeProducts
-                .FirstOrDefault(x => x.FridgeId.Equals(creationFridgeProduct.FridgeId) && x.ProductId.Equals(creationFridgeProduct.ProductId));
+                .FirstOrDefault(x => x.FridgeId == creationFridgeProduct.FridgeId && x.ProductId == creationFridgeProduct.ProductId);
             
             var fridgeProduct = _mapper.Map<FridgeProducts>(creationFridgeProduct);
             var createdGuid = new Guid();

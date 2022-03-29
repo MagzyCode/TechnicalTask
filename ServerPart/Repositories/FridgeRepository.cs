@@ -25,9 +25,9 @@ namespace ServerPart.Repositories
 
         public void DeleteFridge(Fridge fridge) => Delete(fridge);
 
-        public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await FindAll().ToListAsync();
+        public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await GetAll().ToListAsync();
 
-        public async Task<Fridge> GetFridgeAsync(Guid id) => await FindAll().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        public async Task<Fridge> GetFridgeAsync(Guid id) => await GetAll().Where(x => x.Id == id).FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Products>> GetFridgeProductsAsync(Guid fridgeId)
         {

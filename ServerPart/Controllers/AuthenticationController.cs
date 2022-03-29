@@ -30,7 +30,7 @@ namespace ServerPart.Controllers
         /// </summary>
         /// <param name="userForRegistration">Registration user.</param>
         [HttpPost("registration")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ValidationFilter]
         public async Task<IActionResult> RegisterUser([FromBody]UserForRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
@@ -54,7 +54,7 @@ namespace ServerPart.Controllers
         /// <param name="user">Authenticate data of user.</param>
         /// <returns></returns>
         [HttpPost("authentication/login")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ValidationFilter]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
             if (!await _authManager.ValidateUser(user))

@@ -37,7 +37,8 @@ namespace ClientPart.Controllers
                 foreach (var product in productsViewModel)
                 {
                     if (product.Image != null)
-                        product.ImageSrc = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(product.Image));
+                        // product.ImageSrc = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(product.Image));
+                        product.ImageSrc = Convert.ToBase64String(product.Image);
                 }
 
                 return View(productsViewModel);
@@ -54,7 +55,7 @@ namespace ClientPart.Controllers
         public async Task<IActionResult> UpdateProduct(Guid id)
         {
             var products = await _productsService.GetProductsAsync();
-            var updatedProduct = products.First(x => x.Id.Equals(id));
+            var updatedProduct = products.First(x => x.Id == id);
 
             var imageSource = string.Empty;
 

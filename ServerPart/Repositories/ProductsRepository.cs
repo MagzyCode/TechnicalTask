@@ -14,11 +14,9 @@ namespace ServerPart.Repositories
         public ProductsRepository(TaskContext context) : base(context)
         { }
 
-        public async Task<Products> GetProductAsync(Guid id) 
-            => await FindAll()
-                .Where(x => x.Id.Equals(id))
-                .SingleOrDefaultAsync();
+        public async Task<Products> GetProductAsync(Guid id)
+            => await GetAll().FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<IEnumerable<Products>> GetProductsAsync() => await FindAll().ToListAsync();
+        public async Task<IEnumerable<Products>> GetProductsAsync() => await GetAll().ToListAsync();
     }
 }

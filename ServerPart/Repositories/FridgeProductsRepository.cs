@@ -28,12 +28,10 @@ namespace ServerPart.Repositories
             return fridgeProduct.Id;
         }
 
-        public async Task<FridgeProducts> GetFridgeProductAsync(Guid id) 
-            => await FindAll()
-                .Where(x => x.Id.Equals(id))
-                .FirstOrDefaultAsync();
+        public async Task<FridgeProducts> GetFridgeProductAsync(Guid id)
+            => await GetAll().FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await FindAll().ToListAsync();
+        public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await GetAll().ToListAsync();
 
         public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
 

@@ -45,7 +45,7 @@ namespace ServerPart.Controllers
         /// <returns></returns>
         [HttpPut("{productId}")]
         [Authorize(Roles = "Administrator")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ValidationFilter]
         public async Task <IActionResult> UpdateProduct(Guid productId, [FromBody]UpdateProductsDto updateProductsDto)
         {
             var product = await _manager.Products.GetProductAsync(productId);

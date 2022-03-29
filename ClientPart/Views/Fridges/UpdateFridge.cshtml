@@ -1,7 +1,7 @@
 ﻿@model UpdatedFridgeViewModel;
 @{
     var modelSelects = Model.FridgeModels
-        .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString(), Selected = x.Id.Equals(Model.ModelId) })
+        .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString(), Selected = x.Id == Model.ModelId })
         .ToList();
 }
 

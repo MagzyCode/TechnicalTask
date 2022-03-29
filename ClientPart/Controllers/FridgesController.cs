@@ -69,18 +69,18 @@ namespace ClientPart.Controllers
             var fridgeProductsViewModel = _mapper.Map<IEnumerable<FridgeProductsViewModel>>(fridgeProducts);
 
             var productsOfCurrentFridge = fridgeProductsViewModel
-                .Where(x => x.FridgeId.Equals(id))
+                .Where(x => x.FridgeId == id)
                 .ToList();
             
             var products = await _productsService.GetProductsAsync();
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
 
-            foreach (AddProductInFridgeViewModel item in productsViewModel)
+            foreach (var item in productsViewModel)
             {
-                if (productsOfCurrentFridge.Any(x => x.ProductId.Equals(item.Id)))
+                if (productsOfCurrentFridge.Any(x => x.ProductId == item.Id))
                 {
                     item.IsChecked = true;
-                    item.Quantity = productsOfCurrentFridge.First(x => x.ProductId.Equals(item.Id)).Quantity;
+                    item.Quantity += productsOfCurrentFridge.First(x => x.ProductId == item.Id).Quantity;
                 }
             }
             
@@ -94,20 +94,18 @@ namespace ClientPart.Controllers
         {
             try
             {
-                var fridgeProduct = await _fridgeProductsService.GetFridgesProductsAsync();
+                var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
 
-                foreach (AddProductInFridgeViewModel item in updatedFridgeViewModel.FridgeProducts)
+                foreach (var item in updatedFridgeViewModel.FridgeProducts)
                 {
                     if (item.IsChecked)
                     {
-                        var isExists = fridgeProduct.Any(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
+                        var existedProductInFridge = fridgeProducts
+                            .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
 
-                        if (isExists)
+                        if (existedProductInFridge == null)
                         {
-                            await _fridgeProductsService.DeleteFridgeProductAsync(
-                                fridgeProductId: fridgeProduct
-                                    .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id)
-                                    .Id);
+                            await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
                         }
                             
                         await _fridgeProductsService.AddFridgeProductAsync(
