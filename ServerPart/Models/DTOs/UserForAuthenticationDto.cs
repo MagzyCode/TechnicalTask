@@ -10,7 +10,7 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// MagzyCode
         /// </example>
-        [Required(ErrorMessage = "User name field is required")]
+        [Required(ErrorMessage = "User name field is required.")]
         public string UserName { get; set; }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// slojnoNoMojno
         /// </example>
-        [Required(ErrorMessage = "User password field is required")]
+        [Required(ErrorMessage = "User password field is required.")]
         public string Password { get; set; }
     }
 }

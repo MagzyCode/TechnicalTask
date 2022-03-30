@@ -29,25 +29,16 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> GetProducts()
         {
-            try
-            {
-                var products = await _productsService.GetProductsAsync();
-                var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
+            var products = await _productsService.GetProductsAsync();
+            var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
 
-                foreach (var product in productsViewModel)
-                {
-                    if (product.Image != null)
-                        // product.ImageSrc = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(product.Image));
-                        product.ImageSrc = Convert.ToBase64String(product.Image);
-                }
-
-                return View(productsViewModel);
-            }
-            catch (Refit.ApiException)
+            foreach (var product in productsViewModel)
             {
-                ViewData["Error"] = "You should sign in.";
-                return View("~/Views/Home/Error.cshtml");
+                if (product.Image != null)
+                    product.ImageSrc = Convert.ToBase64String(product.Image);
             }
+
+            return View(productsViewModel);
         }
 
         [HttpGet]
@@ -72,29 +63,21 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateProduct(UpdatedProductViewModel model)
         {
-            try
+            if (model == null || !ModelState.IsValid)
+                return BadRequest();
+
+            var imageInBytes = Array.Empty<byte>();
+            using (var binaryReader = new BinaryReader(model.ImageData.OpenReadStream()))
             {
-                if (model == null || !ModelState.IsValid)
-                    return BadRequest();
-
-                var imageInBytes = Array.Empty<byte>();
-                using (var binaryReader = new BinaryReader(model.ImageData.OpenReadStream()))
-                {
-                    imageInBytes = binaryReader.ReadBytes((int)model.ImageData.Length);
-                }
-
-                var updatedProduct = _mapper.Map<Products>(model);
-                updatedProduct.Image = imageInBytes;
-
-                await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct);
-
-                return RedirectToAction("GetProducts", "Products");
+                imageInBytes = binaryReader.ReadBytes((int)model.ImageData.Length);
             }
-            catch (Refit.ApiException)
-            {
-                ViewData["Error"] = "You have no access to this option";
-                return View("~/Views/Home/Error.cshtml");
-            }
+
+            var updatedProduct = _mapper.Map<Products>(model);
+            updatedProduct.Image = imageInBytes;
+
+            await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct);
+
+            return RedirectToAction("GetProducts", "Products");
         }
     }
 }

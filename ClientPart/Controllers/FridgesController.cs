@@ -40,18 +40,10 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> GetFridges()
         {
-            try
-            {
-                var fridges = await _fridgesService.GetAllFridgesAsync();
-                var fridgesViewModel = _mapper.Map<IEnumerable<FridgesViewModel>>(fridges);
+            var fridges = await _fridgesService.GetAllFridgesAsync();
+            var fridgesViewModel = _mapper.Map<IEnumerable<FridgesViewModel>>(fridges);
 
-                return View(fridgesViewModel);
-            }
-            catch (Refit.ApiException)
-            {
-                ViewData["Error"] = "You should sign in.";
-                return View("~/Views/Home/Error.cshtml");
-            }
+            return View(fridgesViewModel);
         }
 
         [HttpGet]
@@ -92,60 +84,44 @@ namespace ClientPart.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateFridge(UpdatedFridgeViewModel updatedFridgeViewModel)
         {
-            try
-            {
-                var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
+            var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
 
-                foreach (var item in updatedFridgeViewModel.FridgeProducts)
+            foreach (var item in updatedFridgeViewModel.FridgeProducts)
+            {
+                if (item.IsChecked)
                 {
-                    if (item.IsChecked)
+                    var existedProductInFridge = fridgeProducts
+                        .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
+
+                    if (existedProductInFridge == null)
                     {
-                        var existedProductInFridge = fridgeProducts
-                            .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
-
-                        if (existedProductInFridge == null)
-                        {
-                            await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
-                        }
-                            
-                        await _fridgeProductsService.AddFridgeProductAsync(
-                            creationFridgeProduct : new FridgeProducts()
-                            {
-                                FridgeId = updatedFridgeViewModel.Id,
-                                ProductId = item.Id,
-                                Quantity = item.Quantity
-                            });
+                        await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
                     }
+
+                    await _fridgeProductsService.AddFridgeProductAsync(
+                        creationFridgeProduct: new FridgeProducts()
+                        {
+                            FridgeId = updatedFridgeViewModel.Id,
+                            ProductId = item.Id,
+                            Quantity = item.Quantity
+                        });
                 }
-
-                var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);
-
-                await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge);
-
-                return RedirectToAction("GetFridges", "Fridges");
             }
-            catch (Refit.ApiException)
-            {
-                ViewData["Error"] = "You have no access to this option";
-                return View("~/Views/Home/Error.cshtml");
-            }
+
+            var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);
+
+            await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge);
+
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> DeleteFridge(Guid id)
         {
-            try
-            {
-                await _fridgesService.DeleteFridgeAsync(id);
+            await _fridgesService.DeleteFridgeAsync(id);
 
-                return RedirectToAction("GetFridges", "Fridges");
-            }
-            catch (Refit.ApiException)
-            {
-                ViewData["Error"] = "You have no access to this option";
-                return View("~/Views/Home/Error.cshtml");
-            }
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
         [HttpGet]
@@ -175,31 +151,23 @@ namespace ClientPart.Controllers
                 return BadRequest();
 
             var addingFridge = _mapper.Map<Fridge>(model);
-            try
-            {
-                var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge);
+            var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge);
 
-                foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
+            foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
+            {
+                if (item.IsChecked)
                 {
-                    if (item.IsChecked)
-                    {
-                        await _fridgeProductsService.AddFridgeProductAsync(
-                            creationFridgeProduct : new FridgeProducts()
-                            {
-                                FridgeId = createdGuid,
-                                ProductId = item.Id,
-                                Quantity = item.Quantity
-                            });
-                    }
+                    await _fridgeProductsService.AddFridgeProductAsync(
+                        creationFridgeProduct: new FridgeProducts()
+                        {
+                            FridgeId = createdGuid,
+                            ProductId = item.Id,
+                            Quantity = item.Quantity
+                        });
                 }
-
-                return RedirectToAction("GetFridges", "Fridges");
             }
-            catch (Refit.ApiException)
-            {
-                ViewData["Error"] = "You have no access to this option";
-                return View("~/Views/Home/Error.cshtml");
-            }   
+
+            return RedirectToAction("GetFridges", "Fridges");
         }
 
     }

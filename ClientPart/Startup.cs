@@ -57,7 +57,7 @@ namespace ClientPart
             }
 
             // app.ConfigureExceptionHandler();
-            // app.UseGlobalExceptionHandler();
+            app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();

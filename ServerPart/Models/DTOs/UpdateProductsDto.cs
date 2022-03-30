@@ -10,8 +10,8 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// Cheese
         /// </example>
-        [Required(ErrorMessage = "Name of updated product can't be null")]
-        [MaxLength(70, ErrorMessage = "Maximum length for the Name is 70 characters")]
+        [Required(ErrorMessage = "Name of updated product can't be null.")]
+        [MaxLength(70, ErrorMessage = "Maximum length for the Name is 70 characters.")]
         public string Name { get; set; }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// 2
         /// </example>
-        [Required(ErrorMessage = "Default number of product shouldn't be null")]
+        [Required(ErrorMessage = "Default number of product shouldn't be null.")]
         public int? DefaultQuantity { get; set; }
 
         public byte[] Image { get; set; }

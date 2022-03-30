@@ -12,8 +12,8 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// Samsung A58-J7
         /// </example>
-        [Required(ErrorMessage = "Name of updated fridge can't be null")]
-        [MaxLength(70, ErrorMessage = "Maximum length for the fridge name is 70 characters")]
+        [Required(ErrorMessage = "Name of updated fridge can't be null.")]
+        [MaxLength(70, ErrorMessage = "Maximum length for the fridge name is 70 characters.")]
         public string Name { get; set; }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace ServerPart.Models.DTOs
         /// <example>
         /// Samsung
         /// </example>
-        [Required(ErrorMessage = "Owner name of updated fridge can't be null")]
-        [MaxLength(70, ErrorMessage = "Maximum length for the fridge owner name is 70 characters")]
+        [Required(ErrorMessage = "Owner name of updated fridge can't be null.")]
+        [MaxLength(70, ErrorMessage = "Maximum length for the fridge owner name is 70 characters.")]
         public string OwnerName { get; set; }
 
         /// <summary>

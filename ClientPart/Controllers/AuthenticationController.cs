@@ -79,15 +79,7 @@ namespace ClientPart.Controllers
             if (model == null || !ModelState.IsValid)
                 return BadRequest();
 
-            try
-            {
-                await Authenticate(model);
-            }
-            catch (Refit.ValidationApiException)
-            {
-                ViewData["Error"] = "Try another user name or password";
-                return View("~/Views/Home/Error.cshtml");
-            }
+            await Authenticate(model);
 
             return RedirectToAction("GetFridges", "Fridges");
         }
