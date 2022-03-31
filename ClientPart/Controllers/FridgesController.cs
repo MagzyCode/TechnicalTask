@@ -88,16 +88,13 @@ namespace ClientPart.Controllers
 
             foreach (var item in updatedFridgeViewModel.FridgeProducts)
             {
-                if (item.IsChecked)
-                {
-                    var existedProductInFridge = fridgeProducts
+                var existedProductInFridge = fridgeProducts
                         .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
 
-                    if (existedProductInFridge == null)
-                    {
-                        await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
-                    }
+                if (existedProductInFridge != null)
+                    await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
 
+                if (item.IsChecked)
                     await _fridgeProductsService.AddFridgeProductAsync(
                         creationFridgeProduct: new FridgeProducts()
                         {
@@ -105,7 +102,6 @@ namespace ClientPart.Controllers
                             ProductId = item.Id,
                             Quantity = item.Quantity
                         });
-                }
             }
 
             var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);

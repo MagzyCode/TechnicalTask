@@ -48,13 +48,7 @@ namespace ClientPart.Controllers
             var products = await _productsService.GetProductsAsync();
             var updatedProduct = products.First(x => x.Id == id);
 
-            var imageSource = string.Empty;
-
-            if (updatedProduct.Image != null)
-                imageSource = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(updatedProduct.Image));
-
             var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
-            updatedProductViewModel.Image = imageSource;
 
             return View(updatedProductViewModel);
         }

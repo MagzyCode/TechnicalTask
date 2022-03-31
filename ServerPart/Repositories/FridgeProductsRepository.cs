@@ -2,7 +2,6 @@
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Models;
 using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

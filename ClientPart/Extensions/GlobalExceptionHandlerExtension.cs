@@ -9,22 +9,5 @@ namespace ClientPart.Extensions
         {
             builder.UseMiddleware<GlobalExceptionHandlerMiddleware>();
         }
-
-        //public static void ConfigureExceptionHandler(this IApplicationBuilder app)
-        //{
-        //    app.UseExceptionHandler(appError =>
-        //    {
-        //        appError.Run(async context =>
-        //        {
-        //            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //            var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-
-        //            if (contextFeature != null && context.Response.StatusCode >= 400 && context.Response.StatusCode != 500)
-        //            {
-        //                context.Response.Redirect($"/Home/Error");
-        //            }
-        //        });
-        //    });
-        //}
     }
 }

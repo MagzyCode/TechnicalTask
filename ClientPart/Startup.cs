@@ -24,10 +24,6 @@ namespace ClientPart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddControllersWithViews(config =>
-            //{
-            //    config.Filters.Add<GlobalExceptionHandlingAttribute>();
-            //});
             services.AddRefitServicesDependecies();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
@@ -56,7 +52,6 @@ namespace ClientPart
                 app.UseHsts();
             }
 
-            // app.ConfigureExceptionHandler();
             app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

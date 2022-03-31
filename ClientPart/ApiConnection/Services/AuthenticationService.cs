@@ -1,7 +1,6 @@
 ﻿using ClientPart.ApiConnection.Contracts;
 using ClientPart.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Threading.Tasks;

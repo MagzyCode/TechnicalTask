@@ -30,13 +30,12 @@ namespace ClientPart.Middlewares
                         statusCode = currentApiException.StatusCode.ToString();
                         errorMessage = currentApiException.Message;
                         method = currentApiException.HttpMethod.Method;
-                        url = string.Format("/Home/Error?message={0}&statusCode={1}&method={2}",
-                    errorMessage, statusCode, method);
+                        url = $"/Home/Error?message={errorMessage}&statusCode={statusCode}&method={method}";
                         break;
                     default:
                         statusCode = ((HttpStatusCode)exception.HResult).ToString();
                         errorMessage = exception.Message;
-                        url = string.Format("/Home/Error?message={0}&statusCode={1}", errorMessage, statusCode);
+                        url = $"/Home/Error?message={errorMessage}&statusCode={statusCode}";
                         break;
                 }
 
