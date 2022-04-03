@@ -12,49 +12,37 @@ using System.Threading.Tasks;
 
 namespace ClientPart.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ProductsService _productsService;
-        private readonly AuthenticationService _authenticationService;
         private readonly IMapper _mapper;
 
-        public ProductsController(ProductsService productsService, AuthenticationService authenticationServic, IMapper mapper)
+        public ProductsController(ProductsService productsService, IMapper mapper)
         {
             _productsService = productsService;
-            _authenticationService = authenticationServic;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productsService.GetProductsAsync();
             var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
 
-            foreach (var product in productsViewModel)
-            {
-                if (product.Image != null)
-                    product.ImageSrc = Convert.ToBase64String(product.Image);
-            }
-
             return View(productsViewModel);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> UpdateProduct(Guid id)
         {
-            var products = await _productsService.GetProductsAsync();
-            var updatedProduct = products.First(x => x.Id == id);
-
+            var updatedProduct = await _productsService.GetProductAsync(id);
             var updatedProductViewModel = _mapper.Map<UpdatedProductViewModel>(updatedProduct);
 
             return View(updatedProductViewModel);
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UpdateProduct(UpdatedProductViewModel model)
         {
             if (model == null || !ModelState.IsValid)

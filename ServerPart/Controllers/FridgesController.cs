@@ -13,6 +13,7 @@ namespace ServerPart.Controllers
 {
     [Route("api/fridges")]
     [ApiController]
+    [Authorize]
     public class FridgesController : ControllerBase
     {
         private readonly IRepositoryManager _manager;
@@ -29,7 +30,6 @@ namespace ServerPart.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllFridges()
         {
             var fridges = await _manager.Fridge.GetAllFridgesAsync();
@@ -44,7 +44,6 @@ namespace ServerPart.Controllers
         /// <param name="fridgeId"></param>
         /// <returns></returns>
         [HttpGet("{fridgeId}")]
-        [Authorize]
         public async Task<IActionResult> GetFridge(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);
@@ -63,7 +62,6 @@ namespace ServerPart.Controllers
         /// <param name="fridgeId">Fridge guid.</param>
         /// <returns></returns>
         [HttpGet("{fridgeId}/products")]
-        [Authorize]
         public async Task<IActionResult> GetFridgesProducts(Guid fridgeId)
         {
             var fridge = await _manager.Fridge.GetFridgeAsync(fridgeId);

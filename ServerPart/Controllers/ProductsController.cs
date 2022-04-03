@@ -12,6 +12,7 @@ namespace ServerPart.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IRepositoryManager _manager;
@@ -28,13 +29,26 @@ namespace ServerPart.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _manager.Products.GetProductsAsync();
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
 
             return Ok(productsDto);
+        }
+
+        /// <summary>
+        /// Get single product in database with current guid.
+        /// </summary>
+        /// <param name="productId">Product guid.</param>
+        /// <returns></returns>
+        [HttpGet("{productId}")]
+        public async Task<IActionResult> GetProduct(Guid productId)
+        {
+            var product = await _manager.Products.GetProductAsync(productId);
+            var productDto = _mapper.Map<ProductsDto>(product);
+
+            return Ok(productDto);
         }
 
         /// <summary>

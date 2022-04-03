@@ -14,6 +14,7 @@ namespace ServerPart.Controllers
 {
     [Route("api/fridgeProducts")]
     [ApiController]
+    [Authorize]
     public class FridgeProductsController : ControllerBase
     {
         private readonly IRepositoryManager _manager;
@@ -30,7 +31,6 @@ namespace ServerPart.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetFridgesProducts()
         {
             var fridgeProducts = await _manager.FridgeProducts.GetAllFridgesProductsAsync();
@@ -44,6 +44,7 @@ namespace ServerPart.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("procedure")]
+        [AllowAnonymous]
         public async Task<IActionResult> CallServerProcedure()
         {
             await _manager.FridgeProducts.CallStoredProcedureAsync();
@@ -58,7 +59,6 @@ namespace ServerPart.Controllers
         /// <param name="fridgeProductId">Fridge product guid.</param>
         /// <returns></returns>
         [HttpGet("{fridgeProductId}", Name = "FridgeProductById")]
-        [Authorize]
         public async Task<IActionResult> GetFridgeProductById(Guid fridgeProductId)
         {
             var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);

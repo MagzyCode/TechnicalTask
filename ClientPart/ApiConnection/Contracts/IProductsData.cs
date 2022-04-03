@@ -13,5 +13,8 @@ namespace ClientPart.ApiConnection.Contracts
 
         [Put("/api/products/{productId}")]
         public Task UpdateProductAsync(Guid productId, [Body] Products product);
+
+        [Get("/api/products/{productId}")]
+        public Task<Products> GetProductAsync(Guid productId);
     }
 }

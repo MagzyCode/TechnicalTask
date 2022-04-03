@@ -6,6 +6,7 @@ namespace ClientPart.ViewModels
 {
     public class UpdatedProductViewModel
     {
+        // Used in POST ClientPart.Controllers.ProductsControllers.UpdateProduct(...)
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Name of updated product can't be null")]

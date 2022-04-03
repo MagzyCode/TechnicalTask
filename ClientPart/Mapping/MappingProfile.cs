@@ -22,7 +22,6 @@ namespace ClientPart.Mapping
             CreateMap<AddFridgeViewModel, Fridge>();
             CreateMap<FridgesViewModel, UpdatedFridgeViewModel>();
             CreateMap<ProductsViewModel, UpdatedProductViewModel>();
-            CreateMap<UpdatedFridgeViewModel, UpdatedShortFridgeViewModel>();
             CreateMap<RegistrationUserViewModel, User>();
             CreateMap<AuthenticationUserViewModel, AuthenticationUser>();     
         }

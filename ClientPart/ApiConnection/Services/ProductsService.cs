@@ -20,5 +20,7 @@ namespace ClientPart.ApiConnection.Services
         public async Task<IEnumerable<Products>> GetProductsAsync() => await _data.GetProductsAsync();
 
         public async Task UpdateProductAsync(Guid productId, Products product) => await _data.UpdateProductAsync(productId, product);
+
+        public async Task<Products> GetProductAsync(Guid productId) => await _data.GetProductAsync(productId);
     }
 }

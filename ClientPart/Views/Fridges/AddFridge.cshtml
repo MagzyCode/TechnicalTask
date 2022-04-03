@@ -26,18 +26,40 @@
     <div class="form-group row">
         <label asp-for="FridgeProducts" class="col-xs-2 col-form-label">Products in fridge</label>
         <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <td>Product Image</td>
+                    <td>Product name</td>
+                    <td>In fridge</td>
+                    <td>Quantity</td>
+                </tr>
+            </thead>
+
             @for (int i = 0; i < Model?.FridgeProducts?.Count; i++)
             {
-                <tr>
-                    <td>@Model.FridgeProducts[i].Name</td>
-                    <td>
-                        @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)
-                    </td>
-                    <td>
-                        <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
-                        <span asp-validation-for="@Model.FridgeProducts[i].Quantity"></span>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            @if (Model.FridgeProducts[i]?.Image?.Length != 0)
+                            {
+                                <img height="80" width="80" src="@string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.FridgeProducts[i].Image))" />
+                            }
+                            else
+                            {
+                                <img height="80" width="80" src="~/Files/Images/NoImage.png" />
+                            }
+                        </td>
+                        <td>@Model.FridgeProducts[i].Name</td>
+                        <td>
+                            @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)
+                        </td>
+                        <td>
+                            <input asp-for="@Model.FridgeProducts[i].Quantity" value="@Model.FridgeProducts[i].Quantity" class="form-control col-xs-5" type="number" id="example-text-input">
+                            <span asp-validation-for="@Model.FridgeProducts[i].Quantity"></span>
+                        </td>
+                    </tr>
+                </tbody>
+                
                 @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Id)
                 @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Name)
                 @Html.HiddenFor(modelItem => Model.FridgeProducts[i].Quantity)

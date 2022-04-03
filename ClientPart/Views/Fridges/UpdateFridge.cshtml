@@ -28,6 +28,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
+                    <td>Product Image</td>
                     <td>Product name</td>
                     <td>In fridge</td>
                     <td>Quantity</td>
@@ -37,6 +38,16 @@
             {
                 <tbody>
                     <tr>
+                        <td>
+                            @if (Model.FridgeProducts[i]?.Image?.Length != 0)
+                            {
+                                <img height="80" width="80" src="@string.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.FridgeProducts[i].Image))" />
+                            }
+                            else
+                            {
+                                <img height="80" width="80" src="~/Files/Images/NoImage.png" />
+                            }
+                        </td>
                         <td>@Model.FridgeProducts[i].Name</td>
                         <td>
                             @Html.CheckBoxFor(modelItem => Model.FridgeProducts[i].IsChecked)

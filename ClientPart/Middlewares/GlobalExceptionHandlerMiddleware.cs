@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientPart.Middlewares
@@ -20,26 +21,23 @@ namespace ClientPart.Middlewares
             }
             catch (Exception exception)
             {
-                var (errorMessage, statusCode, method, request) = ("", "", "", "");
-                var url = "";
+                var url = new StringBuilder();
+                url.Append($"/Home/Error?message={exception.Message}&");
+
                 switch (exception)
                 {
                     case Refit.ValidationApiException:
                     case Refit.ApiException:
                         var currentApiException = exception as Refit.ApiException;
-                        statusCode = currentApiException.StatusCode.ToString();
-                        errorMessage = currentApiException.Message;
-                        method = currentApiException.HttpMethod.Method;
-                        url = $"/Home/Error?message={errorMessage}&statusCode={statusCode}&method={method}";
+                        url.Append($"statusCode={currentApiException.StatusCode}&");
+                        url.Append($"method={currentApiException.HttpMethod.Method}");
                         break;
                     default:
-                        statusCode = ((HttpStatusCode)exception.HResult).ToString();
-                        errorMessage = exception.Message;
-                        url = $"/Home/Error?message={errorMessage}&statusCode={statusCode}";
+                        url.Append($"statusCode={(HttpStatusCode)exception.HResult}");
                         break;
                 }
 
-                httpContext.Response.Redirect(url);
+                httpContext.Response.Redirect(url.ToString());
             }
         }
     }

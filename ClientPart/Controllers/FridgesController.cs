@@ -11,13 +11,13 @@ using ClientPart.Models;
 
 namespace ClientPart.Controllers
 {
+    [Authorize]
     public class FridgesController : Controller
     {
         private readonly FridgesService _fridgesService;
         private readonly FridgeModelService _fridgeModelService;
         private readonly ProductsService _productsService;
         private readonly FridgeProductsService _fridgeProductsService;
-        private readonly AuthenticationService _authenticationService;
         private readonly IMapper _mapper;
 
         public FridgesController(
@@ -25,7 +25,6 @@ namespace ClientPart.Controllers
             FridgeModelService modelService, 
             ProductsService productsService,
             FridgeProductsService fridgeProductsService,
-            AuthenticationService authenticationService,
             IMapper mapper)
         {
             _fridgesService = fridgesService;
@@ -33,11 +32,9 @@ namespace ClientPart.Controllers
             _fridgeModelService = modelService;
             _productsService = productsService;
             _fridgeProductsService = fridgeProductsService;
-            _authenticationService = authenticationService;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetFridges()
         {
             var fridges = await _fridgesService.GetAllFridgesAsync();
@@ -47,7 +44,6 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> UpdateFridge(Guid id)
         {
             var updatedFridge = await _fridgesService.GetFridgeAsync(id);
@@ -81,7 +77,6 @@ namespace ClientPart.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UpdateFridge(UpdatedFridgeViewModel updatedFridgeViewModel)
         {
             var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
@@ -112,7 +107,6 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> DeleteFridge(Guid id)
         {
             await _fridgesService.DeleteFridgeAsync(id);
@@ -121,7 +115,6 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> AddFridge()
         {
             var products = await _productsService.GetProductsAsync();
@@ -140,7 +133,6 @@ namespace ClientPart.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
         {
             if (!ModelState.IsValid || model == null)
@@ -149,7 +141,7 @@ namespace ClientPart.Controllers
             var addingFridge = _mapper.Map<Fridge>(model);
             var createdGuid = await _fridgesService.AddFridgeAsync(addingFridge);
 
-            foreach (AddProductInFridgeViewModel item in model.FridgeProducts)
+            foreach (var item in model.FridgeProducts)
             {
                 if (item.IsChecked)
                 {
