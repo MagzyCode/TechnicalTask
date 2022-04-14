@@ -20,10 +20,15 @@ namespace ServerPart.Repositories
                 return Guid.Empty;
 
             Create(fridge);
+            SaveChanges();
             return fridge.Id;
         }
 
-        public void DeleteFridge(Fridge fridge) => Delete(fridge);
+        public void DeleteFridge(Fridge fridge)
+        {
+            Delete(fridge);
+            SaveChanges();
+        }
 
         public async Task<IEnumerable<Fridge>> GetAllFridgesAsync() => await GetAll().ToListAsync();
 
@@ -40,6 +45,10 @@ namespace ServerPart.Repositories
             return result;
         }
 
-
+        public void UpdateFridge(Fridge fridge)
+        {
+            Update(fridge);
+            SaveChanges();
+        }
     }
 }

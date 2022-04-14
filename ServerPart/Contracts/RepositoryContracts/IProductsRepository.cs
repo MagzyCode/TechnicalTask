@@ -10,5 +10,7 @@ namespace ServerPart.Contracts.RepositoryContracts
         public Task<Products> GetProductAsync(Guid id);
 
         public Task<IEnumerable<Products>> GetProductsAsync();
+
+        public void UpdateProduct(Products product);
     }
 }

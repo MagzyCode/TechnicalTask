@@ -16,5 +16,7 @@ namespace ServerPart.Contracts.RepositoryContracts
         public void DeleteFridge(Fridge id);
 
         public Guid AddFridge(Fridge fridge);
+
+        public void UpdateFridge(Fridge fridge);
     }
 }

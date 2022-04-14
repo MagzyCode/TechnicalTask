@@ -68,7 +68,5 @@ namespace ServerPart.Repositories
                 return _rolesRepository;
             }
         }
-
-        public async Task SaveAsync() => await _taskContext.SaveChangesAsync();
     }
 }

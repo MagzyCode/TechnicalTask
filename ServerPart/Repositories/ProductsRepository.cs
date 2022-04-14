@@ -18,5 +18,11 @@ namespace ServerPart.Repositories
             => await GetAll().FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<IEnumerable<Products>> GetProductsAsync() => await GetAll().ToListAsync();
+
+        public void UpdateProduct(Products product)
+        {
+            Update(product);
+            SaveChanges();
+        }
     }
 }

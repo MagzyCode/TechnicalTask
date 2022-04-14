@@ -5,6 +5,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ServerPart.Repositories
 {
@@ -15,7 +16,8 @@ namespace ServerPart.Repositories
 
         public async Task CallStoredProcedureAsync()
         {
-            await Context.Database.ExecuteSqlRawAsync("EXEC sp_TaskMethod");          
+            await Context.Database.ExecuteSqlRawAsync("EXEC sp_TaskMethod");
+            SaveChanges();
         }
 
         public Guid AddProductInFridge(FridgeProducts fridgeProduct)
@@ -24,6 +26,7 @@ namespace ServerPart.Repositories
                 return Guid.Empty;
 
             Create(fridgeProduct);
+            SaveChanges();
             return fridgeProduct.Id;
         }
 
@@ -32,8 +35,23 @@ namespace ServerPart.Repositories
 
         public async Task<IEnumerable<FridgeProducts>> GetAllFridgesProductsAsync() => await GetAll().ToListAsync();
 
-        public void DeleteFridgeProduct(FridgeProducts fridgeProduct) => Delete(fridgeProduct);
+        public void DeleteFridgeProduct(FridgeProducts fridgeProduct)
+        {
+            Delete(fridgeProduct);
+            SaveChanges();
+        }
 
-        public void UpdateFridgeProduct(FridgeProducts updatedFridgeProduct) => Update(updatedFridgeProduct);
+        public void UpdateFridgeProduct(FridgeProducts updatedFridgeProduct)
+        {
+            Update(updatedFridgeProduct);
+            SaveChanges();
+        }
+
+        public async Task<FridgeProducts> GetFridgeProductByGuidsAsync(Guid fridgeId, Guid productId)
+        {
+            var fridgeProducts = await GetAllFridgesProductsAsync();
+
+            return fridgeProducts.FirstOrDefault(x => x.FridgeId == fridgeId && x.ProductId == productId);
+        }
     }
 }

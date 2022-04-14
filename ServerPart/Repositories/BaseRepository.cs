@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ServerPart.Repositories
 {
-    public abstract class BaseRepository<T> 
+    public abstract class BaseRepository<T>
         : IRepository<T> where T : class
     {
         private protected TaskContext _taskContext;
@@ -51,5 +51,7 @@ namespace ServerPart.Repositories
         {
             Context.Set<T>().Update(model);
         }
+
+        public void SaveChanges() => Context.SaveChanges();
     }
 }

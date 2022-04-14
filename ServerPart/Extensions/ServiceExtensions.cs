@@ -66,7 +66,7 @@ namespace ServerPart.Extensions
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = Encoding.UTF8.GetBytes(configuration["Keys:JWT"]); // Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = Encoding.UTF8.GetBytes(configuration["Keys:JWT"]);
 
             services.AddAuthentication(opt =>
             {
