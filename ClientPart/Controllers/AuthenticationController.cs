@@ -91,7 +91,14 @@ namespace ClientPart.Controllers
 
             var authenticationUser = _mapper.Map<AuthenticationUser>(model);
             var token = await _authenticationService.AuthenticateAsync(authenticationUser);
-            var claims = new List<Claim> { new Claim("Token", token) };
+
+            var role = await _authenticationService.GetUserRoleAsync(authenticationUser);
+
+            var claims = new List<Claim>
+            {
+                new Claim("Token", token),
+                new Claim(ClaimTypes.Role, role.Replace("\"", ""))
+            };
 
             ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));

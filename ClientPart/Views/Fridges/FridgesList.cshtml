@@ -1,4 +1,10 @@
-﻿@model IEnumerable<FridgesViewModel>;
+﻿@using System.Security.Claims
+@model IEnumerable<FridgesViewModel>;
+
+@{
+    var isAdmin = User.Identities.ToList()[0]
+        .Claims.ToList()[1].Value == "Administrator";
+}
 
 <h2>All fridges</h2>
 <br/>
@@ -14,7 +20,11 @@
                     <td>Id</td>
                     <td>Fridge name</td>
                     <td>Owner</td>
-                    <td colspan="2">Actions</td>
+                    @if (isAdmin)
+                    {
+                        <td colspan="2">Actions</td>
+                    }
+                   
                 </tr>
             </thead>
             @foreach (var item in Model)
@@ -24,24 +34,20 @@
                         <td>@item.Id</td>
                         <td>@item.Name</td>
                         <td>@item.OwnerName</td>
-                        @{
-                            var isClient = User.IsInRole("Client");
-                            var isAdmin = User.IsInRole("Administrator");
-                            if (isAdmin && isClient)
-                            {
-                                var y = 0;
-                            }
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <form method="get">
+                                    <button type="submit" class="btn btn-primary mb-2" asp-controller="Fridges" asp-action="UpdateFridge" asp-route-id="@item.Id">Update</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="get">
+                                    <button type="submit" class="btn btn-primary mb-2 bg-danger" asp-controller="Fridges" asp-action="DeleteFridge" asp-route-id="@item.Id">Delete</button>
+                                </form>
+                            </td>
                         }
-                        <td>
-                            <form method="get">
-                                <button type="submit" class="btn btn-primary mb-2" asp-controller="Fridges" asp-action="UpdateFridge" asp-route-id="@item.Id">Update</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="get">
-                                <button type="submit" class="btn btn-primary mb-2 bg-danger" asp-controller="Fridges" asp-action="DeleteFridge" asp-route-id="@item.Id">Delete</button>
-                            </form>
-                        </td>
+                        
                     </tr>
                 </tbody>
             }

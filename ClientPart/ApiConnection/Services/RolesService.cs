@@ -1,4 +1,5 @@
 ﻿using ClientPart.ApiConnection.Contracts;
+using ClientPart.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;

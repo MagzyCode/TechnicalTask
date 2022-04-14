@@ -11,5 +11,8 @@ namespace ClientPart.ApiConnection.Contracts
 
         [Post("/api/authentication/login")]
         public Task<string> AuthenticateAsync([Body] AuthenticationUser user);
+
+        [Post("/api/user/role")]
+        Task<string> GetUserRoleAsync(AuthenticationUser user);
     }
 }

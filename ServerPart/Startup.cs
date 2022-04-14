@@ -11,6 +11,7 @@ using ServerPart.Context;
 using ServerPart.Contracts.AuthenticationManagerContracts;
 using ServerPart.Extensions;
 using ServerPart.Repositories;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.IO;
 using System.Linq;
@@ -69,8 +70,10 @@ namespace ServerPart
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 option.IncludeXmlComments(xmlPath);
                 option.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                // option.ExampleFilters();
+                
             });
-
+            // services.AddSwaggerExamplesFromAssemblyOf<Startup>();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));

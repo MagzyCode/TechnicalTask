@@ -40,7 +40,7 @@ namespace ServerPart.Controllers
         /// <response code="400">Incoming model is null or validation not pass.</response>
         /// <response code="500">Something going wrong on server.</response>
         [HttpPost("registration")]
-        [SwaggerRequestExample(requestType: typeof(RegisterUserExample), examplesProviderType: typeof(RegisterUserExample))]
+        // [SwaggerRequestExample(requestType: typeof(RegisterUserExample), examplesProviderType: typeof(RegisterUserExample))]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status500InternalServerError)]

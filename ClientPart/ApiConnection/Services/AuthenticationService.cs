@@ -16,6 +16,8 @@ namespace ClientPart.ApiConnection.Services
 
         public async Task<string> AuthenticateAsync(AuthenticationUser model) => await _data.AuthenticateAsync(model);
 
+        public async Task<string> GetUserRoleAsync(AuthenticationUser user) => await _data.GetUserRoleAsync(user);
+
         public string GetToken(HttpContext context)
         {
             var tokenClaim = context?.User?.Claims?.First(x => x.Type == "Token");

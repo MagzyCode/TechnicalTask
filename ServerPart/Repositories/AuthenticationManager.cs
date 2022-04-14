@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServerPart.Contracts.AuthenticationManagerContracts;
+using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models;
 using ServerPart.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +19,14 @@ namespace ServerPart.Repositories
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IRepositoryManager _repositoryManager;
         private User _user;
 
-        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration, IRepositoryManager repositoryManager)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _repositoryManager = repositoryManager;
         }
 
         public async Task<string> CreateToken()
@@ -39,6 +43,23 @@ namespace ServerPart.Repositories
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
 
             return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
+        }
+
+        public async Task<string> GetUserRoleAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            var roles = await _repositoryManager.Roles.GetRolesAsync();
+            var userRole = string.Empty;
+
+            foreach (var role in roles)
+            {
+                userRole = await _userManager.IsInRoleAsync(user, role)
+                    ? role
+                    : userRole;
+            }
+
+            return userRole;
         }
 
         private SigningCredentials GetSigningCredentials()
@@ -80,6 +101,5 @@ namespace ServerPart.Repositories
 
             return tokenOptions;
         }
-
     }
 }

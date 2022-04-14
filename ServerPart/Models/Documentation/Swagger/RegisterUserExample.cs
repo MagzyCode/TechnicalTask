@@ -1,24 +1,32 @@
 ﻿using ServerPart.Models.DTOs;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.Examples;
+using System.Collections.Generic;
 
 namespace ServerPart.Models.Documentation.Swagger
 {
-    public class RegisterUserExample : IExamplesProvider
+    public class RegisterUserExample : IMultipleExamplesProvider<UserForRegistrationDto>
     {
-        public object GetExamples()
+        public IEnumerable<SwaggerExample<UserForRegistrationDto>> GetExamples()
         {
-            return new UserForRegistrationDto()
+            return new[]
             {
-                FirstName = "Andrei",
-                LastName = "Kazarevich",
-                UserName = "Andre",
-                Password = "slojnoNoMojno1045",
-                Email = "andreikazarevich@mail.ru",
-                PhoneNumber = "+375291986245",
-                Roles = new[]
+                new SwaggerExample<UserForRegistrationDto>()
                 {
-                    "Administrator",
-                    "Client"
+                    Value = new UserForRegistrationDto()
+                    {
+                        FirstName = "Andrei",
+                        LastName = "Kazarevich",
+                        UserName = "Andre",
+                        Password = "slojnoNoMojno1045",
+                        Email = "andreikazarevich@mail.ru",
+                        PhoneNumber = "+375291986245",
+                        Roles = new[]
+                        {
+                            "Administrator",
+                            "Client"
+                        }
+                    }
                 }
             };
         }

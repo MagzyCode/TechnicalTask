@@ -1,4 +1,5 @@
-﻿using Refit;
+﻿using ClientPart.Models;
+using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

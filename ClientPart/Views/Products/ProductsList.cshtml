@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<ProductsViewModel>
+@{
+    var isAdmin = User.Identities.ToList()[0]
+        .Claims.ToList()[1].Value == "Administrator";
+}
 
 <h2>All products</h2>
 <br />
@@ -10,7 +14,11 @@
                     <td>Image</td>
                     <td>Id</td>
                     <td>Product name</td>
-                    <td>Actions</td>
+                    @if (isAdmin)
+                    {
+                        <td>Actions</td>
+                    }
+                    
                 </tr>
             </thead>
             @foreach (var item in Model)
@@ -30,11 +38,14 @@
                         </td>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
-                        <td>
-                            <form method="get">
-                                <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</button>
-                            </form>
-                        </td>
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <form method="get">
+                                    <button type="submit" class="btn btn-primary mb-2" asp-controller="Products" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</button>
+                                </form>
+                            </td>
+                        }
                     </tr>
                 </tbody>
 
