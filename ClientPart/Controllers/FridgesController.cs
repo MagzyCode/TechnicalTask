@@ -21,8 +21,8 @@ namespace ClientPart.Controllers
         private readonly IMapper _mapper;
 
         public FridgesController(
-            FridgesService fridgesService, 
-            FridgeModelService modelService, 
+            FridgesService fridgesService,
+            FridgeModelService modelService,
             ProductsService productsService,
             FridgeProductsService fridgeProductsService,
             IMapper mapper)
@@ -35,7 +35,7 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFridges()
+        public async Task<IActionResult> FridgesList()
         {
             var fridges = await _fridgesService.GetAllFridgesAsync();
             var fridgesViewModel = _mapper.Map<IEnumerable<FridgesViewModel>>(fridges);
@@ -52,14 +52,14 @@ namespace ClientPart.Controllers
             var fridgeModelsViewModel = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels);
             var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
             updatedFridgeViewModel.FridgeModels = fridgeModelsViewModel.ToList();
-             
+
             var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
             var fridgeProductsViewModel = _mapper.Map<IEnumerable<FridgeProductsViewModel>>(fridgeProducts);
 
             var productsOfCurrentFridge = fridgeProductsViewModel
                 .Where(x => x.FridgeId == id)
                 .ToList();
-            
+
             var products = await _productsService.GetProductsAsync();
             var productsViewModel = _mapper.Map<IEnumerable<AddProductInFridgeViewModel>>(products);
 
@@ -71,7 +71,7 @@ namespace ClientPart.Controllers
                     item.Quantity += productsOfCurrentFridge.First(x => x.ProductId == item.Id).Quantity;
                 }
             }
-            
+
             updatedFridgeViewModel.FridgeProducts = productsViewModel.ToList();
             return View(updatedFridgeViewModel);
         }
@@ -103,7 +103,7 @@ namespace ClientPart.Controllers
 
             await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge);
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         [HttpGet]
@@ -111,7 +111,7 @@ namespace ClientPart.Controllers
         {
             await _fridgesService.DeleteFridgeAsync(id);
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         [HttpGet]
@@ -125,8 +125,8 @@ namespace ClientPart.Controllers
             var fridgeModelsDto = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels)
                 .ToList();
 
-            return View(new AddFridgeViewModel() 
-            { 
+            return View(new AddFridgeViewModel()
+            {
                 FridgeProducts = productsViewModel,
                 FridgeModels = fridgeModelsDto
             });
@@ -155,10 +155,10 @@ namespace ClientPart.Controllers
                 }
             }
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
     }
 
-    
+
 }

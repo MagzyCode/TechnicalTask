@@ -25,7 +25,7 @@ namespace ClientPart.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> ProductsList()
         {
             var products = await _productsService.GetProductsAsync();
             var productsViewModel = _mapper.Map<IEnumerable<ProductsViewModel>>(products);
@@ -59,7 +59,7 @@ namespace ClientPart.Controllers
 
             await _productsService.UpdateProductAsync(updatedProduct.Id, updatedProduct);
 
-            return RedirectToAction("GetProducts", "Products");
+            return RedirectToAction("ProductsList", "Products");
         }
     }
 }

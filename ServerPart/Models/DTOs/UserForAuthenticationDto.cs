@@ -17,7 +17,7 @@ namespace ServerPart.Models.DTOs
         /// Represents password of user in system, which using for authentication.
         /// </summary>
         /// <example>
-        /// slojnoNoMojno
+        /// slojnoNoMojno1045
         /// </example>
         [Required(ErrorMessage = "User password field is required.")]
         public string Password { get; set; }

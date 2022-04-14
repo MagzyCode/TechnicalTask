@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ServerPart.Context;
+using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Contracts.RepositoryManagerContracts;
 using ServerPart.Models;
 using ServerPart.Repositories;
@@ -22,8 +23,16 @@ namespace ServerPart.Extensions
                 opts => opts.UseSqlServer(configuration.GetConnectionString("taskConnectionString"),
                     b => b.MigrationsAssembly("ServerPart")));
 
-        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+        public static void ConfigureRepositoryManager(this IServiceCollection services)
+        {
+            services.AddScoped<IFridgeModelRepository, FridgeModelRepository>();
+            services.AddScoped<IFridgeProductsRepository, FridgeProductsRepository>();
+            services.AddScoped<IFridgeRepository, FridgeRepository>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+        }
+            
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {

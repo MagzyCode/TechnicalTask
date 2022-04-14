@@ -21,10 +21,10 @@ namespace ClientPart.ApiConnection.Services
 
         public async Task<Fridge> GetFridgeAsync(Guid fridgeId) => await _data.GetFridgeAsync(fridgeId);
 
-        public async Task<IEnumerable<Products>> GetFridgesProductsAsync(Guid fridgeId) 
+        public async Task<IEnumerable<Products>> GetFridgesProductsAsync(Guid fridgeId)
             => await _data.GetFridgesProductsAsync(fridgeId);
 
-        public async Task UpdateFridgeAsync(Guid fridgeId, Fridge updatedFridge) 
+        public async Task UpdateFridgeAsync(Guid fridgeId, Fridge updatedFridge)
             => await _data.UpdateFridgeAsync(fridgeId, updatedFridge);
 
         public async Task DeleteFridgeAsync(Guid fridgeId) => await _data.DeleteFridgeAsync(fridgeId);

@@ -1,7 +1,6 @@
 ﻿using ServerPart.Context;
 using ServerPart.Contracts.RepositoryContracts;
 using ServerPart.Contracts.RepositoryManagerContracts;
-using System.Threading.Tasks;
 
 namespace ServerPart.Repositories
 {
@@ -14,59 +13,45 @@ namespace ServerPart.Repositories
         private IFridgeModelRepository _fridgeModelRepository;
         private IRolesRepository _rolesRepository;
 
-        public RepositoryManager(TaskContext context)
+        public RepositoryManager(
+            TaskContext context,
+            IFridgeProductsRepository fridgeProductsRepository,
+            IFridgeRepository fridgeRepository,
+            IProductsRepository productsRepository,
+            IFridgeModelRepository fridgeModelRepository,
+            IRolesRepository rolesRepository)
         {
             _taskContext = context;
+            _fridgeProductsRepository = fridgeProductsRepository;
+            _fridgeRepository = fridgeRepository;
+            _productsRepository = productsRepository;
+            _fridgeModelRepository = fridgeModelRepository;
+            _rolesRepository = rolesRepository;
         }
 
         public IFridgeModelRepository FridgeModel
         {
-            get
-            {
-                if (_fridgeModelRepository == null)
-                    _fridgeModelRepository = new FridgeModelRepository(_taskContext);
-                return _fridgeModelRepository;
-            }
+            get => _fridgeModelRepository;
         }
 
         public IFridgeProductsRepository FridgeProducts
         {
-            get
-            {
-                if (_fridgeProductsRepository == null)
-                    _fridgeProductsRepository = new FridgeProductsRepository(_taskContext);
-                return _fridgeProductsRepository;
-            }
+            get => _fridgeProductsRepository;
         }
 
         public IFridgeRepository Fridge
         {
-            get
-            {
-                if (_fridgeRepository == null)
-                    _fridgeRepository = new FridgeRepository(_taskContext);
-                return _fridgeRepository;
-            }
+            get => _fridgeRepository;
         }
 
         public IProductsRepository Products
         {
-            get
-            {
-                if (_productsRepository == null)
-                    _productsRepository = new ProductsRepository(_taskContext);
-                return _productsRepository;
-            }
+            get => _productsRepository;
         }
 
         public IRolesRepository Roles
         {
-            get
-            {
-                if (_rolesRepository == null)
-                    _rolesRepository = new RolesRepository(_taskContext);
-                return _rolesRepository;
-            }
+            get => _rolesRepository;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace ClientPart.Controllers
         {
             await _fridgeProductsService.CallServerProcedureAsync();
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

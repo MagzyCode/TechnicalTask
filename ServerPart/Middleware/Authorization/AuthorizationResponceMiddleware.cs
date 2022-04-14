@@ -17,15 +17,17 @@ namespace ServerPart.Middleware.Authorization
         {
             await _next(context);
 
-            if (context.Response.StatusCode == 401)
+            if (context.Response.StatusCode == StatusCodes.Status401Unauthorized && context.Response.ContentType == null)
             {
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(new ErrorDetails()
                 {
-                    StatusCode = 401,
+                    StatusCode = StatusCodes.Status401Unauthorized,
                     Message = "Unauthorize invoke of action method."
                 }.ToString());
             }
+                
+            
         }
     }
 }

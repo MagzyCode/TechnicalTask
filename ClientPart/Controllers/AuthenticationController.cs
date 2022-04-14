@@ -57,7 +57,7 @@ namespace ClientPart.Controllers
 
             await Authenticate(userInSystem);
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         [HttpGet]
@@ -81,7 +81,7 @@ namespace ClientPart.Controllers
 
             await Authenticate(model);
 
-            return RedirectToAction("GetFridges", "Fridges");
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         private async Task Authenticate(AuthenticationUserViewModel model)

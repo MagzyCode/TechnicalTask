@@ -167,6 +167,7 @@ namespace ServerPart.Controllers
         /// <summary>
         /// Update fridge product.
         /// </summary>
+        /// <param name="fridgeProductId">Fridge product guid.</param>
         /// <param name="updateFridgeProductDto">Updated fridge product DTO model.</param>
         /// <returns></returns>
         /// <response code="204">Fridge product was successfully updated.</response>
@@ -180,8 +181,12 @@ namespace ServerPart.Controllers
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status500InternalServerError)]
         [ValidationFilter]
-        public async Task<IActionResult> UpdateFridgeProduct([FromBody] UpdateFridgeProductDto updateFridgeProductDto)
+        public async Task<IActionResult> UpdateFridgeProduct(Guid fridgeProductId, [FromBody] UpdateFridgeProductDto updateFridgeProductDto)
         {
+            var fridgeProduct = await _manager.FridgeProducts.GetFridgeProductAsync(fridgeProductId);
+            if (fridgeProduct == null)
+                return NotFound("There is no fridge product with given guid.");
+
             var product = await _manager.Products.GetProductAsync(updateFridgeProductDto.ProductId);
             if (product == null)
                 return NotFound("There is no product object with such guid.");

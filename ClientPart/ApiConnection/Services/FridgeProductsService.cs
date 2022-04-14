@@ -19,17 +19,19 @@ namespace ClientPart.ApiConnection.Services
 
         public async Task CallServerProcedureAsync() => await _data.CallServerProcedureAsync();
 
-        public async Task<FridgeProducts> GetFridgeProductByIdAsync(Guid fridgeProductId) 
+        public async Task<FridgeProducts> GetFridgeProductByIdAsync(Guid fridgeProductId)
             => await _data.GetFridgeProductByIdAsync(fridgeProductId);
 
-        public async Task AddFridgeProductAsync(FridgeProducts creationFridgeProduct) 
+        public async Task AddFridgeProductAsync(FridgeProducts creationFridgeProduct)
             => await _data.AddFridgeProductAsync(creationFridgeProduct);
 
-        public async Task DeleteFridgeProductAsync(Guid fridgeProductId) 
+        public async Task DeleteFridgeProductAsync(Guid fridgeProductId)
             => await _data.DeleteFridgeProductAsync(fridgeProductId);
 
-        public async Task<IEnumerable<FridgeProducts>> GetFridgesProductsAsync() 
+        public async Task<IEnumerable<FridgeProducts>> GetFridgesProductsAsync()
             => await _data.GetFridgesProductsAsync();
 
+        public async Task UpdateFridgeProductAsync(Guid fridgeProductId, FridgeProducts updateFridgeProduct)
+            => await _data.UpdateFridgeProductAsync(fridgeProductId, updateFridgeProduct);
     }
 }

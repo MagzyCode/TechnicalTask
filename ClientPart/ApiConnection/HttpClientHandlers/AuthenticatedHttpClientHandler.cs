@@ -24,7 +24,7 @@ namespace ClientPart.ApiConnection.HttpClientHandlers
         {
             if (request.Headers.Authorization == null)
             {
-                var token = _authenticationService.GetToken(_httpContextAccessor.HttpContext);
+                var token = _authenticationService.GetToken(_httpContextAccessor.HttpContext).Replace("\"", "");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
             return await base.SendAsync(request, cancellationToken);

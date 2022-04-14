@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ServerPart.ActionFilters;
+using ServerPart.Context;
 using ServerPart.Contracts.AuthenticationManagerContracts;
 using ServerPart.Extensions;
 using ServerPart.Repositories;

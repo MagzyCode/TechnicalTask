@@ -22,5 +22,8 @@ namespace ClientPart.ApiConnection.Contracts
 
         [Delete("/api/fridgeProducts/{fridgeProductId}")]
         public Task DeleteFridgeProductAsync(Guid fridgeProductId);
+
+        [Put("/api/fridgeProducts/{fridgeProductId}")]
+        public Task UpdateFridgeProductAsync(Guid fridgeProductId, [Body] FridgeProducts updateFridgeProduct);
     }
 }
