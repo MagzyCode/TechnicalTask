@@ -48,9 +48,11 @@ namespace ClientPart.Controllers
             if (model == null || !ModelState.IsValid)
                 return BadRequest();
 
-            var imageInBytes = Array.Empty<byte>();
-            using (var binaryReader = new BinaryReader(model.ImageData.OpenReadStream()))
+            var imageInBytes = model.Image;
+            
+            if (model.ImageData != null)
             {
+                using var binaryReader = new BinaryReader(model.ImageData.OpenReadStream());
                 imageInBytes = binaryReader.ReadBytes((int)model.ImageData.Length);
             }
 
