@@ -36,6 +36,7 @@ namespace ServerPart
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            
             services.AddSwaggerGen(option =>
             {
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -66,14 +67,14 @@ namespace ServerPart
                 });
 
                 option.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerPart", Version = "v1" });
+                option.ExampleFilters();
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 option.IncludeXmlComments(xmlPath);
                 option.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                // option.ExampleFilters();
-                
             });
-            // services.AddSwaggerExamplesFromAssemblyOf<Startup>();
+            
+            services.AddSwaggerExamplesFromAssemblyOf<Startup>();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));

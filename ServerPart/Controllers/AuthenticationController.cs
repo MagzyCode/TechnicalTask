@@ -8,7 +8,7 @@ using ServerPart.Models;
 using ServerPart.Models.Documentation.Swagger;
 using ServerPart.Models.DTOs;
 using ServerPart.Models.ErrorModel;
-using Swashbuckle.Examples;
+using Swashbuckle.AspNetCore.Filters;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace ServerPart.Controllers
         /// <response code="400">Incoming model is null or validation not pass.</response>
         /// <response code="500">Something going wrong on server.</response>
         [HttpPost("registration")]
-        // [SwaggerRequestExample(requestType: typeof(RegisterUserExample), examplesProviderType: typeof(RegisterUserExample))]
+        [SwaggerRequestExample(typeof(RequestModel), typeof(UserForRegistrationDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(type: typeof(ErrorDetails), statusCode: StatusCodes.Status500InternalServerError)]

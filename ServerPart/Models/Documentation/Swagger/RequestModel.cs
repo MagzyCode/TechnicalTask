@@ -1,11 +1,10 @@
 ﻿using ServerPart.Models.DTOs;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.Examples;
 using System.Collections.Generic;
 
 namespace ServerPart.Models.Documentation.Swagger
 {
-    public class RegisterUserExample : IMultipleExamplesProvider<UserForRegistrationDto>
+    public class RequestModel : IMultipleExamplesProvider<UserForRegistrationDto>
     {
         public IEnumerable<SwaggerExample<UserForRegistrationDto>> GetExamples()
         {
@@ -13,17 +12,18 @@ namespace ServerPart.Models.Documentation.Swagger
             {
                 new SwaggerExample<UserForRegistrationDto>()
                 {
+                    Name = "User registration",
+                    Summary = "Give user registration example",
                     Value = new UserForRegistrationDto()
                     {
-                        FirstName = "Andrei",
+                        FirstName = "Natalia",
                         LastName = "Kazarevich",
-                        UserName = "Andre",
+                        UserName = "Nata",
                         Password = "slojnoNoMojno1045",
-                        Email = "andreikazarevich@mail.ru",
-                        PhoneNumber = "+375291986245",
-                        Roles = new[]
+                        Email = "natakazarevich@mail.ru",
+                        PhoneNumber = "+375291734620",
+                        Roles = new List<string>()
                         {
-                            "Administrator",
                             "Client"
                         }
                     }
