@@ -1,21 +1,18 @@
-﻿using ClientPart.Models;
+﻿using ClientPart.ApiConnection.Services;
+using ClientPart.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPart.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly FridgeProductsService _fridgeProductsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(FridgeProductsService fridgeProductsService)
         {
-            _logger = logger;
+            _fridgeProductsService = fridgeProductsService;
         }
 
         public IActionResult Index()
@@ -26,6 +23,13 @@ namespace ClientPart.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Procedure()
+        {
+            await _fridgeProductsService.CallServerProcedureAsync();
+
+            return RedirectToAction("FridgesList", "Fridges");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

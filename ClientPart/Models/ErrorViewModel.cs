@@ -1,5 +1,3 @@
-using System;
-
 namespace ClientPart.Models
 {
     public class ErrorViewModel
