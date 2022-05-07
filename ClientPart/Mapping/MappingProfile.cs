@@ -11,7 +11,7 @@ namespace ClientPart.Mapping
             // models in view models
             CreateMap<FridgeModel, FridgeModelViewModel>();
             CreateMap<Fridge, FridgesViewModel>();
-            CreateMap<Fridge, UpdatedFridgeViewModel>().ReverseMap();
+            CreateMap<Fridge, AddOrUpdateFridgeViewModel>().ReverseMap();
             CreateMap<FridgeProducts, FridgeProductsViewModel>();
             CreateMap<Products, AddProductInFridgeViewModel>();
             CreateMap<Products, ProductsViewModel>();
@@ -19,8 +19,9 @@ namespace ClientPart.Mapping
 
 
             // view models back to models
-            CreateMap<AddFridgeViewModel, Fridge>();
-            CreateMap<FridgesViewModel, UpdatedFridgeViewModel>();
+            CreateMap<AddOrUpdateFridgeViewModel, Fridge>().ReverseMap();
+            CreateMap<AddOrUpdateFridgeViewModel, Fridge>();
+            CreateMap<FridgesViewModel, AddOrUpdateFridgeViewModel>();
             CreateMap<ProductsViewModel, UpdatedProductViewModel>();
             CreateMap<RegistrationUserViewModel, User>();
             CreateMap<AuthenticationUserViewModel, AuthenticationUser>();     

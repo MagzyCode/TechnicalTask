@@ -50,7 +50,7 @@ namespace ClientPart.Controllers
             var fridgeModels = await _fridgeModelService.GetFridgeModelsAsync();
 
             var fridgeModelsViewModel = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels);
-            var updatedFridgeViewModel = _mapper.Map<UpdatedFridgeViewModel>(updatedFridge);
+            var updatedFridgeViewModel = _mapper.Map<AddOrUpdateFridgeViewModel>(updatedFridge);
             updatedFridgeViewModel.FridgeModels = fridgeModelsViewModel.ToList();
 
             var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
@@ -73,18 +73,20 @@ namespace ClientPart.Controllers
             }
 
             updatedFridgeViewModel.FridgeProducts = productsViewModel.ToList();
-            return View(updatedFridgeViewModel);
+            updatedFridgeViewModel.ActionName = "UpdateFridge";
+
+            return View("AddOrUpdateFridge", updatedFridgeViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateFridge(UpdatedFridgeViewModel updatedFridgeViewModel)
+        public async Task<IActionResult> UpdateFridge(AddOrUpdateFridgeViewModel updatedFridgeViewModel)
         {
             var fridgeProducts = await _fridgeProductsService.GetFridgesProductsAsync();
 
             foreach (var item in updatedFridgeViewModel.FridgeProducts)
             {
                 var existedProductInFridge = fridgeProducts
-                        .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id && x.ProductId == item.Id);
+                        .FirstOrDefault(x => x.FridgeId == updatedFridgeViewModel.Id.Value && x.ProductId == item.Id);
 
                 if (existedProductInFridge != null)
                     await _fridgeProductsService.DeleteFridgeProductAsync(existedProductInFridge.Id);
@@ -93,7 +95,7 @@ namespace ClientPart.Controllers
                     await _fridgeProductsService.AddFridgeProductAsync(
                         creationFridgeProduct: new FridgeProducts()
                         {
-                            FridgeId = updatedFridgeViewModel.Id,
+                            FridgeId = updatedFridgeViewModel.Id.Value,
                             ProductId = item.Id,
                             Quantity = item.Quantity
                         });
@@ -101,7 +103,7 @@ namespace ClientPart.Controllers
 
             var updatedFridge = _mapper.Map<Fridge>(updatedFridgeViewModel);
 
-            await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id, updatedFridge);
+            await _fridgesService.UpdateFridgeAsync(updatedFridgeViewModel.Id.Value, updatedFridge);
 
             return RedirectToAction("FridgesList", "Fridges");
         }
@@ -125,15 +127,16 @@ namespace ClientPart.Controllers
             var fridgeModelsDto = _mapper.Map<IEnumerable<FridgeModelViewModel>>(fridgeModels)
                 .ToList();
 
-            return View(new AddFridgeViewModel()
+            return View("AddOrUpdateFridge", new AddOrUpdateFridgeViewModel()
             {
                 FridgeProducts = productsViewModel,
-                FridgeModels = fridgeModelsDto
+                FridgeModels = fridgeModelsDto,
+                ActionName = "AddFridge"
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFridge(AddFridgeViewModel model)
+        public async Task<IActionResult> AddFridge(AddOrUpdateFridgeViewModel model)
         {
             if (!ModelState.IsValid || model == null)
                 return BadRequest();
